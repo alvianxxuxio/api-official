@@ -6,222 +6,190 @@
 <title>API Documentation</title>
 <style>
   body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #121212;
-  color: #e0e0e0;
-  margin: 0;
-  padding: 0;
-  direction: ltr;
-}
-
-.container {
-  max-width: 100%;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #1e1e1e;
-  border-radius: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 90%;
-    padding: 30px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    direction: ltr;
   }
-}
-
-@media (min-width: 1024px) {
   .container {
     max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
   }
-}
-
-.container * {
-  animation: slide-in 1s ease-out forwards;
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
+  .container * {
+    animation: slide-in 1s ease-out forwards;
   }
-  to {
-    transform: translateX(0);
-    opacity: 1;
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
-}
-
-.about-me {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.profile-pic-container {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 20px;
-}
-
-.profile-pic {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #444;
-}
-
-.rotating-lines {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 140px;
-  height: 140px;
-  margin-top: -70px;
-  margin-left: -70px;
-  border-radius: 50%;
-  border: 2px dashed #fff;
-  animation: rotate 5s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
+  .about-me {
+    text-align: center;
+    margin-bottom: 40px;
   }
-  to {
-    transform: rotate(360deg);
+  .profile-pic-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
   }
-}
-
-.about-me h1 {
-  font-size: 2rem;
-  margin-bottom: 15px;
-}
-
-.about-me p {
-  font-size: 1.1rem;
-  margin-bottom: 20px;
-}
-
-.view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
-  display: block;
-  padding: 12px 24px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #333;
-  border-radius: 20px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-  margin: 10px auto;
-  width: fit-content;
-}
-
-.view-docs-btn:hover, .whatsapp-chat-btn:hover, .whatsapp-channel-btn:hover {
-  background-color: #505050;
-}
-
-.section {
-  margin-bottom: 30px;
-}
-
-.section-title {
-  font-size: 1.4rem;
-  border-bottom: 2px solid #444;
-  padding-bottom: 8px;
-  text-align: center;
-  color: #fff;
-}
-
-.info-card {
-  display: flex;
-  flex-direction: column;
-  background-color: #2a2a2a;
-  padding: 15px;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  align-items: center;
-}
-
-@media (min-width: 768px) {
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #444;
+  }
+  .rotating-lines {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin-top: -100px;
+    margin-left: -100px;
+    border-radius: 50%;
+    border: 2px dashed #fff;
+    animation: rotate 5s linear infinite;
+  }
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .about-me h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  .about-me p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+  .view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
+    display: block;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #333;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    margin: 10px auto;
+    width: fit-content;
+  }
+  .view-docs-btn:hover, .whatsapp-chat-btn:hover, .whatsapp-channel-btn:hover {
+    background-color: #444;
+  }
+  .content {
+    display: none;
+  }
+  .section {
+    margin-bottom: 40px;
+  }
+  .section-title {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #444;
+    padding-bottom: 10px;
+    text-align: center;
+  }
   .info-card {
-    flex-direction: row;
+    display: flex;
     justify-content: space-between;
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    align-items: center;
   }
-}
-
-.info-title {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.info-content {
-  font-size: 1rem;
-  color: #b0b0b0;
-}
-
-.btn-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.btn {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #333;
-  color: #fff;
-  padding: 15px;
-  text-decoration: none;
-  font-size: 1rem;
-  border-radius: 20px;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #505050;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 1rem;
-  color: #fff;
-}
-
-.form-group input, .form-group button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #444;
-  background-color: #2a2a2a;
-  color: #fff;
-  font-size: 1rem;
-}
-
-.form-group button {
-  margin-top: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.form-group button:hover {
-  background-color: #505050;
-}
-
-.result {
-  background-color: #2a2a2a;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 20px;
-}</style>
+  .info-card div {
+    flex: 1;
+    text-align: center;
+  }
+  .info-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  .info-content {
+    font-size: 1rem;
+    color: #b0b0b0;
+  }
+  .btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 1rem;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background-color: #444;
+  }
+  .dropdown-content {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #fff;
+  }
+  .form-group input, .form-group button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 1rem;
+  }
+  .form-group button {
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .form-group button:hover {
+    background-color: #444;
+  }
+  .result {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+</style>
 </head>
 <body>
 <div class="container">
