@@ -4,10 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Documentation</title>
+<script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js" type="text/javascript"></script>
 <style>
   body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f5f5f5; /* Mengubah background menjadi putih */
+  background-image: url("https://files.catbox.moe/cy6tec.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 100%;
   color: #000000; /* Mengubah teks menjadi hitam */
   margin: 0;
   padding: 0;
@@ -21,10 +25,12 @@
 
 .container {
   display: center;
+  margin-top: 40% !important;
   max-width: 90%;
-  margin: 20px auto;
+  margin: 20px;
   padding: 20px;
-  background-color: #ffffff; /* Background putih */
+  color: yellow;
+  background-color: rgba(255, 255, 255, 0.4); /* Background putih */
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Mengurangi bayangan */
   overflow: hidden;
@@ -52,10 +58,19 @@
 
 .profile-pic-container {
   position: center;
-  display: inline-block;
+  display: center;
   margin-bottom: 20px;
 }
-
+#effetsalju {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
 .profile-pic {
   width: 80px; /* Mengurangi ukuran avatar */
   height: 80px;
@@ -99,6 +114,7 @@
 button {
   display: block;
   padding: 12px 20px;
+  
   font-size: 1rem;
   color: #000000;
   background-color: #d3d3d3;
@@ -150,7 +166,7 @@ button:hover {
 .info-title {
   font-size: 1.1rem;
   margin-bottom: 8px;
-  color: #000000;
+  color: #000;
   text-align: center;
 }
 
@@ -172,6 +188,7 @@ button:hover {
   align-items: center;
   background-color: #d3d3d3;
   color: #000000;
+  
   padding: 12px;
   font-size: 1rem;
   border-radius: 20px;
@@ -204,7 +221,7 @@ button:hover {
 .form-group input, .form-group button {
   width: 100%;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 18px;
   border: 1px solid #444444;
   background-color: #e0e0e0;
   color: #000000;
@@ -285,9 +302,31 @@ animation: slide-in 2s ease-out forwards;
   margin-bottom: 20px;
   color: #5f6368;
 }
+.view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
+    display: block;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    width: 90% !important;
+    color: #000;
+    background-color: #d3d3d3;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    margin: 10px auto;
+    width: fit-content;
+  }
+  .view-docs-btn:hover, .whatsapp-chat-btn:hover, .whatsapp-channel-btn:hover {
+    color: #fff;
+transform: scale(0.95);
+  }
+.view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
+transform: scale(0.95);
+  }
 </style>
 </head>
 <body>
+<div id="effetsalju"></div>
 <div id="popup-modal" class="modal">
   <div class="modal-content">
     <h2>Welcome to ALVIAN UXIO - API</h2>
@@ -300,10 +339,10 @@ animation: slide-in 2s ease-out forwards;
   <div class="about-me">
     <h1>ALVIAN UXIO - API</h1>
     <div class="profile-pic-container">
-      <img src="https://files.catbox.moe/fgq7jl.jpg" alt="Profile Picture" class="profile-pic">
+      <img src="https://files.catbox.moe/r2c1pe.jpg" alt="Profile Picture" class="profile-pic">
       <div class="rotating-lines"></div>
     </div>
-    <p>Free Rest api</p>
+    <p>We provide api for everyone support us to continue growing </p>
     <button class="view-docs-btn" onclick="viewDocs()">View Docs</button>
     <button class="whatsapp-chat-btn" onclick="location.href='https://wa.me/6285895988045'">Chat WhatsApp</button>
     <button class="whatsapp-channel-btn" onclick="location.href='https://whatsapp.com/channel/0029Vac0DjG6xCSJT0HTV61w'">Channel WhatsApp</button>
@@ -548,7 +587,7 @@ animation: slide-in 2s ease-out forwards;
       </pre>
     </div>
 
-    <div class="section">
+    <div class="section" style='color:black;'>
       <h2 class="section-title">Rules</h2>
       <div class="info-card">
         <div>
