@@ -6,202 +6,306 @@
 <title>API Documentation</title>
 <style>
   body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
-    margin: 0;
-    padding: 0;
-    direction: ltr;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5; /* Mengubah background menjadi putih */
+  color: #000000; /* Mengubah teks menjadi hitam */
+  margin: 0;
+  padding: 0;
+  direction: ltr;
+  box-sizing: border-box; /* Mengatur box-sizing */
+}
+
+*, *::before, *::after {
+  box-sizing: inherit; /* Memastikan semua elemen mengikuti aturan box-sizing */
+}
+
+.container {
+  display: center;
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff; /* Background putih */
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Mengurangi bayangan */
+  overflow: hidden;
+}
+
+.container * {
+  animation: slide-in 0.8s ease-out forwards;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
   }
-  .container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  .container * {
-    animation: slide-in 1s ease-out forwards;
+}
+
+.about-me {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-pic-container {
+  position: center;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.profile-pic {
+  width: 80px; /* Mengurangi ukuran avatar */
+  height: 80px;
+  display: center;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #6d6d6d;
+}
+
+.rotating-liness {
+  position: fixed;
+  width: 90px; /* Ukuran lingkaran lebih kecil */
+  height: 90px;
+ 
+  border-radius: 50%;
+  border: 2px dashed #6d6d6d;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
   }
-  @keyframes slide-in {
-    from {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
+  to {
+    transform: rotate(360deg);
   }
-  .about-me {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .profile-pic-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
-  }
-  .profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid #444;
-  }
-  .rotating-lines {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 200px;
-    margin-top: -100px;
-    margin-left: -100px;
-    border-radius: 50%;
-    border: 2px dashed #fff;
-    animation: rotate 5s linear infinite;
-  }
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  .about-me h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-  }
-  .about-me p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-  }
-  .view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
-    display: block;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    color: #fff;
-    background-color: #333;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-    margin: 10px auto;
-    width: fit-content;
-  }
-  .view-docs-btn:hover, .whatsapp-chat-btn:hover, .whatsapp-channel-btn:hover {
-    background-color: #444;
-  }
-  .content {
-    display: none;
-  }
-  .section {
-    margin-bottom: 40px;
-  }
-  .section-title {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    border-bottom: 2px solid #444;
-    padding-bottom: 10px;
-    text-align: center;
-  }
-  .info-card {
-    display: flex;
-    justify-content: space-between;
-    background-color: #2a2a2a;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    align-items: center;
-  }
-  .info-card div {
-    flex: 1;
-    text-align: center;
-  }
-  .info-title {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #fff;
-  }
-  .info-content {
-    font-size: 1rem;
-    color: #b0b0b0;
-  }
-  .btn-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: #fff;
-    padding: 15px;
-    text-decoration: none;
-    font-size: 1rem;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-  }
-  .btn:hover {
-    background-color: #444;
-  }
-  .dropdown-content {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  .form-group {
-    margin-bottom: 20px;
-  }
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 1rem;
-    color: #fff;
-  }
-  .form-group input, .form-group button {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #444;
-    background-color: #2a2a2a;
-    color: #fff;
-    font-size: 1rem;
-  }
-  .form-group button {
-    margin-top: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .form-group button:hover {
-    background-color: #444;
-  }
-  .result {
-    background-color: #2a2a2a;
-    padding: 15px;
-    border-radius: 5px;
-    margin-top: 20px;
-  }
+}
+
+.about-me h1 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #000000;
+}
+
+.about-me p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+button {
+  display: block;
+  padding: 12px 20px;
+  font-size: 1rem;
+  color: #000000;
+  background-color: #d3d3d3;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: transform 0.2s ease ,background-color 0.3s ease;
+  cursor: pointer;
+  margin: 10px auto;
+  width: fit-content;
+  border: none;
+}
+
+button:active {
+  transform: scale(0.95); /* Mengurangi ukuran tombol sedikit saat diklik */
+}
+
+button:hover {
+  transform: scale(0.90);
+  background-color: #444444;
+}
+
+.content {
+  display: none;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  border-bottom: 2px solid #444444;
+  padding-bottom: 8px;
+  text-align: center;
+  color: #000000;
+}
+
+.info-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.info-title {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #000000;
+  text-align: center;
+}
+
+.info-content {
+  font-size: 1rem;
+  color: #606060;
+  text-align: center;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d3d3d3;
+  color: #000000;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #c0c0c0;
+}
+
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #000000;
+}
+
+.form-group input, .form-group button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #444444;
+  background-color: #e0e0e0;
+  color: #000000;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group button {
+  margin-top: 10px;
+  cursor: pointer;
+  background-color: #d3d3d3;
+  transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+  background-color: #c0c0c0;
+}
+
+.result {
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 20px;
+  color: #000000;
+}
+
+/* Tombol execute */
+button#execute {
+  display: block;
+  padding: 12px 20px;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #333333;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 10px auto;
+  border: none;
+}
+
+button#execute:hover {
+  background-color: #444444;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 9999; /* Ensures the modal is on top */
+  align-items: center;
+  justify-content: center;
+animation: slide-in 2s ease-out forwards;
+}
+
+.modal-content {
+  background-color: #f5f5f5; /* Light background */
+  border-radius: 28px; /* Round corners */
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  text-align: center;
+animation: slide-in 2s ease-out forwards;
+  animation: fadeIn 0.4s ease-out; /* Smooth pop-up */
+}
+
+.modal-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #000000;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #5f6368;
+}
 </style>
 </head>
 <body>
+<div id="popup-modal" class="modal">
+  <div class="modal-content">
+    <h2>Welcome to ALVIAN UXIO - API</h2>
+    <p>Free api for everyone.</p>
+    <button id="close-popup">Got it!</button>
+  </div>
+</div>
+  
 <div class="container">
   <div class="about-me">
-    <h1>Pan Pan Api</h1>
+    <h1>ALVIAN UXIO - API</h1>
     <div class="profile-pic-container">
       <img src="https://files.catbox.moe/fgq7jl.jpg" alt="Profile Picture" class="profile-pic">
       <div class="rotating-lines"></div>
     </div>
-    <p>Welcome To My Rest Api</p>
+    <p>Free Rest api</p>
     <button class="view-docs-btn" onclick="viewDocs()">View Docs</button>
-    <button class="whatsapp-chat-btn" onclick="location.href='https://wa.me/62857021072505'">Chat WhatsApp</button>
+    <button class="whatsapp-chat-btn" onclick="location.href='https://wa.me/6285895988045'">Chat WhatsApp</button>
     <button class="whatsapp-channel-btn" onclick="location.href='https://whatsapp.com/channel/0029Vac0DjG6xCSJT0HTV61w'">Channel WhatsApp</button>
   </div>
   <div class="content">
@@ -238,7 +342,7 @@
       <div class="btn-container">
         <div class="btn" onclick="toggleDropdown('dropdown1')">
           /api/llama3
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown1" class="dropdown-content">
           <form class="form-group" action="/api/llama3" onsubmit="executeApi(event, '/api/llama3')">
@@ -249,7 +353,7 @@
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown2')">
           /api/Renvy
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown2" class="dropdown-content">
           <form class="form-group" action="/api/Renvy" onsubmit="executeApi(event, '/api/Renvy')">
@@ -260,7 +364,7 @@
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown3')">
           /api/DegreeGuru
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown3" class="dropdown-content">
           <form class="form-group" action="/api/DegreeGuru" onsubmit="executeApi(event, '/api/DegreeGuru')">
@@ -271,7 +375,7 @@
         </div>
 <div class="btn" onclick="toggleDropdown('dropdown4')">
           /api/SmartContract
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown4" class="dropdown-content">
           <form class="form-group" action="/api/SmartContract" onsubmit="executeApi(event, '/api/SmartContract')">
@@ -282,7 +386,7 @@
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown5')">
           /api/BlackboxAIChat
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown5" class="dropdown-content">
           <form class="form-group" action="/api/BlackboxAIChat" onsubmit="executeApi(event, '/api/BlackboxAIChat')">
@@ -294,7 +398,7 @@
 
         <div class="btn" onclick="toggleDropdown('dropdown6')">
           /api/simi
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown6" class="dropdown-content">
           <form class="form-group" action="/api/simi" onsubmit="executeApi(event, '/api/simi')">
@@ -306,7 +410,7 @@
 
         <div class="btn" onclick="toggleDropdown('dropdown7')">
           /api/letmegpt
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown7" class="dropdown-content">
           <form class="form-group" action="/api/letmegpt" onsubmit="executeApi(event, '/api/letmegpt')">
@@ -318,7 +422,7 @@
       
         <div class="btn" onclick="toggleDropdown('dropdown8')">
           /api/gpt4o
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown8" class="dropdown-content">
           <form class="form-group" action="/api/gpt4o" onsubmit="executeApi(event, '/api/gpt4o')">
@@ -330,7 +434,7 @@
       
               <div class="btn" onclick="toggleDropdown('dropdown9')">
           /api/txt2img
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown9" class="dropdown-content">
           <form class="form-group" action="/api/txt2img" onsubmit="executeApi(event, '/api/txt2img')">
@@ -342,7 +446,7 @@
       
       <div class="btn" onclick="toggleDropdown('dropdown10')">
           /api/pinterest
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown10" class="dropdown-content">
           <form class="form-group" action="/api/pinterest" onsubmit="executeApi(event, '/api/pinterest')">
@@ -354,7 +458,7 @@
       
       <div class="btn" onclick="toggleDropdown('dropdown11')">
           /api/gptpic
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown11" class="dropdown-content">
           <form class="form-group" action="/api/gptpic" onsubmit="executeApi(event, '/api/gptpic')">
@@ -366,7 +470,7 @@
       
       <div class="btn" onclick="toggleDropdown('dropdown12')">
           /api/halodoc
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown12" class="dropdown-content">
           <form class="form-group" action="/api/halodoc" onsubmit="executeApi(event, '/api/halodoc')">
@@ -377,7 +481,7 @@
       </div>
             <div class="btn" onclick="toggleDropdown('dropdown13')">
           /api/Rusdi
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown13" class="dropdown-content">
           <form class="form-group" action="/api/Rusdi" onsubmit="executeApi(event, '/api/Rusdi')">
@@ -388,7 +492,7 @@
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown14')">
     /api/gptlogic
-    <span>↓</span>
+    <span>•</span>
 </div>
 <div id="dropdown14" class="dropdown-content">
     <form class="form-group" onsubmit="logicgpt(event)">
@@ -401,7 +505,7 @@
 </div>
 <div class="btn" onclick="toggleDropdown('dropdown15')">
           /api/gemini
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown15" class="dropdown-content">
           <form class="form-group" action="/api/gemini" onsubmit="executeApi(event, '/api/gemini')">
@@ -412,7 +516,7 @@
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown16')">
           /api/prodia
-          <span>↓</span>
+          <span>•</span>
         </div>
         <div id="dropdown16" class="dropdown-content">
           <form class="form-group" action="/api/prodia" onsubmit="executeApi(event, '/api/prodia')">
@@ -582,6 +686,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Show main content on View Docs button click
   window.viewDocs = function() {
+
     document.querySelector('.about-me').style.display = 'none';
     document.querySelector('.content').style.display = 'block';
     const audio = new Audio('https://files.catbox.moe/q4x9k4.webm');
@@ -591,6 +696,21 @@ document.addEventListener('DOMContentLoaded', function() {
   // Update total requests on initial load
   updateTotalRequests();
 });
+</script>
+<script>
+window.onload = function () {
+  const modal = document.getElementById('popup-modal');
+  const closeButton = document.getElementById('close-popup');
+
+  // Show the modal when the page loads
+  modal.style.display = 'flex';
+
+  // Close the modal when the button is clicked
+  closeButton.onclick = function () {
+    modal.style.display = 'none';
+  };
+};
+
 </script>
 </body>
 </html>
