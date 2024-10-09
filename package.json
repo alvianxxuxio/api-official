@@ -1,0 +1,28 @@
+{
+  "name": "nodejs",
+  "version": "1.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.14.0",
+    "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "cheerio": "^1.0.0-rc.12",
+    "crypto": "^1.0.1",
+    "express": "^4.19.2",
+    "fake-useragent": "^1.0.1",
+    "file-type": "^16.5.3",
+    "form-data": "^4.0.0",
+    "fs": "^0.0.1-security",
+    "javascript-obfuscator": "^4.1.0",
+    "mongoose": "^6.9.2",
+    "moment-timezone": "^0.5.43",
+    "node-fetch": "^2.6.1"
+  }
+}
