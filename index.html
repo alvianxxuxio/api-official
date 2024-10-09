@@ -676,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resultElement.style.display = 'block';
         totalRequests++;
         updateTotalRequests();
-        const baseUrl = 'https://api.pan.alvianuxio.my.id';
+        const baseUrl = 'https://api.alvianuxio.my.id';
         const requestUrl = baseUrl + endpoint + query;
         const requestUrlElement = document.createElement('p');
         requestUrlElement.textContent = `Request URL: ${requestUrl}`;
@@ -694,7 +694,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = event.target;
     const message = form.querySelector('input[name="message"]').value;
     const prompt = form.querySelector('input[name="prompt"]').value;
-    const baseUrl = 'https://api.pan.alvianuxio.my.id';
+    const baseUrl = 'https://api.alvianuxio.my.id';
     const endpoint = '/api/gptlogic';
     const query = `?message=${encodeURIComponent(message)}&prompt=${encodeURIComponent(prompt)}`;
     const url = baseUrl + endpoint + query;
