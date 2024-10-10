@@ -516,6 +516,39 @@ async function gptpic(captionInput) {
         throw error;
     }
 }
+
+// capcut
+
+async function Capcut(Url) {
+  try {
+    const token = Url.match(/\d+/)[0];
+    const response = await fetch(
+      `https://ssscapcut.com/api/download/${token}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "/",
+          "User-Agent":
+            "Mozilla/5.0 (Linux; Android 13; CPH2217 Build/TP1A.220905.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/110.0.5481.153 Mobile Safari/537.36",
+          "X-Requested-With": "acr.browser.barebones",
+          "Sec-Fetch-Site": "same-origin",
+          "Sec-Fetch-Mode": "cors",
+          "Sec-Fetch-Dest": "empty",
+          Referer: "https://ssscapcut.com/",
+          "Accept-Encoding": "gzip, deflate",
+          "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+          Cookie:
+            "sign=2cbe441f7f5f4bdb8e99907172f65a42; device-time=1685437999515",
+        },
+      },
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 //Rusdi
 async function Rusdi(q) {
   try {
@@ -577,61 +610,51 @@ async function Rusdi(q) {
 }
 //instagram
 async function igdl(url) {
-  try {
-    const response = await axios({
-      method: 'post',
-      url: 'https://v3.igdownloader.app/api/ajaxSearch',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Accept': '*/*'
-      },
-      data: qs.stringify({
-        recaptchaToken: '',
-        q: url,
-        t: 'media',
-        lang: 'en'
+  return new Promise(async (resolve, reject) => {
+    const payload = new URLSearchParams(
+      Object.entries({
+        url: url,
+        host: "instagram",
+      }),
+    );
+    await axios
+      .request({
+        method: "POST",
+        baseURL: "https://saveinsta.io/core/ajax.php",
+        data: payload,
+        headers: {
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          cookie: "PHPSESSID=rmer1p00mtkqv64ai0pa429d4o",
+          "user-agent":
+            "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36",
+        },
       })
-    });
-
-    const $ = cheerio.load(response.data.data);
-    const result = [];
-    $('ul.download-box li').each((index, element) => {
-      const thumbnail = $(element).find('.download-items__thumb img').attr('src');
-      const options = [];
-      let videoUrl = '';
-      let audioUrl = '';
-      let caption = $(element).find('.photo-caption').text().trim();
-      $(element).find('.photo-option select option').each((i, opt) => {
-        const resolution = $(opt).text();
-        const url = $(opt).attr('value');
-        if (resolution.toLowerCase().includes('video')) {
-          videoUrl = url;
-        } else if (resolution.toLowerCase().includes('audio')) {
-          audioUrl = url;
-        } else {
-          options.push({
-            resolution: resolution,
-            url: url
-          });
-        }
+      .then((response) => {
+        const $ = cheerio.load(response.data);
+        const mediaURL = $(
+          "div.row > div.col-md-12 > div.row.story-container.mt-4.pb-4.border-bottom",
+        )
+          .map((_, el) => {
+            return (
+              "https://saveinsta.io/" +
+              $(el).find("div.col-md-8.mx-auto > a").attr("href")
+            );
+          })
+          .get();
+        const res = {
+          status: 200,
+          media: mediaURL,
+        };
+        resolve(res);
+      })
+      .catch((e) => {
+        console.log(e);
+        throw {
+          status: 400,
+          message: "error",
+        };
       });
-      const download = $(element).find('.download-items__btn a').attr('href');
-
-      result.push({
-        thumbnail: thumbnail,
-        options: options,
-        video: videoUrl,
-        audio: audioUrl,
-        download: download,
-        caption: caption
-      });
-    });
-
-    return result;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
+  });
 }
 
 //gptlogic
@@ -947,6 +970,20 @@ app.get('/api/instagram', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await igdl(message);
+    res.status(200).json( response );
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// capcut
+app.get('/api/capcut', async (req, res) => {
+  try {
+    const { message }= req.query;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await Capcut(message);
     res.status(200).json( response );
   } catch (error) {
     res.status(500).json({ error: error.message });
