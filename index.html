@@ -272,7 +272,7 @@ button#execute:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent background */
   z-index: 9999; /* Ensures the modal is on top */
   align-items: center;
   justify-content: center;
@@ -323,14 +323,20 @@ transform: scale(0.95);
 .view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
 transform: scale(0.95);
   }
+ .active {
+ color: green;
+ }
+ .error {
+ color: red;
+ } 
 </style>
 </head>
 <body>
 <div id="effetsalju"></div>
 <div id="popup-modal" class="modal">
   <div class="modal-content">
-    <h2>Welcome to ALVIAN UXIO - API</h2>
-    <p>Free api for everyone.</p>
+    <h2>ALVIAN UXIO - API</h2>
+    <p>Welcome!, Free api for everyone.</p>
     <button id="close-popup">Got it!</button>
   </div>
 </div>
@@ -379,8 +385,19 @@ transform: scale(0.95);
     <div class="section">
       <h2 class="section-title">Artificial Intelligence</h2>
       <div class="btn-container">
+       <div class="btn" onclick="toggleDropdown('dropdown100')">
+          /api/Renvy
+          <span>•</span>
+        </div>
+        <div id="dropdown100" class="dropdown-content">
+          <form class="form-gr-oup" action="/api/aluxi" onsubmit="executeApi(event, '/api/aluxi')">
+            <label for="message2">Enter Message:</label>
+            <input type="text" id="message2" name="message" required>
+            <button type="submit">Execute</button>
+          </form>
+        </div>
         <div class="btn" onclick="toggleDropdown('dropdown1')">
-          /api/llama3
+          /api/aluxi
           <span>•</span>
         </div>
         <div id="dropdown1" class="dropdown-content">
@@ -479,7 +496,7 @@ transform: scale(0.95);
           <form class="form-group" action="/api/txt2img" onsubmit="executeApi(event, '/api/txt2img')">
             <label for="message9">Enter Message:</label>
             <input type="text" id="message9" name="message" required>
-            <button type="submit">Execute</button>
+            <button type="submit" href="#sdha">Execute</button>
           </form>
       </div>
       
@@ -565,8 +582,9 @@ transform: scale(0.95);
           </form>
       </div>
        </div>
+       <section id="sdha"></section>
       <div id="result" class="result" style="display:none;"></div>
-    </div>
+    </div></section>
 
 
     <div class="section">
