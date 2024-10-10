@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="icon" href="https://files.catbox.moe/r2c1pe.jpg" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <title>API Documentation</title>
 <script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js" type="text/javascript"></script>
 <style>
@@ -369,24 +370,33 @@ transform: scale(0.95);
     <h2 class="section-title">Information</h2>
     <div class="info-card">
       <div>
-        <h3 class="info-title">Your IP Address</h3>
+        <h3 class="info-title"><i class="fas fa-network-wired"></i> Your IP Address</h3>
         <div class="info-content" id="ip">Loading...</div>
       </div>
+      </div>
+      <div class="info-card">
       <div>
-        <h3 class="info-title">Time</h3>
+        <h3 class="info-title"><i class="fas fa-clock"></i> Time</h3>
         <div class="info-content" id="jam">Loading...</div>
+        <div id="greetings"></div>
       </div>
+      </div>
+      <div class="info-card">
       <div>
-        <h3 class="info-title">Date</h3>
+        <h3 class="info-title"><i class="fas fa-calendar"></i> Date</h3>
         <div class="info-content" id="tanggal">Loading...</div>
-      </div>
+      </div></div>
+      <div class="info-card">
       <div>
-        <h3 class="info-title">Your Battery</h3>
+        <h3 class="info-title"><i class="fas fa-battery-half"></i> Battery</h3>
         <div class="info-content" id="batre">Loading...</div>
       </div>
+      </div>
+      <div class="info-card">
       <div>
-        <h3 class="info-title">Total Requests</h3>
+        <h3 class="info-title"><i class="fas fa-list-alt"></i> Total Requests</h3>
         <div class="info-content" id="total-requests">0</div>
+      </div>
       </div>
 </div>
 
@@ -691,6 +701,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const seconds = now.getSeconds().toString().padStart(2, '0');
     const timeString = `${hours}:${minutes}:${seconds}`;
     document.getElementById('jam').textContent = timeString;
+    
   }
   setInterval(updateTime, 1000);
   updateTime();
@@ -808,7 +819,6 @@ window.onload = function () {
     modal.style.display = 'none';
   };
 };
-
 </script>
 </body>
 </html>
