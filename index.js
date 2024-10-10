@@ -857,6 +857,9 @@ app.get('/api/Rusdi', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await Rusdi(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -876,6 +879,9 @@ app.get('/api/llama3', async (req, res) => {
     const message = req.query.message;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await llama3(message);
     res.status(200).json({
@@ -897,6 +903,9 @@ app.get('/api/gemini', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await gemini(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -916,6 +925,9 @@ app.get('/api/halodoc', async (req, res) => {
     const message = req.query.message;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await halodoc(message);
     res.status(200).json({
@@ -937,6 +949,9 @@ app.get('/api/gptpic', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await gptpic(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -956,6 +971,12 @@ app.get('/api/prodia', async (req, res) => {
     const message = req.query.message;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await prodia(message);
     res.status(200).json({
@@ -977,6 +998,9 @@ app.get('/api/txt2img', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await text2imgAfter(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -996,6 +1020,9 @@ app.get('/api/pinterest', async (req, res) => {
     const { message }= req.query;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await pinterest(message);
     res.status(200).json({
@@ -1017,6 +1044,9 @@ app.get('/api/instagram', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await igdl(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -1036,6 +1066,9 @@ app.get('/api/capcut', async (req, res) => {
     const { message }= req.query;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await Capcut(message);
     res.status(200).json({
@@ -1057,6 +1090,9 @@ app.get('/api/tiktok', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await tiktok(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -1076,6 +1112,9 @@ app.get('/api/gpt4o', async (req, res) => {
     const { message }= req.query;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await gpt4o(message);
     res.status(200).json({
@@ -1098,6 +1137,9 @@ app.get('/api/letmegpt', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await letmegpt(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -1118,6 +1160,9 @@ app.get('/api/simi', async (req, res) => {
     const { message }= req.query;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await simi(message);
     res.status(200).json({
@@ -1140,6 +1185,9 @@ app.get('/api/ragbot', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await ragBot(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -1159,6 +1207,9 @@ app.get('/api/degreeguru', async (req, res) => {
     const { message }= req.query;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await degreeGuru(message);
     res.status(200).json({
@@ -1180,6 +1231,9 @@ app.get('/api/Renvy', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await Renvy(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -1199,6 +1253,9 @@ app.get('/api/aluxi', async (req, res) => {
     const { message }= req.query;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await simi(message);
     res.status(200).json({
@@ -1220,6 +1277,9 @@ app.get('/api/smartcontract', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
+    }
     const response = await smartContract(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -1239,6 +1299,9 @@ app.get('/api/blackboxAIChat', async (req, res) => {
     const message = req.query.message;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    if (!apikey) {
+    return res.status(400).json({ error: 'paramater ?apikey=alvianuxio tidak ditemukan' })
     }
     const response = await blackboxAIChat(message);
     res.status(200).json({
