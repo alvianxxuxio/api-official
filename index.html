@@ -246,7 +246,12 @@ button:hover {
   border-radius: 12px;
   margin-top: 20px;
   color: #000000;
+  word-wrap: break-word;  /* Memastikan kata panjang akan dipisah dan tidak melebihi container */
+  overflow-wrap: break-word;  /* Alternatif untuk browser lain */
+  max-width: 100%;  /* Membatasi lebar maksimal agar tidak melebihi ukuran container */
+  box-sizing: border-box;  /* Memastikan padding dihitung dalam lebar total */
 }
+
 
 /* Tombol execute */
 button#execute {
