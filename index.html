@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="icon" href="https://files.catbox.moe/r2c1pe.jpg" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <title>API Documentation</title>
 <script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js" type="text/javascript"></script>
 <style>
@@ -152,10 +153,19 @@ button:hover {
   border-bottom: 2px solid #444444;
   padding-bottom: 8px;
   text-align: center;
-  color: #000000;
+  color: #fff;
 }
 
 .info-card {
+  display: center;
+  justify-content: center;
+background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 15px;
+  text-align: center;
+}
+.info-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 15px;
@@ -166,6 +176,7 @@ button:hover {
 }
 
 .info-title {
+  display: center;
   font-size: 1.1rem;
   margin-bottom: 8px;
   color: #000;
@@ -173,6 +184,7 @@ button:hover {
 }
 
 .info-content {
+  display: center;
   font-size: 1rem;
   color: #606060;
   text-align: center;
@@ -351,12 +363,12 @@ transform: scale(0.95);
 <div class="container">
 <marquee style='color: white;text-shadow: h-shadow black;font-weight: bold;padding-bottom:4px;'>Gunakanlah api dengan bijak, dan api ini gratis dan tidak diperjual belikan</marquee>
   <div class="about-me">
-    <h1>ALVIAN UXIO - API</h1>
+    <h1 style='color: white;'>ALVIAN UXIO - API</h1>
     <div class="profile-pic-container">
       <img src="https://files.catbox.moe/r2c1pe.jpg" alt="Profile Picture" class="profile-pic">
       <div class="rotating-lines"></div>
     </div>
-    <p>We provide api for everyone support us to continue growing </p>
+    <p style='color: white'>We provide api for everyone support us to continue growing </p>
     <button class="view-docs-btn" onclick="viewDocs()">View Docs</button>
     <button class="whatsapp-chat-btn" onclick="location.href='https://wa.me/6285895988045'">Chat WhatsApp</button>
     <button class="whatsapp-channel-btn" onclick="location.href='https://whatsapp.com/channel/0029Vac0DjG6xCSJT0HTV61w'">Channel WhatsApp</button>
@@ -368,25 +380,33 @@ transform: scale(0.95);
   <div class="section">
     <h2 class="section-title">Information</h2>
     <div class="info-card">
-      <div>
-        <h3 class="info-title">Your IP Address</h3>
+        <h3 class="info-title"><i class="fas fa-network-wired"></i> IP Address</h3>
         <div class="info-content" id="ip">Loading...</div>
+      
       </div>
-      <div>
-        <h3 class="info-title">Time</h3>
+      <div class="info-card">
+      
+        <h3 class="info-title"><i class="fas fa-clock"></i> Time</h3>
         <div class="info-content" id="jam">Loading...</div>
+        <div id="greetings"></div>
+      
       </div>
-      <div>
-        <h3 class="info-title">Date</h3>
+      <div class="info-card">
+      
+        <h3 class="info-title"><i class="fas fa-calendar"></i> Date</h3>
         <div class="info-content" id="tanggal">Loading...</div>
       </div>
-      <div>
-        <h3 class="info-title">Your Battery</h3>
+      <div class="info-card">
+      
+        <h3 class="info-title"><i class="fas fa-battery-half"></i> Battery</h3>
         <div class="info-content" id="batre">Loading...</div>
+      
       </div>
-      <div>
-        <h3 class="info-title">Total Requests</h3>
+      <div class="info-card">
+      
+        <h3 class="info-title"><i class="fas fa-list-alt"></i> Total Requests</h3>
         <div class="info-content" id="total-requests">0</div>
+      
       </div>
 </div>
 
@@ -691,6 +711,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const seconds = now.getSeconds().toString().padStart(2, '0');
     const timeString = `${hours}:${minutes}:${seconds}`;
     document.getElementById('jam').textContent = timeString;
+    
   }
   setInterval(updateTime, 1000);
   updateTime();
@@ -726,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function() {
   window.executeApi = function(event, endpoint) {
     event.preventDefault();
     const message = event.target.querySelector('input[name="message"]').value;
-    const query = `?message=${encodeURIComponent(message)}?apikey=alvianuxio`;
+    const query = `?message=${encodeURIComponent(message)}`;
     fetch(endpoint + query)
       .then(response => response.json())
       .then(data => {
@@ -808,7 +829,6 @@ window.onload = function () {
     modal.style.display = 'none';
   };
 };
-
 </script>
 </body>
 </html>
