@@ -859,7 +859,7 @@ app.get('/api/Rusdi', async (req, res) => {
     }
     const response = await Rusdi(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -879,7 +879,7 @@ app.get('/api/llama3', async (req, res) => {
     }
     const response = await llama3(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -899,7 +899,7 @@ app.get('/api/gemini', async (req, res) => {
     }
     const response = await gemini(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -919,7 +919,7 @@ app.get('/api/halodoc', async (req, res) => {
     }
     const response = await halodoc(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -939,7 +939,7 @@ app.get('/api/gptpic', async (req, res) => {
     }
     const response = await gptpic(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -959,7 +959,7 @@ app.get('/api/prodia', async (req, res) => {
     }
     const response = await prodia(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -979,7 +979,7 @@ app.get('/api/txt2img', async (req, res) => {
     }
     const response = await text2imgAfter(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -999,7 +999,7 @@ app.get('/api/pinterest', async (req, res) => {
     }
     const response = await pinterest(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1019,7 +1019,7 @@ app.get('/api/instagram', async (req, res) => {
     }
     const response = await igdl(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1039,7 +1039,7 @@ app.get('/api/capcut', async (req, res) => {
     }
     const response = await Capcut(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1059,7 +1059,7 @@ app.get('/api/tiktok', async (req, res) => {
     }
     const response = await tiktok(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1079,7 +1079,7 @@ app.get('/api/gpt4o', async (req, res) => {
     }
     const response = await gpt4o(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1100,7 +1100,7 @@ app.get('/api/letmegpt', async (req, res) => {
     }
     const response = await letmegpt(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1121,7 +1121,7 @@ app.get('/api/simi', async (req, res) => {
     }
     const response = await simi(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1142,7 +1142,7 @@ app.get('/api/ragbot', async (req, res) => {
     }
     const response = await ragBot(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1162,7 +1162,7 @@ app.get('/api/degreeguru', async (req, res) => {
     }
     const response = await degreeGuru(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1182,7 +1182,7 @@ app.get('/api/Renvy', async (req, res) => {
     }
     const response = await Renvy(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1202,7 +1202,7 @@ app.get('/api/aluxi', async (req, res) => {
     }
     const response = await simi(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1222,7 +1222,7 @@ app.get('/api/smartcontract', async (req, res) => {
     }
     const response = await smartContract(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -1242,7 +1242,7 @@ app.get('/api/blackboxAIChat', async (req, res) => {
     }
     const response = await blackboxAIChat(message);
     res.status(200).json({
-  status: `${res.status}`,
+  information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
