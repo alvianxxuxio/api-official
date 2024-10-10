@@ -858,7 +858,13 @@ app.get('/api/Rusdi', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Rusdi(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -872,7 +878,13 @@ app.get('/api/llama3', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await llama3(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -886,7 +898,13 @@ app.get('/api/gemini', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gemini(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -900,7 +918,13 @@ app.get('/api/halodoc', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await halodoc(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -914,7 +938,13 @@ app.get('/api/gptpic', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gptpic(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -928,7 +958,13 @@ app.get('/api/prodia', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await prodia(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -942,7 +978,13 @@ app.get('/api/txt2img', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await text2imgAfter(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -956,7 +998,13 @@ app.get('/api/pinterest', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await pinterest(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -970,7 +1018,13 @@ app.get('/api/instagram', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await igdl(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -984,7 +1038,13 @@ app.get('/api/capcut', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Capcut(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -998,7 +1058,13 @@ app.get('/api/tiktok', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await tiktok(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1012,7 +1078,13 @@ app.get('/api/gpt4o', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gpt4o(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1027,7 +1099,13 @@ app.get('/api/letmegpt', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await letmegpt(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1042,7 +1120,13 @@ app.get('/api/simi', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await simi(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1057,7 +1141,13 @@ app.get('/api/ragbot', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await ragBot(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1071,7 +1161,13 @@ app.get('/api/degreeguru', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await degreeGuru(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1085,7 +1181,13 @@ app.get('/api/Renvy', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Renvy(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1099,7 +1201,13 @@ app.get('/api/aluxi', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await simi(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1113,7 +1221,13 @@ app.get('/api/smartcontract', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await smartContract(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1127,7 +1241,13 @@ app.get('/api/blackboxAIChat', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await blackboxAIChat(message);
-    res.status(200).json( response );
+    res.status(200).json({
+  status: `${res.status}`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
