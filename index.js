@@ -1032,6 +1032,21 @@ app.get('/api/Renvy', async (req, res) => {
   }
 });
 
+// Endpoint untuk Aluxi ai
+// Endpoint untuk Renvy AI
+app.get('/api/aluxi', async (req, res) => {
+  try {
+    const message = req.query.message;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await aluxi(message);
+    res.status(200).json( response );
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Endpoint untuk smartContract
 app.get('/api/smartcontract', async (req, res) => {
   try {
