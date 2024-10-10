@@ -1011,6 +1011,7 @@ app.get('/api/simi', async (req, res) => {
   }
 });
 
+
 // Endpoint untuk ragBot
 app.get('/api/ragbot', async (req, res) => {
   try {
@@ -1053,14 +1054,14 @@ app.get('/api/Renvy', async (req, res) => {
   }
 });
 
-// Endpoint untuk Aluxi ai
+//simi
 app.get('/api/aluxi', async (req, res) => {
   try {
-    const message = req.query.message;
+    const { message }= req.query;
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
-    const response = await aluxi(message);
+    const response = await simi(message);
     res.status(200).json( response );
   } catch (error) {
     res.status(500).json({ error: error.message });

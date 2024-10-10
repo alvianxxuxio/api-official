@@ -385,10 +385,20 @@ transform: scale(0.95);
     <div class="section">
       <h2 class="section-title">Artificial Intelligence</h2>
       <div class="btn-container">
-      
+        <div class="btn" onclick="toggleDropdown('dropdown7')">
+          /api/aluxi
+          <span>•</span>
+        </div>
+        <div id="dropdown17" class="dropdown-content">
+          <form class="form-group" action="/api/aluxi" onsubmit="executeApi(event, '/api/aluxi')">
+            <label for="message17">Enter Message:</label>
+            <input type="text" id="message17" name="message" required>
+            <button type="submit">Execute</button>
+          </form>
+        </div>
         <div class="btn" onclick="toggleDropdown('dropdown1')">
           /api/llama3
-          <span>•</span>
+          <span><b class="active">New</b></span>
         </div>
         <div id="dropdown1" class="dropdown-content">
           <form class="form-group" action="/api/llama3" onsubmit="executeApi(event, '/api/llama3')">
