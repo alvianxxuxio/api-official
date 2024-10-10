@@ -519,7 +519,7 @@ async function gptpic(captionInput) {
 
 // capcut
 
-async function Capcut(Url) {
+async function Capcut(query) {
   try {
     const token = Url.match(/\d+/)[0];
     const response = await fetch(
