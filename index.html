@@ -330,7 +330,7 @@ animation: slide-in 2s ease-out forwards;
     background-color: #d3d3d3;
     border-radius: 10px;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: transform 0.6s ease;
     cursor: pointer;
     margin: 10px auto;
     width: fit-content;
@@ -341,6 +341,10 @@ transform: scale(0.95);
   }
 .view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
 transform: scale(0.95);
+  }
+  .view-docs-btn:active::before, .whatsapp-chat-btn:active::before, .whatsapp-channel-btn:active::before {
+transform: translate(-50%, -50%) scale(1);
+            transition: transform 0.3s ease;
   }
  .active {
  color: green;
