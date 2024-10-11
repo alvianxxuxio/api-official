@@ -309,6 +309,18 @@ animation: slide-in 2s ease-out forwards;
 animation: slide-in 2s ease-out forwards;
   animation: fadeIn 0.4s ease-out; /* Smooth pop-up */
 }
+  .material-toastify {
+            border-radius: 16px; /* Membuat sudut membulat */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08); /* Tambahkan bayangan */
+            padding: 12px 24px; /* Spasi dalam lebih besar */
+            font-family: 'Roboto', sans-serif; /* Font Material You */
+            font-size: 14px; /* Ukuran font lebih besar */
+            color: #FFFFFF; /* Warna teks */
+            background-color: #6200EE; /* Warna latar Material You */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+  }
 
 .modal-content h2 {
   font-size: 1.8rem;
@@ -395,6 +407,10 @@ transform: translate(-50%, -50%) scale(1);
 
 /* Untuk tablet (min-width: 768px) */
 @media (min-width: 768px) and (max-width: 1024px) {
+  .material-toastify {
+                font-size: 12px;
+                padding: 8px 16px;
+  }
   .container {
     margin-top: 15% !important;
     max-width: 80%; /* Lebar lebih kecil */
@@ -916,6 +932,36 @@ window.onload = function () {
     modal.style.display = 'none';
   };
 };
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    // Fungsi untuk menampilkan notifikasi toast dengan gaya Material You
+    function showToast(message) {
+        Toastify({
+            text: message,
+            duration: 3000, // Durasi toast dalam milidetik
+            gravity: "top", // Posisi toast di atas
+            position: 'right', // Posisi toast di kanan
+            className: "material-toastify", // Tambahkan kelas untuk Material You styling
+            stopOnFocus: true // Hentikan animasi saat dihover
+        }).showToast();
+    }
+
+    // Menonaktifkan salin dan tempel
+    document.addEventListener('copy', function(event) {
+        event.preventDefault(); // Mencegah salin
+        showToast("Salin tidak diperbolehkan di halaman ini."); // Tampilkan pesan pop-up toast
+    });
+
+    document.addEventListener('paste', function(event) {
+        event.preventDefault(); // Mencegah tempel
+        showToast("Maaf tindakan ini tidak di izinkan"); // Tampilkan pesan pop-up toast
+    });
+
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault(); // Mencegah klik kanan
+        showToast("Maaf tindakan ini tidak di izinkan"); // Tampilkan pesan pop-up toast
+    });
 </script>
 </body>
 </html>
