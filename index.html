@@ -348,7 +348,8 @@ transform: scale(0.95);
  .error {
  color: red;
  } 
- @media (min-width: 1024px) {
+ /* Untuk layar desktop (lebih dari 1024px) */
+@media (min-width: 1024px) {
   .container {
     margin-top: 10% !important;
     max-width: 70%;
@@ -361,6 +362,7 @@ transform: scale(0.95);
     width: 150px;
     height: 150px;
   }
+
   .about-me h1 {
     font-size: 3rem;
   }
@@ -368,6 +370,7 @@ transform: scale(0.95);
   .about-me p {
     font-size: 1.5rem;
   }
+
   .modal-content {
     max-width: 600px;
   }
@@ -376,7 +379,35 @@ transform: scale(0.95);
     font-size: 1.5rem;
     padding: 20px 40px;
   }
- }
+}
+
+/* Tambahan untuk tablet (768px sampai 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    margin-top: 15% !important;
+    max-width: 85%; /* Sedikit lebih kecil daripada desktop */
+    padding: 30px; /* Kurangi padding untuk tablet */
+  }
+
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+  }
+
+  .about-me h1 {
+    font-size: 2.5rem;
+  }
+
+  .about-me p {
+    font-size: 1.3rem;
+  }
+
+  .view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
+    font-size: 1.2rem;
+    padding: 18px 30px;
+  }
+}
+
 </style>
 </head>
 <body>
