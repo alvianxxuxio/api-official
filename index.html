@@ -255,16 +255,21 @@ background-color: #f5f5f5;
 }
 
 .result {
+  position: fixed; /* Posisi tetap untuk memastikan di atas semua elemen lain */
+  top: 50%; /* Posisi di tengah secara vertikal */
+  left: 50%; /* Posisi di tengah secara horizontal */
+  transform: translate(-50%, -50%); /* Menggeser elemen agar benar-benar berada di tengah */
   background-color: #f5f5f5;
   padding: 12px;
   border-radius: 12px;
-  margin-top: 20px;
   color: #000000;
   word-wrap: break-word;  /* Memastikan kata panjang akan dipisah dan tidak melebihi container */
   overflow-wrap: break-word;  /* Alternatif untuk browser lain */
-  max-width: 100%;  /* Membatasi lebar maksimal agar tidak melebihi ukuran container */
+  max-width: 90%;  /* Membatasi lebar maksimal agar tidak melebihi ukuran container */
   box-sizing: border-box;  /* Memastikan padding dihitung dalam lebar total */
+  z-index: 99999; /* Pastikan elemen berada di atas semua elemen lain */
 }
+
 
 
 /* Tombol execute */
