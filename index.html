@@ -349,13 +349,14 @@ transform: scale(0.95);
  color: red;
  } 
  /* Untuk layar desktop (lebih dari 1024px) */
+/* Untuk layar desktop (lebih dari 1024px) */
 @media (min-width: 1024px) {
   .container {
     margin-top: 10% !important;
     max-width: 70%;
     margin-left: auto;
     margin-right: auto;
-    padding: 40px; /* Tambahkan lebih banyak padding untuk layar besar */
+    padding: 40px;
   }
 
   .profile-pic {
@@ -381,12 +382,14 @@ transform: scale(0.95);
   }
 }
 
-/* Tambahan untuk tablet (768px sampai 1024px) */
+/* Untuk tablet (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
   .container {
     margin-top: 15% !important;
-    max-width: 85%; /* Sedikit lebih kecil daripada desktop */
-    padding: 30px; /* Kurangi padding untuk tablet */
+    max-width: 85%; /* Lebar container lebih kecil */
+    padding: 30px; /* Kurangi padding */
+    margin-left: auto; /* Pastikan container centering */
+    margin-right: auto; /* Pastikan container centering */
   }
 
   .profile-pic {
@@ -407,6 +410,7 @@ transform: scale(0.95);
     padding: 18px 30px;
   }
 }
+
 
 </style>
 </head>
