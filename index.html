@@ -384,6 +384,13 @@ transform: translate(-50%, -50%) scale(1);
     font-size: 1.5rem;
     padding: 20px 40px;
   }
+  .view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
+transform: scale(0.95);
+  }
+  .view-docs-btn:active::before, .whatsapp-chat-btn:active::before, .whatsapp-channel-btn:active::before {
+transform: translate(-50%, -50%) scale(1);
+            transition: transform 0.3s ease;
+  }
 }
 
 /* Untuk tablet (min-width: 768px) */
@@ -418,6 +425,13 @@ transform: translate(-50%, -50%) scale(1);
     margin-left: auto; /* Pastikan button centering */
     margin-right: auto; /* Pastikan button centering */
     display: block; /* Pastikan button tetap tampil sebagai block */
+  }
+  .view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
+transform: scale(0.95);
+  }
+  .view-docs-btn:active::before, .whatsapp-chat-btn:active::before, .whatsapp-channel-btn:active::before {
+transform: translate(-50%, -50%) scale(1);
+            transition: transform 0.3s ease;
   }
   .sdkjsa { padding-right:10px; }
 }
