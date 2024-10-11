@@ -382,19 +382,22 @@ transform: scale(0.95);
   }
 }
 
-/* Untuk tablet (768px - 1024px) */
+/* Untuk tablet (min-width: 768px) */
 @media (min-width: 768px) and (max-width: 1024px) {
   .container {
     margin-top: 15% !important;
-    max-width: 85%; /* Lebar container lebih kecil */
-    padding: 30px; /* Kurangi padding */
+    max-width: 80%; /* Lebar lebih kecil */
     margin-left: auto; /* Pastikan container centering */
     margin-right: auto; /* Pastikan container centering */
+    padding: 30px; /* Kurangi padding */
+    text-align: center; /* Tambahkan text-align center jika diperlukan */
   }
 
   .profile-pic {
     width: 120px;
     height: 120px;
+    margin-left: auto; /* Centering untuk gambar */
+    margin-right: auto; /* Centering untuk gambar */
   }
 
   .about-me h1 {
@@ -408,10 +411,11 @@ transform: scale(0.95);
   .view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
     font-size: 1.2rem;
     padding: 18px 30px;
+    margin-left: auto; /* Pastikan button centering */
+    margin-right: auto; /* Pastikan button centering */
+    display: block; /* Pastikan button tetap tampil sebagai block */
   }
 }
-
-
 </style>
 </head>
 <body>
