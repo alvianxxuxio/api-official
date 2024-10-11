@@ -310,17 +310,19 @@ animation: slide-in 2s ease-out forwards;
   animation: fadeIn 0.4s ease-out; /* Smooth pop-up */
 }
   .material-toastify {
+    position: fixed; /* Pastikan toast ditempatkan secara tetap di atas */
+    top: 10px; /* Jarak dari atas */
+    right: 10px; /* Jarak dari kanan */
     background-color: #fff; /* Background putih */
-    width: 80%;
-    max-width: 90%;
     color: #000; /* Teks hitam */
     border-radius: 12px; /* Membuat sudut bulat sesuai Material You */
     padding: 16px; /* Padding yang cukup untuk kenyamanan */
     font-family: 'Roboto', sans-serif; /* Font yang lebih bersih */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan lembut */
-    z-index: 9999; /* Tingkatkan z-index untuk memastikan berada di atas elemen lain */
+    z-index: 99999; /* Tingkatkan z-index lebih tinggi */
     opacity: 0.95; /* Sedikit transparan */
 }
+
 
 .modal-content h2 {
   font-size: 1.8rem;
