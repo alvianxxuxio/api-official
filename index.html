@@ -458,6 +458,35 @@ transform: translate(-50%, -50%) scale(1);
   }
   .sdkjsa { padding-right:10px; }
 }
+  .dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 12px;
+  color: #000000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 80%;
+  box-sizing: border-box;
+  z-index: 99999;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+  display: none;
+}
+
+#dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99998;
+  display: none;
+}
+
 </style>
 </head>
 <body>
@@ -754,7 +783,11 @@ transform: translate(-50%, -50%) scale(1);
       </div>
        </div>
        <section id="sdha"></section>
-      <div id="result" class="result" style="display:none;"></div>
+      <div id="dialog-overlay"></div> <!-- Overlay untuk dialog -->
+<div id="result" class="dialog" style="display:none;">
+    <!-- Konten hasil akan dimasukkan ke sini -->
+</div>
+
     </div></section>
 
 
@@ -970,5 +1003,26 @@ window.onload = function () {
         showToast("Maaf tindakan ini tidak di izinkan"); // Tampilkan pesan pop-up toast
     });
 </script>
+  <script>
+    // Fungsi untuk menampilkan dialog dan overlay
+function showDialog() {
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('dialog-overlay').style.display = 'block';
+}
+
+// Fungsi untuk menyembunyikan dialog dan overlay
+function hideDialog() {
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('dialog-overlay').style.display = 'none';
+}
+
+// Fungsi untuk memunculkan dialog dengan konten yang diisi di elemen #result
+function showResultDialog(content) {
+  document.getElementById('result').innerHTML = content; // Masukkan konten ke dalam elemen #result
+  showDialog(); // Tampilkan dialog
+}
+
+  </script>
+  
 </body>
 </html>
