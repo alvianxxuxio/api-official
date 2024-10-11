@@ -996,26 +996,6 @@ window.onload = function () {
         showToast("Maaf tindakan ini tidak di izinkan"); // Tampilkan pesan pop-up toast
     });
 </script>
-  <script>
-    // Fungsi untuk menampilkan dialog dan overlay
-function showDialog() {
-  document.getElementById('result').style.display = 'block';
-  document.getElementById('dialog-overlay').style.display = 'block';
-}
-
-// Fungsi untuk menyembunyikan dialog dan overlay
-function hideDialog() {
-  document.getElementById('result').style.display = 'none';
-  document.getElementById('dialog-overlay').style.display = 'none';
-}
-
-// Fungsi untuk memunculkan dialog dengan konten yang diisi di elemen #result
-function showResultDialog(content) {
-  document.getElementById('result').innerHTML = content; // Masukkan konten ke dalam elemen #result
-  showDialog(); // Tampilkan dialog
-}
-
-  </script>
   
 </body>
 </html>
