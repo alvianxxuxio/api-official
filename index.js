@@ -518,37 +518,17 @@ async function gptpic(captionInput) {
 }
 
 // capcut
+async function capcut(url) {
+  const response = await fetch(url);
+  const data = await response.text();
+  const $ = cheerio.load(data);
 
-async function Capcut(query) {
-  try {
-    const token = Url.match(/\d+/)[0];
-    const response = await fetch(
-      `https://ssscapcut.com/api/download/${token}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "/",
-          "User-Agent":
-            "Mozilla/5.0 (Linux; Android 13; CPH2217 Build/TP1A.220905.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/110.0.5481.153 Mobile Safari/537.36",
-          "X-Requested-With": "acr.browser.barebones",
-          "Sec-Fetch-Site": "same-origin",
-          "Sec-Fetch-Mode": "cors",
-          "Sec-Fetch-Dest": "empty",
-          Referer: "https://ssscapcut.com/",
-          "Accept-Encoding": "gzip, deflate",
-          "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
-          Cookie:
-            "sign=2cbe441f7f5f4bdb8e99907172f65a42; device-time=1685437999515",
-        },
-      },
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+  return {
+    thumbnail: $("video").attr("poster"),
+    video: $("video").attr("src"),
+  };
 }
+
 //Rusdi
 async function Rusdi(q) {
   try {
@@ -1100,7 +1080,7 @@ app.get('/api/capcut', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
-    const response = await Capcut(message);
+    const response = await capcut(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
