@@ -24,8 +24,21 @@ This API allows you to easily generate responses, manage data, and integrate var
 
 ## 📚 Getting Started
 
-USAGE :
+> USAGE :
 --
 To use the endpoints, send a GET request to the desired endpoint with the following query parameter:
 
 message: Your message content
+
+> RESPONSE :
+--
+The response will be in JSON format with the following structure:
+
+ {
+    "status": 200,
+    "creator": "ALVIAN UXIO Inc.",
+    "data": {
+      "response": "Response data here"
+    }
+  }
+  
