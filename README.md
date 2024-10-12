@@ -23,3 +23,10 @@ This API allows you to easily generate responses, manage data, and integrate var
 ---
 
 ## 📚 Getting Started
+
+--
+USAGE :
+--
+To use the endpoints, send a GET request to the desired endpoint with the following query parameter:
+
+message: Your message content
