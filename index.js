@@ -517,6 +517,27 @@ async function gptpic(captionInput) {
     }
 }
 
+// terabox 
+async function terabox(query) {
+    const apiKey = 'fFUzSrI1ZcD3';
+    const url = `https://api.botwa.space/api/terabox?url=${query}&apikey=${apiKey}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (response.ok) {
+            // Menampilkan hasil data dari API
+            return data;
+        } else {
+            throw new Error(`Error: ${data.message || 'Terabox scrape failed'}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return { success: false, message: error.message };
+    }
+}
+
 // capcut
 async function capcut(url) {
   const response = await fetch(url);
@@ -1081,6 +1102,26 @@ app.get('/api/capcut', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await capcut(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// terabox
+app.get('/api/terabox', async (req, res) => {
+  try {
+    const { message }= req.query;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await terabox(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
