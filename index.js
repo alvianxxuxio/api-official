@@ -634,7 +634,7 @@ async function twiterdl(query) {
             tt: tt,
             ts: ts,
             source: 'form',
-            id: id,
+            id: query,
             locale: 'en'
         });
 
