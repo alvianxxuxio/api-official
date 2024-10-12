@@ -11,7 +11,7 @@
 <style>
   body {
   font-family: 'Roboto', sans-serif;
-  background-image: url("https://i.postimg.cc/qvdbstmB/20241011-144827.jpg");
+  background-image: url("https://files.catbox.moe/cy6tec.jpg");
       background-repeat: no-repeat;
       background-size: cover;
       width: 100%;
@@ -267,7 +267,6 @@ background-color: #f5f5f5;
 }
 
 
-
 /* Tombol execute */
 button#execute {
   display: block;
@@ -310,20 +309,6 @@ animation: slide-in 2s ease-out forwards;
 animation: slide-in 2s ease-out forwards;
   animation: fadeIn 0.4s ease-out; /* Smooth pop-up */
 }
-  .material-toastify {
-    position: fixed; /* Pastikan toast ditempatkan secara tetap di atas */
-    top: 10px; /* Jarak dari atas */
-    right: 10px; /* Jarak dari kanan */
-    background-color: #fff; /* Background putih */
-    color: #000; /* Teks hitam */
-    border-radius: 12px; /* Membuat sudut bulat sesuai Material You */
-    padding: 16px; /* Padding yang cukup untuk kenyamanan */
-    font-family: 'Roboto', sans-serif; /* Font yang lebih bersih */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan lembut */
-    z-index: 99999; /* Tingkatkan z-index lebih tinggi */
-    opacity: 0.95; /* Sedikit transparan */
-}
-
 
 .modal-content h2 {
   font-size: 1.8rem;
@@ -345,7 +330,7 @@ animation: slide-in 2s ease-out forwards;
     background-color: #d3d3d3;
     border-radius: 10px;
     text-decoration: none;
-    transition: transform 0.6s ease;
+    transition: background-color 0.3s ease;
     cursor: pointer;
     margin: 10px auto;
     width: fit-content;
@@ -356,10 +341,6 @@ transform: scale(0.95);
   }
 .view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
 transform: scale(0.95);
-  }
-  .view-docs-btn:active::before, .whatsapp-chat-btn:active::before, .whatsapp-channel-btn:active::before {
-transform: translate(-50%, -50%) scale(1);
-            transition: transform 0.3s ease;
   }
  .active {
  color: green;
@@ -399,35 +380,21 @@ transform: translate(-50%, -50%) scale(1);
     font-size: 1.5rem;
     padding: 20px 40px;
   }
-  .view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
-transform: scale(0.95);
-  }
-  .view-docs-btn:active::before, .whatsapp-chat-btn:active::before, .whatsapp-channel-btn:active::before {
-transform: translate(-50%, -50%) scale(1);
-            transition: transform 0.3s ease;
-  }
 }
 
-/* Untuk tablet (min-width: 768px) */
+/* Untuk tablet (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
-  .material-toastify {
-                font-size: 12px;
-                padding: 8px 16px;
-  }
   .container {
     margin-top: 15% !important;
-    max-width: 80%; /* Lebar lebih kecil */
+    max-width: 85%; /* Lebar container lebih kecil */
+    padding: 30px; /* Kurangi padding */
     margin-left: auto; /* Pastikan container centering */
     margin-right: auto; /* Pastikan container centering */
-    padding: 30px; /* Kurangi padding */
-    text-align: center; /* Tambahkan text-align center jika diperlukan */
   }
 
   .profile-pic {
     width: 120px;
     height: 120px;
-    margin-left: auto; /* Centering untuk gambar */
-    margin-right: auto; /* Centering untuk gambar */
   }
 
   .about-me h1 {
@@ -441,47 +408,9 @@ transform: translate(-50%, -50%) scale(1);
   .view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
     font-size: 1.2rem;
     padding: 18px 30px;
-    margin-left: auto; /* Pastikan button centering */
-    margin-right: auto; /* Pastikan button centering */
-    display: block; /* Pastikan button tetap tampil sebagai block */
   }
-  .view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
-transform: scale(0.95);
-  }
-  .view-docs-btn:active::before, .whatsapp-chat-btn:active::before, .whatsapp-channel-btn:active::before {
-transform: translate(-50%, -50%) scale(1);
-            transition: transform 0.3s ease;
-  }
-  .sdkjsa { padding-right:10px; }
-}
-  .dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 12px;
-  color: #000000;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 80%;
-  box-sizing: border-box;
-  z-index: 99999;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
-  display: none;
 }
 
-#dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99998;
-  display: none;
-}
 
 </style>
 </head>
@@ -506,7 +435,7 @@ transform: translate(-50%, -50%) scale(1);
     <p style='color: white'>We provide api for everyone support us to continue growing </p>
     <button class="view-docs-btn" onclick="viewDocs()">View Docs</button>
     <button class="whatsapp-chat-btn" onclick="location.href='https://wa.me/6285895988045'">Chat WhatsApp</button>
-    <button class="whatsapp-channel-btn" onclick="location.href='https://instagram.com/alvianuxio'">Direct Message Instagram</button>
+    <button class="whatsapp-channel-btn" onclick="location.href='https://whatsapp.com/channel/0029Vac0DjG6xCSJT0HTV61w'">Channel WhatsApp</button>
   </div>
   <div class="content">
     <h1>API Documentation</h1>
@@ -515,31 +444,31 @@ transform: translate(-50%, -50%) scale(1);
   <div class="section">
     <h2 class="section-title">Information</h2>
     <div class="info-card">
-        <h3 class="info-title"><i class="fas fa-network-wired"></i><div class='sdkjsa'></div> IP Address</h3>
+        <h3 class="info-title"><i class="fas fa-network-wired"></i> IP Address</h3>
         <div class="info-content" id="ip">Loading...</div>
       
       </div>
       <div class="info-card">
       
-        <h3 class="info-title"><i class="fas fa-clock"></i><div class='sdkjsa'></div> Time</h3>
+        <h3 class="info-title"><i class="fas fa-clock"></i> Time</h3>
         <div class="info-content" id="jam">Loading...</div>
         <div id="greetings"></div>
       
       </div>
       <div class="info-card">
       
-        <h3 class="info-title"><i class="fas fa-calendar"></i><div class='sdkjsa'></div> Date</h3>
+        <h3 class="info-title"><i class="fas fa-calendar"></i> Date</h3>
         <div class="info-content" id="tanggal">Loading...</div>
       </div>
       <div class="info-card">
       
-        <h3 class="info-title"><i class="fas fa-battery-half"></i><div class='sdkjsa'></div> Battery</h3>
+        <h3 class="info-title"><i class="fas fa-battery-half"></i> Battery</h3>
         <div class="info-content" id="batre">Loading...</div>
       
       </div>
       <div class="info-card">
       
-        <h3 class="info-title"><i class="fas fa-list-alt"></i><div class='sdkjsa'></div> Total Requests</h3>
+        <h3 class="info-title"><i class="fas fa-list-alt"></i> Total Requests</h3>
         <div class="info-content" id="total-requests">0</div>
       
       </div>
@@ -548,6 +477,17 @@ transform: translate(-50%, -50%) scale(1);
     <div class="section">
       <h2 class="section-title">Artificial Intelligence</h2>
       <div class="btn-container">
+      <div class="btn" onclick="toggleDropdown('dropdown21')">
+          /api/twitter
+          <span><b class="active">New</b></span>
+        </div>
+        <div id="dropdown21" class="dropdown-content">
+          <form class="form-group" action="/api/twitter" onsubmit="executeApi(event, '/api/twitter')">
+            <label for="message21">Enter Message:</label>
+            <input type="text" id="message21" name="message" required>
+            <button type="submit">Execute</button>
+          </form>
+        </div>
       <div class="btn" onclick="toggleDropdown('dropdown20')">
           /api/instagram
           <span><b class="active">New</b></span>
@@ -780,7 +720,6 @@ transform: translate(-50%, -50%) scale(1);
        </div>
        <section id="sdha"></section>
       <div id="result" class="result" style="display:none;"></div>
-
     </div></section>
 
 
@@ -966,36 +905,5 @@ window.onload = function () {
   };
 };
 </script>
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script>
-    // Fungsi untuk menampilkan notifikasi toast dengan gaya Material You
-    function showToast(message) {
-        Toastify({
-            text: message,
-            duration: 3000, // Durasi toast dalam milidetik
-            gravity: "top", // Posisi toast di atas
-            position: 'right', // Posisi toast di kanan
-            className: "material-toastify", // Tambahkan kelas untuk Material You styling
-            stopOnFocus: true // Hentikan animasi saat dihover
-        }).showToast();
-    }
-
-    // Menonaktifkan salin dan tempel
-    document.addEventListener('copy', function(event) {
-        event.preventDefault(); // Mencegah salin
-        showToast("Salin tidak diperbolehkan di halaman ini."); // Tampilkan pesan pop-up toast
-    });
-
-    document.addEventListener('paste', function(event) {
-        event.preventDefault(); // Mencegah tempel
-        showToast("Maaf tindakan ini tidak di izinkan"); // Tampilkan pesan pop-up toast
-    });
-
-    document.addEventListener('contextmenu', function(event) {
-        event.preventDefault(); // Mencegah klik kanan
-        showToast("Maaf tindakan ini tidak di izinkan"); // Tampilkan pesan pop-up toast
-    });
-</script>
-  
 </body>
 </html>
