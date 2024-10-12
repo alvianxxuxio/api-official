@@ -686,16 +686,23 @@ async function fb(query) {
       },
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data from the API");
+    // Ambil teks mentah dari respons
+    const responseText = await response.text();
+    
+    // Cek apakah teks bisa diubah menjadi JSON
+    try {
+      const data = JSON.parse(responseText);
+      return data;
+    } catch (jsonError) {
+      // Jika gagal parsing JSON, tampilkan teks mentah
+      console.error("Failed to parse JSON, response was:", responseText);
     }
 
-    const data = await response.json();
-    return data;
   } catch (error) {
     console.error("Error:", error);
   }
 }
+
 
 //instagram
 async function igdl(url) {
