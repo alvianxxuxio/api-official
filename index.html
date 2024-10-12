@@ -498,8 +498,19 @@ transform: translate(-50%, -50%) scale(1);
 </div>
 
     <div class="section">
-      <h2 class="section-title">Artificial Intelligence</h2>
+      <h2 class="section-title">List of available apis</h2>
       <div class="btn-container">
+      <div class="btn" onclick="toggleDropdown('dropdown24')">
+          /api/spotify
+          <span><b class="active">New</b></span>
+        </div>
+        <div id="dropdown24" class="dropdown-content">
+          <form class="form-group" action="/api/spotify" onsubmit="executeApi(event, '/api/spotify')">
+            <label for="message24">Enter Message:</label>
+            <input type="text" id="message24" name="message" required>
+            <button type="submit">Execute</button>
+          </form>
+        </div>
       <div class="btn" onclick="toggleDropdown('dropdown23')">
           /api/facebook
           <span><b class="mnc">Maintenance</b></span>
