@@ -578,12 +578,12 @@ async function idn(avosky, m) {
                 message += `Gambar: ${item.imageUrl}\n\n`;
             });
 
-            m.reply(message);
+            console.log(message);
         } else {
-            m.reply('Tidak ada hasil.');
+            console.log('Tidak ada hasil.');
         }
     } catch (error) {
-        m.reply('ErRRrRrr.');
+        console.log('Error.');
     }
 }
 
