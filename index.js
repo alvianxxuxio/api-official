@@ -538,6 +538,55 @@ async function terabox(query) {
     }
 }
 
+// idntimes
+
+async function idn(avosky, m) {
+    const url = `https://www.idntimes.com/search?keyword=${encodeURIComponent(avosky)}`;
+
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const result = [];
+
+        $('li.box-latest.box-list').each((i, element) => {
+            const title = $(element).find('h2.title-text').text().trim();
+            const category = $(element).find('.category').text().trim();
+            const date = $(element).find('.date').text().trim();
+            const articleUrl = $(element).find('a').attr('href');
+            const imageUrl = $(element).find('img').attr('src') || $(element).find('img').attr('data-src');
+
+            if (title && category && date && articleUrl && imageUrl) {
+                result.push({
+                    title,
+                    category,
+                    date,
+                    articleUrl,
+                    imageUrl
+                });
+            }
+        });
+
+        if (result.length > 0) {
+            let message = `Hasil pencarian untuk: *${avosky}*\n\n`;
+
+            result.forEach((item, index) => {
+                message += `${index + 1}. *${item.title}*\n`;
+                message += `Kategori: ${item.category}\n`;
+                message += `Tanggal: ${item.date}\n`;
+                message += `Link: ${item.articleUrl}\n`;
+                message += `Gambar: ${item.imageUrl}\n\n`;
+            });
+
+            m.reply(message);
+        } else {
+            m.reply('Tidak ada hasil.');
+        }
+    } catch (error) {
+        m.reply('ErRRrRrr.');
+    }
+}
+
 // spotify
 async function spotifydl(url) {
   return new Promise(async (resolve, reject) => {
@@ -1227,6 +1276,27 @@ app.get('/api/spotify', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await spotifydl(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// idntimes
+// spotify
+app.get('/api/idntimes', async (req, res) => {
+  try {
+    const { message }= req.query;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await idn(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
