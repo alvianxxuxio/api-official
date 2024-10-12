@@ -477,6 +477,17 @@ transform: scale(0.95);
     <div class="section">
       <h2 class="section-title">Artificial Intelligence</h2>
       <div class="btn-container">
+      <div class="btn" onclick="toggleDropdown('dropdown23')">
+          /api/facebook
+          <span><b class="active">New</b></span>
+        </div>
+        <div id="dropdown23" class="dropdown-content">
+          <form class="form-group" action="/api/facebook" onsubmit="executeApi(event, '/api/facebook')">
+            <label for="message23">Enter Message:</label>
+            <input type="text" id="message23" name="message" required>
+            <button type="submit">Execute</button>
+          </form>
+        </div>
       <div class="btn" onclick="toggleDropdown('dropdown22')">
           /api/terabox
           <span><b class="active">New</b></span>

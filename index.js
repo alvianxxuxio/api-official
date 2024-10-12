@@ -672,6 +672,31 @@ async function twiterdl(query) {
     }
 }
 
+// facebook
+async function fb(query) {
+  try {
+    const response = await fetch("https://skizo.tech/api/fb", {
+      method: "POST",
+      body: JSON.stringify({
+        url: query,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "alvianuxio",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data from the API");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
 //instagram
 async function igdl(url) {
   return new Promise(async (resolve, reject) => {
@@ -1102,6 +1127,26 @@ app.get('/api/capcut', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await capcut(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// facebook
+app.get('/api/facebook', async (req, res) => {
+  try {
+    const { message }= req.query;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await fb(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
