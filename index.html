@@ -341,9 +341,16 @@ transform: scale(0.95);
   }
 .view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
 transform: scale(0.95);
+.view-docs-btn:active::before, .whatsapp-chat-btn:active::before, .whatsapp-channel-btn:active::before {
+transform: translate(-50%, -50%) scale(1);
+            transition: transform 0.3s ease;
+  }
   }
  .active {
  color: green;
+ }
+ .mnc {
+ color: yellow;
  }
  .error {
  color: red;
@@ -460,31 +467,31 @@ transform: scale(0.95);
   <div class="section">
     <h2 class="section-title">Information</h2>
     <div class="info-card">
-        <h3 class="info-title"><i class="fas fa-network-wired"></i> IP Address</h3>
+        <h3 class="info-title"><i class="fas fa-network-wired"></i><div class='sdkjsa'></div> IP Address</h3>
         <div class="info-content" id="ip">Loading...</div>
       
       </div>
       <div class="info-card">
       
-        <h3 class="info-title"><i class="fas fa-clock"></i> Time</h3>
+        <h3 class="info-title"><i class="fas fa-clock"></i><div class='sdkjsa'></div> Time</h3>
         <div class="info-content" id="jam">Loading...</div>
         <div id="greetings"></div>
       
       </div>
       <div class="info-card">
       
-        <h3 class="info-title"><i class="fas fa-calendar"></i> Date</h3>
+        <h3 class="info-title"><i class="fas fa-calendar"></i><div class='sdkjsa'></div> Date</h3>
         <div class="info-content" id="tanggal">Loading...</div>
       </div>
       <div class="info-card">
       
-        <h3 class="info-title"><i class="fas fa-battery-half"></i> Battery</h3>
+        <h3 class="info-title"><i class="fas fa-battery-half"></i><div class='sdkjsa'></div> Battery</h3>
         <div class="info-content" id="batre">Loading...</div>
       
       </div>
       <div class="info-card">
       
-        <h3 class="info-title"><i class="fas fa-list-alt"></i> Total Requests</h3>
+        <h3 class="info-title"><i class="fas fa-list-alt"></i><div class='sdkjsa'></div> Total Requests</h3>
         <div class="info-content" id="total-requests">0</div>
       
       </div>
@@ -495,7 +502,7 @@ transform: scale(0.95);
       <div class="btn-container">
       <div class="btn" onclick="toggleDropdown('dropdown23')">
           /api/facebook
-          <span><b class="active">New</b></span>
+          <span><b class="mnc">Maintenance</b></span>
         </div>
         <div id="dropdown23" class="dropdown-content">
           <form class="form-group" action="/api/facebook" onsubmit="executeApi(event, '/api/facebook')">
