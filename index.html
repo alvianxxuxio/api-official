@@ -500,6 +500,17 @@ transform: translate(-50%, -50%) scale(1);
     <div class="section">
       <h2 class="section-title">List of available apis</h2>
       <div class="btn-container">
+      <div class="btn" onclick="toggleDropdown('dropdown26')">
+          /api/mediafire
+          <span><b class="active">New</b></span>
+        </div>
+        <div id="dropdown26" class="dropdown-content">
+          <form class="form-group" action="/api/mediafire" onsubmit="executeApi(event, '/api/mediafire')">
+            <label for="message26">Enter Message:</label>
+            <input type="text" id="message26" name="message" required>
+            <button type="submit">Execute</button>
+          </form>
+        </div>
       <div class="btn" onclick="toggleDropdown('dropdown25')">
           /api/idntimes
           <span><b class="active">New</b></span>

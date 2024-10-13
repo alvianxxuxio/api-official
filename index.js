@@ -13,6 +13,7 @@ const cheerio = require('cheerio');
 const qs = require('qs');
 const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
+const undici = require('undici')
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.enable("trust proxy");
@@ -52,6 +53,36 @@ async function text2imgAfter(prompt) {
     } catch (error) {
         throw error
     }
+}
+
+// mediafire 
+async function mf(url) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await require("undici").fetch(url);
+            const data = await response.text();
+            const $ = cheerio.load(data);
+            
+            let name = $('.dl-info > div > div.filename').text();
+            let link = $('#downloadButton').attr('href');
+          let det = $('ul.details').html().replace(/\s/g, "").replace(/<\/li><li>/g, '\n').replace(/<\/?li>|<\/?span>/g, '');
+            let type = $('.dl-info > div > div.filetype').text();
+
+        
+
+            const hasil = {
+                filename: name,
+                filetype: type,
+                link: link,
+                detail: det
+            };
+
+            resolve(hasil);
+        } catch (err) {
+            console.error(err);
+            reject(err);
+        }
+    });
 }
 
 //tiktok
@@ -1317,6 +1348,26 @@ app.get('/api/capcut', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await capcut(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// mediafire
+app.get('/api/mediafire', async (req, res) => {
+  try {
+    const { message }= req.query;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await mf(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
