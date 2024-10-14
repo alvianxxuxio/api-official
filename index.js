@@ -3,7 +3,6 @@ const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
-const yts = require('yt-search');
 const moment = require("moment-timezone");
 const {
   GoogleGenerativeAI,
@@ -85,89 +84,6 @@ async function mf(url) {
         }
     });
 }
-
-//Youtube
-async function YouTube(url) {
-    try {
-        url = url.trim();
-        if (!url) throw new Error("Enter either a YouTube link for downloading, or query for searching");
-
-        const yt = /youtu(\.)?be/gi.test(url);
-        if (!yt) {
-            throw new Error("Invalid YouTube link provided");
-        }
-
-        const id = /(?:youtu\.be\/|youtube\.com(?:\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|youtu\.be\/|embed\/|v\/|m\/|watch\?(?:[^=]+=[^&]+&)*?v=))([^"&?\/\s]{11})/.exec(url)?.[1] || "";
-
-        if (!id) throw new Error("Enter valid YouTube video link!");
-
-        // Request headers
-        const headers = {
-            Accept: "*/*",
-            Origin: "https://id-y2mate.com",
-            Referer: "https://id-y2mate.com/",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-            "Sec-Ch-Ua-Platform-Version": '"15.0.0"',
-            "Sec-Ch-Ua-Bitness": "64",
-            "Sec-Ch-Ua-Model": "",
-            "Sec-Ch-Ua-Mobile": "?0",
-            "Sec-Ch-Ua-Arch": "x86",
-            "X-Requested-With": "XMLHttpRequest",
-            "Sec-Ch-Ua-Full-Version": "129.0.6668.90",
-            "Sec-Ch-Ua-Full-Version-List": '"Google Chrome";v="129.0.6668.90", "Not=A?Brand";v="8.0.0.0", "Chromium";v="129.0.6668.90"',
-        };
-
-        // Scraping YouTube download information
-        const response = await axios.post("https://id-y2mate.com/mates/analyzeV2/ajax", new URLSearchParams({
-            k_query: `https://youtube.com/watch?v=${id}`,
-            k_page: "home",
-            hl: "",
-            q_auto: "0",
-        }), { headers });
-
-        if (!response.data) throw new Error("Failed to get video & audio information");
-
-        const downloadData = {
-            mp3: {},
-            mp4: {},
-        };
-
-        // Process MP4 and MP3 download links
-        for (let i of Object.values(response.data.links.mp4)) {
-            downloadData.mp4[i.q] = async () => {
-                const mp4Response = await axios.post("https://id-y2mate.com/mates/convertV2/index", new URLSearchParams({
-                    vid: id,
-                    k: i.k,
-                }), { headers: { ...headers, Referer: headers.Referer + id } });
-                if (mp4Response.data.status !== "ok") throw new Error("Failed to convert video");
-                return { size: i.size, format: i.f, url: mp4Response.data.dlink };
-            };
-        }
-
-        for (let i of Object.values(response.data.links.mp3)) {
-            downloadData.mp3[i.f] = async () => {
-                const mp3Response = await axios.post("https://id-y2mate.com/mates/convertV2/index", new URLSearchParams({
-                    vid: id,
-                    k: i.k,
-                }), { headers: { ...headers, Referer: headers.Referer + id } });
-                if (mp3Response.data.status !== "ok") throw new Error("Failed to convert video");
-                return { size: i.size, format: i.f, url: mp3Response.data.dlink };
-            };
-        }
-
-        return {
-            type: "download",
-            download: {
-                id,
-                dl: downloadData,
-            },
-        };
-    } catch (error) {
-        console.error("Error:", error);
-        throw error;
-    }
-}
-
 
 //tiktok
 async function tiktok(query) {
@@ -1524,25 +1440,6 @@ app.get('/api/tiktok', async (req, res) => {
   }
 });
 
-//Youtube
-app.get('/api/youtube', async (req, res) => {
-  try {
-    const { message }= req.query;
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
-    }
-    const response = await Youtube(message);
-    res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
-  creator: "ALVIAN UXIO Inc",
-  data: {
-    response: response
-  }
-});
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 // twitter
 app.get('/api/twitter', async (req, res) => {
