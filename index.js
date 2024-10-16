@@ -985,7 +985,7 @@ async function gptlogic(inputText, customPrompt) {
 }
 
 //gemini
-async function gemini(options) {
+async function gemini(query) {
   try {
     return await new Promise(async(resolve, reject) => {
       options = {
