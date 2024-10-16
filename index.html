@@ -9,7 +9,89 @@
 <title>API Documentation</title>
 <script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js" type="text/javascript"></script>
 <style>
-  body {
+  /* Container for the API list */
+.info-cards {
+  background-color: #f5f5f5; /* Light gray background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 100%;
+}
+
+/* Each API item */
+.info-card {
+  background-color: #ffffff; /* White card for each item */
+  border-radius: 10px; /* Rounded corners */
+  border-left: 5px solid #2196f3; /* Color-coded border */
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover effect for API items */
+.info-card:hover {
+  transform: scale(1.02); /* Slight zoom on hover */
+  background-color: #e8f4fd; /* Light blue background on hover */
+}
+
+/* Title of each API item */
+.info-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  text-align: left;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #2196f3; /* Light blue underline */
+}
+
+/* Content description of each API item */
+.info-content {
+  font-size: 1rem;
+  color: #606060;
+  text-align: left;
+}
+
+/* Method button styles */
+button.api-method {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #28a745; /* Default green */
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  margin-top: 10px;
+}
+
+/* Specific color coding for different HTTP methods */
+button.api-method.post {
+  background-color: #ffc107; /* Yellow for POST */
+}
+
+button.api-method.put {
+  background-color: #17a2b8; /* Blue for PUT */
+}
+
+button.api-method.delete {
+  background-color: #dc3545; /* Red for DELETE */
+}
+
+/* Adjust button hover effects */
+button.api-method:hover {
+  background-color: #444444;
+  color: #ffffff;
+  transform: scale(0.98);
+}
+
+/* Make text wrap properly */
+.info-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+body {
   font-family: 'Roboto', sans-serif;
   background-image: url("https://files.catbox.moe/cy6tec.jpg");
       background-repeat: no-repeat;
@@ -27,16 +109,16 @@
 }
 
 .container {
-  display: center;
-  margin-top: 40% !important;
-  max-width: 90%;
-  margin: 20px;
-  padding: 20px;
-  color: yellow;
-  background-color: rgba(255, 255, 255, 0.4); /* Background putih */
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Mengurangi bayangan */
-  overflow: hidden;
+  display: block; /* Correct display property */
+  margin: 20px auto; /* Center the container horizontally */
+  padding: 20px; /* Consistent padding for inner content */
+  max-width: 90%; /* Limit width for better control */
+  background-color: rgba(240, 248, 255, 0.6); /* Slightly transparent light blue */
+  color: #333333; /* Dark text for readability */
+  border-radius: 8px; /* Softer rounded corners */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06); /* Soft shadow */
+  overflow: hidden; /* Hide overflow */
+  border: 1px solid rgba(173, 216, 230, 0.4); /* Light blue border */
 }
 
 .container * {
@@ -156,7 +238,7 @@ button:hover {
   color: #fff;
 }
 
-.info-card {
+.info-cawrd {
   display: center;
   justify-content: center;
 background-color: #f5f5f5;
@@ -198,20 +280,32 @@ background-color: #f5f5f5;
 
 .btn {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Align items to the left and right */
   align-items: center;
-  background-color: #d3d3d3;
-  color: #000000;
-  
-  padding: 12px;
+  background-color: #ffffff; /* White background like Swagger UI */
+  color: #007bff; /* Blue color text */
+  padding: 10px 20px; /* Defined padding */
   font-size: 1rem;
-  border-radius: 20px;
+  font-weight: bold; /* Bold text for better visibility */
+  border-radius: 13px; /* Slightly less rounded to resemble Swagger UI */
+  border: 2px solid #007bff; /* Blue border to match text color */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  text-align: left; /* Ensure left alignment */
 }
 
+/* Hover effect to mimic Swagger UI */
 .btn:hover {
-  background-color: #c0c0c0;
+  background-color: lightgray; /* Solid blue on hover */
+  color: black; /* White text on hover */
+  transform: scale(1.02); /* Slightly larger on hover */
+}
+
+/* Active state to give a pressed feel */
+.btn:active {
+  background-color: #0056b3; /* Darker blue when pressed */
+  color: #ffffff; /* White text */
+  transform: scale(0.98); /* Slightly smaller on click */
 }
 
 .dropdown-content {
@@ -255,15 +349,25 @@ background-color: #f5f5f5;
 }
 
 .result {
-  background-color: #f5f5f5;
-  padding: 12px;
-  border-radius: 12px;
+  background-color: #fafafa; /* Lighter, clean background similar to Swagger UI */
+  padding: 15px; /* Increased padding for better spacing */
+  border-radius: 8px; /* Smooth, rounded corners */
   margin-top: 20px;
-  color: #000000;
-  word-wrap: break-word;  /* Memastikan kata panjang akan dipisah dan tidak melebihi container */
-  overflow-wrap: break-word;  /* Alternatif untuk browser lain */
-  max-width: 100%;  /* Membatasi lebar maksimal agar tidak melebihi ukuran container */
-  box-sizing: border-box;  /* Memastikan padding dihitung dalam lebar total */
+  color: #333333; /* Darker text for contrast */
+  word-wrap: break-word; /* Ensure long words wrap properly */
+  overflow-wrap: break-word; /* Support for different browsers */
+  max-width: 100%; /* Ensure it doesn’t exceed its container */
+  box-sizing: border-box; /* Include padding within the total width */
+  border: 1px solid #dcdcdc; /* Light gray border for definition */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); /* Subtle shadow */
+}
+
+/* Hover effect for a slight pop-out */
+.result:hover {
+  background-color: #ffffff; /* Brighter background on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); /* Deeper shadow on hover */
+  transform: translateY(-2px); /* Small lift effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 
