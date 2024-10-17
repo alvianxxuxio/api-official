@@ -296,8 +296,8 @@ background-color: #f5f5f5;
 
 /* Hover effect to mimic Swagger UI */
 .btn:hover {
-  background-color: lightgray; /* Solid blue on hover */
-  color: black; /* White text on hover */
+  background-color: lightgray; /* Light background on hover */
+  color: black; /* Dark text on hover */
   transform: scale(1.02); /* Slightly larger on hover */
 }
 
@@ -313,7 +313,49 @@ background-color: #f5f5f5;
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
+  background-color: #f9f9f9; /* Light background like Swagger UI dropdowns */
+  padding: 15px; /* Padding for dropdown content */
+  border: 1px solid #ddd; /* Light gray border around dropdown */
+  border-radius: 10px; /* Slight rounding for a clean look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
+
+/* Show dropdown when button is active */
+.btn.active + .dropdown-content {
+  display: flex;
+}
+
+/* Style for each API item in the dropdown */
+.dropdown-content .api-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff; /* White background for each API item */
+  border: 1px solid #e0e0e0; /* Light gray border around each item */
+  border-radius: 8px; /* Slightly rounded corners */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for each API item */
+.dropdown-content .api-item:hover {
+  background-color: lightgray;
+  transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+/* API item title style */
+.dropdown-content .api-item .api-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333; /* Dark text color */
+}
+
+/* API item description style */
+.dropdown-content .api-item .api-description {
+  font-size: 0.9rem;
+  color: #777; /* Lighter text for description */
+}
+
 
 .form-group {
   margin-bottom: 15px;
@@ -329,18 +371,23 @@ background-color: #f5f5f5;
 .form-group input, .form-group button {
   width: 100%;
   padding: 12px;
-  border-radius: 18px;
-  border: 1px solid #444444;
-  background-color: #e0e0e0;
+  border-radius: 13px;
+  border: 1px solid black;
+  background-color: #fff;
   color: #000000;
   font-size: 1rem;
   box-sizing: border-box;
+}
+.form-group input:focus {
+    outline: none; /* Menghilangkan outline saat input di fokus */
+    border: 1px solid #ccc; /* Mengatur border sesuai kebutuhan */
+    box-shadow: none; /* Menghilangkan shadow atau efek highlight */
 }
 
 .form-group button {
   margin-top: 10px;
   cursor: pointer;
-  background-color: #d3d3d3;
+  background-color: #fff;
   transition: background-color 0.3s ease;
 }
 
@@ -539,6 +586,13 @@ transform: translate(-50%, -50%) scale(1);
     z-index: 99999; /* Tingkatkan z-index lebih tinggi */
     opacity: 0.95; /* Sedikit transparan */
 }
+.info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            color: #757575;
+            margin: 5px 0;
+        }
 </style>
 </head>
 <body>
@@ -613,6 +667,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message27">Enter Message:</label>
             <input type="text" id="message27" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown26')">
@@ -624,6 +682,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message26">Enter Message:</label>
             <input type="text" id="message26" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown25')">
@@ -635,6 +697,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message25">Enter Message:</label>
             <input type="text" id="message25" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown24')">
@@ -646,6 +712,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message24">Enter Message:</label>
             <input type="text" id="message24" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown23')">
@@ -657,6 +727,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message23">Enter Message:</label>
             <input type="text" id="message23" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown22')">
@@ -668,6 +742,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message22">Enter Message:</label>
             <input type="text" id="message22" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown21')">
@@ -679,6 +757,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message21">Enter Message:</label>
             <input type="text" id="message21" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown20')">
@@ -690,6 +772,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message20">Enter Message:</label>
             <input type="text" id="message20" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown19')">
@@ -701,6 +787,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message19">Enter Message:</label>
             <input type="text" id="message19" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown18')">
@@ -712,6 +802,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message18">Enter Message:</label>
             <input type="text" id="message18" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown17')">
@@ -723,6 +817,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message17">Enter Message:</label>
             <input type="text" id="message17" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown1')">
@@ -734,6 +832,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message1">Enter Message:</label>
             <input type="text" id="message1" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown2')">
@@ -745,6 +847,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message2">Enter Message:</label>
             <input type="text" id="message2" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown3')">
@@ -756,6 +862,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message3">Enter Message:</label>
             <input type="text" id="message3" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
 <div class="btn" onclick="toggleDropdown('dropdown4')">
@@ -767,6 +877,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message4">Enter Message:</label>
             <input type="text" id="message4" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown5')">
@@ -778,6 +892,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message5">Enter Message:</label>
             <input type="text" id="message5" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
 
@@ -790,6 +908,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message6">Enter Message:</label>
             <input type="text" id="message6" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
 
@@ -802,6 +924,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message7">Enter Message:</label>
             <input type="text" id="message7" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
       
@@ -814,6 +940,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message8">Enter Message:</label>
             <input type="text" id="message8" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
       
@@ -838,6 +968,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message10">Enter Message:</label>
             <input type="text" id="message10" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
       
@@ -850,6 +984,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message11">Enter Message:</label>
             <input type="text" id="message11" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
       
@@ -862,6 +1000,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message12">Enter Message:</label>
             <input type="text" id="message12" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
             <div class="btn" onclick="toggleDropdown('dropdown13')">
@@ -873,6 +1015,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message13">Enter Message:</label>
             <input type="text" id="message13" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown14')">
@@ -897,6 +1043,10 @@ transform: translate(-50%, -50%) scale(1);
             <label for="message15">Enter Message:</label>
             <input type="text" id="message15" name="message" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown16')">
@@ -904,12 +1054,22 @@ transform: translate(-50%, -50%) scale(1);
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown16" class="dropdown-content">
-          <form class="form-group" action="/api/prodia" onsubmit="executeApi(event, '/api/prodia')">
-            <label for="message16">Enter Message:</label>
-            <input type="text" id="message16" name="message" required>
-            <button type="submit">Execute</button>
-          </form>
-      </div>
+    <form class="form-group" action="/api/prodia" onsubmit="executeApi(event, '/api/prodia', 'result16')">
+        <label for="message16">Enter Message:</label>
+        <input type="text" id="message16" name="message" required>
+        <button type="submit">Execute</button>
+        <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span>
+            <span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span>
+        </div>
+        <div class="info-row"><span>200</span><span>Success</span></div>
+        <div class="info-row"><span>404</span><span>Not Found</span></div>
+        <div class="info-row"><span>400</span><span>Bad Request</span></div>
+        <div class="info-row"><span>500</span><span>Internal server error</span></div>
+    </form>
+    <!-- Result untuk dropdown ini -->
+    <div id="result16" class="result" style="display:none;"></div>
+</div>
        </div>
        <section id="sdha"></section>
       <div id="result" class="result" style="display:none;"></div>
