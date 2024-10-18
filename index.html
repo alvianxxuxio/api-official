@@ -573,7 +573,7 @@ transform: translate(-50%, -50%) scale(1);
   }
 }
 .sdkjsa { padding-right:10px; }
- .material-toastify {
+ .material-toastify, .material-toastify-close {
     position: fixed; /* Pastikan toast ditempatkan secara tetap di atas */
     top: 10px; /* Jarak dari atas */
     right: 10px; /* Jarak dari kanan */
@@ -1191,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             // Mengonversi hasil menjadi string dan menampilkan melalui Toastify
-            const message = JSON.stringify(data, null, 2) + requestUrlElement;
+            const message = JSON.stringify(data, null, 2) + requestUrl;
             
             // Tampilkan pesan sebagai notifikasi menggunakan Toastify
             showToast(message);
@@ -1274,16 +1274,19 @@ window.onload = function () {
 </script>
 <script>
     // Fungsi untuk menampilkan notifikasi toast dengan gaya Material You
-    function showToast(message) {
-        Toastify({
-            text: message,
-            duration: 3000, // Durasi toast dalam milidetik
-            gravity: "top", // Posisi toast di atas
-            position: 'right', // Posisi toast di kanan
-            className: "material-toastify", // Tambahkan kelas untuk Material You styling
-            stopOnFocus: true // Hentikan animasi saat dihover
-        }).showToast();
-    }
+    function showToast(message, options = { autoClose: true, duration: 3000 }) {
+    Toastify({
+        text: message,
+        duration: options.autoClose ? options.duration : -1, // -1 untuk tidak otomatis menutup
+        gravity: "top", // Posisi toast di atas
+        position: 'right', // Posisi toast di kanan
+        className: options.autoClose ? "material-toastify" : "material-toastify-close", // Kelas CSS yang berbeda jika ada tombol close
+        closeClass: "close-popup",
+        close: !options.autoClose,
+         // Tampilkan tombol close jika tidak otomatis tutup
+        stopOnFocus: true // Hentikan animasi saat dihover
+    }).showToast();
+}
 
     // Menonaktifkan salin dan tempel
     document.addEventListener('copy', function(event) {
