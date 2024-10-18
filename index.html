@@ -1176,26 +1176,40 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault();
     const message = event.target.querySelector('input[name="message"]').value;
     const query = `?message=${encodeURIComponent(message)}`;
+    
+    // Buat URL lengkap
+    const baseUrl = 'https://api.alvianuxio.my.id';
+    const requestUrl = baseUrl + endpoint + query;
+
+    // Lakukan permintaan API
     fetch(endpoint + query)
-      .then(response => response.json())
-      .then(data => {
-        const resultElement = document.getElementById('result');
-        resultElement.textContent = JSON.stringify(data, null, 2);
-        resultElement.style.display = 'block';
-        totalRequests++;
-        updateTotalRequests();
-        const baseUrl = 'https://api.alvianuxio.my.id';
-        const requestUrl = baseUrl + endpoint + query;
-        const requestUrlElement = document.createElement('p');
-        requestUrlElement.textContent = `Request URL: ${requestUrl}`;
-        resultElement.appendChild(requestUrlElement);
-      })
-      .catch(error => {
-        const resultElement = document.getElementById('result');
-        resultElement.textContent = 'Error: ' + error;
-        resultElement.style.display = 'block';
-      });
-  }
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Mengonversi hasil menjadi string dan menampilkan melalui Toastify
+            const message = JSON.stringify(data, null, 2);
+            
+            // Tampilkan pesan sebagai notifikasi menggunakan Toastify
+            showToast(message);
+
+            // Tambah hitungan total permintaan dan perbarui tampilan
+            totalRequests++;
+            updateTotalRequests();
+
+            // Buat elemen untuk menunjukkan URL permintaan (opsional, jika diperlukan di halaman)
+            const requestUrlElement = document.createElement('p');
+            requestUrlElement.textContent = `Request URL: ${requestUrl}`;
+            document.body.appendChild(requestUrlElement); // Tempatkan di halaman jika diperlukan
+        })
+        .catch(error => {
+            // Tampilkan pesan error menggunakan Toastify
+            showToast('Error: ' + error, true);
+        });
+}
 
   window.logicgpt = function(event) {
     event.preventDefault();
