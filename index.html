@@ -435,7 +435,6 @@ button#execute:hover {
   background-color: #444444;
 }
 
-
 .modal {
   display: none; /* Hidden by default */
   position: fixed;
@@ -574,53 +573,18 @@ transform: translate(-50%, -50%) scale(1);
   }
 }
 .sdkjsa { padding-right:10px; }
-/* Pastikan toast selalu di atas semua elemen */
-.toastify {
-    z-index: 9999 !important; /* Memberikan z-index tinggi agar berada di atas elemen lain */
-}
-
-#close-popup {
-  background-color: #fff;
-  padding:20px;
-  
-}
-/* Tambahkan gaya untuk tombol close */
- .material-toastify-close .toastify-close {
-    background-color: #ffffff; /* Warna background tombol close */
-    width: 100px !important; /* Lebar tombol close */
-    max-width: 120px;
-    height: 30px; /* Tinggi tombol close */
-    color: #000000; /* Warna ikon X */
-    border-radius: 5px; /* Sudut melengkung, bisa diubah sesuai keinginan */
-    padding: 0; /* Hapus padding agar tombol tetap ramping */
-    cursor: pointer; /* Pointer cursor untuk memberikan indikasi bisa diklik */
-    border: none; /* Menghilangkan border default */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Tambahkan sedikit shadow agar terlihat */
-    display: flex; /* Gunakan flexbox untuk memusatkan ikon */
-    align-items: center; /* Pusatkan secara vertikal */
-    justify-content: center; /* Pusatkan secara horizontal */
-}
-
-/* Hover effect untuk tombol close */
-.material-toastify-close .toastify-close:hover {
-    background-color: #f5f5f5; /* Warna saat tombol dihover */
-    color: #333; /* Warna teks/ikon saat dihover */
-}
-
-/* Pastikan toast memiliki posisi yang benar */
-.material-toastify, .material-toastify-close {
-    position: fixed; /* Gunakan posisi tetap agar selalu di layar */
-    z-index: 9999; /* Pastikan toast muncul di atas elemen lain */
+ .material-toastify {
+    position: fixed; /* Pastikan toast ditempatkan secara tetap di atas */
     top: 10px; /* Jarak dari atas */
     right: 10px; /* Jarak dari kanan */
-    max-width: 300px; /* Maksimal lebar toast */
-    word-break: break-word; /* Memastikan teks tidak keluar dari batas */
     background-color: #fff; /* Background putih */
     color: #000; /* Teks hitam */
     border-radius: 12px; /* Membuat sudut bulat sesuai Material You */
     padding: 16px; /* Padding yang cukup untuk kenyamanan */
     font-family: 'Roboto', sans-serif; /* Font yang lebih bersih */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan lembut */
+    z-index: 99999; /* Tingkatkan z-index lebih tinggi */
+    opacity: 0.95; /* Sedikit transparan */
 }
 .info-row {
             display: flex;
@@ -1226,13 +1190,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-          
             // Mengonversi hasil menjadi string dan menampilkan melalui Toastify
-            const message = JSON.stringify(data, null, 2);
+            const message = JSON.stringify(data, null, 2) + requestUrlElement;
             
             // Tampilkan pesan sebagai notifikasi menggunakan Toastify
-            
-            
+            showToast(message);
 
             // Tambah hitungan total permintaan dan perbarui tampilan
             totalRequests++;
@@ -1245,9 +1207,8 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             // Tampilkan pesan error menggunakan Toastify
-            showToast('Error: ' + error, true, { autoClose: false });
+            showToast('Error: ' + error, true);
         });
-        showToast(message, { autoClose: false });
 }
 
   window.logicgpt = function(event) {
@@ -1312,22 +1273,17 @@ window.onload = function () {
 };
 </script>
 <script>
-  function showToast(message, options = { autoClose: true, duration: 3000 }) {
-    Toastify({
-        text: message,
-        duration: options.autoClose ? options.duration : -1, // -1 untuk tidak otomatis menutup
-        gravity: "top", // Posisi toast di atas
-        position: 'right', // Posisi toast di kanan
-        className: options.autoClose ? "material-toastify" : "material-toastify-close", // Kelas CSS yang berbeda jika ada tombol close
-        closeClass: "close-popup",
-        close: !options.autoClose,
-         // Tampilkan tombol close jika tidak otomatis tutup
-        stopOnFocus: true // Hentikan animasi saat dihover
-    }).showToast();
-}
-const toastContainer = document.querySelector('.material-toastify');
-        const closeButton = document.createElement('button');
-        closeButton.innerText = "Tutup"; // Teks untuk tombol close
+    // Fungsi untuk menampilkan notifikasi toast dengan gaya Material You
+    function showToast(message) {
+        Toastify({
+            text: message,
+            duration: 3000, // Durasi toast dalam milidetik
+            gravity: "top", // Posisi toast di atas
+            position: 'right', // Posisi toast di kanan
+            className: "material-toastify", // Tambahkan kelas untuk Material You styling
+            stopOnFocus: true // Hentikan animasi saat dihover
+        }).showToast();
+    }
 
     // Menonaktifkan salin dan tempel
     document.addEventListener('copy', function(event) {
