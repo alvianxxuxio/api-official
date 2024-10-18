@@ -9,7 +9,89 @@
 <title>API Documentation</title>
 <script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js" type="text/javascript"></script>
 <style>
-  body {
+  /* Container for the API list */
+.info-cards {
+  background-color: #f5f5f5; /* Light gray background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 100%;
+}
+
+/* Each API item */
+.info-card {
+  background-color: #ffffff; /* White card for each item */
+  border-radius: 10px; /* Rounded corners */
+  border-left: 5px solid #2196f3; /* Color-coded border */
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover effect for API items */
+.info-card:hover {
+  transform: scale(1.02); /* Slight zoom on hover */
+  background-color: #e8f4fd; /* Light blue background on hover */
+}
+
+/* Title of each API item */
+.info-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  text-align: left;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #2196f3; /* Light blue underline */
+}
+
+/* Content description of each API item */
+.info-content {
+  font-size: 1rem;
+  color: #606060;
+  text-align: left;
+}
+
+/* Method button styles */
+button.api-method {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #28a745; /* Default green */
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  margin-top: 10px;
+}
+
+/* Specific color coding for different HTTP methods */
+button.api-method.post {
+  background-color: #ffc107; /* Yellow for POST */
+}
+
+button.api-method.put {
+  background-color: #17a2b8; /* Blue for PUT */
+}
+
+button.api-method.delete {
+  background-color: #dc3545; /* Red for DELETE */
+}
+
+/* Adjust button hover effects */
+button.api-method:hover {
+  background-color: #444444;
+  color: #ffffff;
+  transform: scale(0.98);
+}
+
+/* Make text wrap properly */
+.info-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+body {
   font-family: 'Roboto', sans-serif;
   background-image: url("https://files.catbox.moe/cy6tec.jpg");
       background-repeat: no-repeat;
@@ -27,16 +109,16 @@
 }
 
 .container {
-  display: center;
-  margin-top: 40% !important;
-  max-width: 90%;
-  margin: 20px;
-  padding: 20px;
-  color: yellow;
-  background-color: rgba(255, 255, 255, 0.4); /* Background putih */
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Mengurangi bayangan */
-  overflow: hidden;
+  display: block; /* Correct display property */
+  margin: 20px auto; /* Center the container horizontally */
+  padding: 20px; /* Consistent padding for inner content */
+  max-width: 90%; /* Limit width for better control */
+  background-color: rgba(240, 248, 255, 0.6); /* Slightly transparent light blue */
+  color: #333333; /* Dark text for readability */
+  border-radius: 8px; /* Softer rounded corners */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06); /* Soft shadow */
+  overflow: hidden; /* Hide overflow */
+  border: 1px solid rgba(173, 216, 230, 0.4); /* Light blue border */
 }
 
 .container * {
@@ -156,7 +238,7 @@ button:hover {
   color: #fff;
 }
 
-.info-card {
+.info-cawrd {
   display: center;
   justify-content: center;
 background-color: #f5f5f5;
@@ -198,20 +280,32 @@ background-color: #f5f5f5;
 
 .btn {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Align items to the left and right */
   align-items: center;
-  background-color: #d3d3d3;
-  color: #000000;
-  
-  padding: 12px;
+  background-color: #ffffff; /* White background like Swagger UI */
+  color: #007bff; /* Blue color text */
+  padding: 10px 20px; /* Defined padding */
   font-size: 1rem;
-  border-radius: 20px;
+  font-weight: bold; /* Bold text for better visibility */
+  border-radius: 13px; /* Slightly less rounded to resemble Swagger UI */
+  border: 2px solid #007bff; /* Blue border to match text color */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  text-align: left; /* Ensure left alignment */
 }
 
+/* Hover effect to mimic Swagger UI */
 .btn:hover {
-  background-color: #c0c0c0;
+  background-color: lightgray; /* Light background on hover */
+  color: black; /* Dark text on hover */
+  transform: scale(1.02); /* Slightly larger on hover */
+}
+
+/* Active state to give a pressed feel */
+.btn:active {
+  background-color: #0056b3; /* Darker blue when pressed */
+  color: #ffffff; /* White text */
+  transform: scale(0.98); /* Slightly smaller on click */
 }
 
 .dropdown-content {
@@ -219,7 +313,49 @@ background-color: #f5f5f5;
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
+  background-color: #f9f9f9; /* Light background like Swagger UI dropdowns */
+  padding: 15px; /* Padding for dropdown content */
+  border: 1px solid #ddd; /* Light gray border around dropdown */
+  border-radius: 10px; /* Slight rounding for a clean look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
+
+/* Show dropdown when button is active */
+.btn.active + .dropdown-content {
+  display: flex;
+}
+
+/* Style for each API item in the dropdown */
+.dropdown-content .api-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff; /* White background for each API item */
+  border: 1px solid #e0e0e0; /* Light gray border around each item */
+  border-radius: 8px; /* Slightly rounded corners */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for each API item */
+.dropdown-content .api-item:hover {
+  background-color: lightgray;
+  transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+/* API item title style */
+.dropdown-content .api-item .api-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333; /* Dark text color */
+}
+
+/* API item description style */
+.dropdown-content .api-item .api-description {
+  font-size: 0.9rem;
+  color: #777; /* Lighter text for description */
+}
+
 
 .form-group {
   margin-bottom: 15px;
@@ -235,18 +371,23 @@ background-color: #f5f5f5;
 .form-group input, .form-group button {
   width: 100%;
   padding: 12px;
-  border-radius: 18px;
-  border: 1px solid #444444;
-  background-color: #e0e0e0;
+  border-radius: 13px;
+  border: 1px solid black;
+  background-color: #fff;
   color: #000000;
   font-size: 1rem;
   box-sizing: border-box;
+}
+.form-group input:focus {
+    outline: none; /* Menghilangkan outline saat input di fokus */
+    border: 1px solid #ccc; /* Mengatur border sesuai kebutuhan */
+    box-shadow: none; /* Menghilangkan shadow atau efek highlight */
 }
 
 .form-group button {
   margin-top: 10px;
   cursor: pointer;
-  background-color: #d3d3d3;
+  background-color: #fff;
   transition: background-color 0.3s ease;
 }
 
@@ -255,15 +396,25 @@ background-color: #f5f5f5;
 }
 
 .result {
-  background-color: #f5f5f5;
-  padding: 12px;
-  border-radius: 12px;
+  background-color: #fafafa; /* Lighter, clean background similar to Swagger UI */
+  padding: 15px; /* Increased padding for better spacing */
+  border-radius: 8px; /* Smooth, rounded corners */
   margin-top: 20px;
-  color: #000000;
-  word-wrap: break-word;  /* Memastikan kata panjang akan dipisah dan tidak melebihi container */
-  overflow-wrap: break-word;  /* Alternatif untuk browser lain */
-  max-width: 100%;  /* Membatasi lebar maksimal agar tidak melebihi ukuran container */
-  box-sizing: border-box;  /* Memastikan padding dihitung dalam lebar total */
+  color: #333333; /* Darker text for contrast */
+  word-wrap: break-word; /* Ensure long words wrap properly */
+  overflow-wrap: break-word; /* Support for different browsers */
+  max-width: 100%; /* Ensure it doesn’t exceed its container */
+  box-sizing: border-box; /* Include padding within the total width */
+  border: 1px solid #dcdcdc; /* Light gray border for definition */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); /* Subtle shadow */
+}
+
+/* Hover effect for a slight pop-out */
+.result:hover {
+  background-color: #ffffff; /* Brighter background on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); /* Deeper shadow on hover */
+  transform: translateY(-2px); /* Small lift effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 
@@ -435,6 +586,13 @@ transform: translate(-50%, -50%) scale(1);
     z-index: 99999; /* Tingkatkan z-index lebih tinggi */
     opacity: 0.95; /* Sedikit transparan */
 }
+.info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            color: #757575;
+            margin: 5px 0;
+        }
 </style>
 </head>
 <body>
@@ -508,9 +666,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/youtube" onsubmit="executeApi(event, '/api/youtube')">
             <label for="message27">Enter Message:</label>
             <input type="text" id="message27" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown26')">
@@ -521,9 +681,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/mediafire" onsubmit="executeApi(event, '/api/mediafire')">
             <label for="message26">Enter Message:</label>
             <input type="text" id="message26" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown25')">
@@ -534,9 +696,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/idntimes" onsubmit="executeApi(event, '/api/idntimes')">
             <label for="message25">Enter Message:</label>
             <input type="text" id="message25" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown24')">
@@ -547,9 +711,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/spotify" onsubmit="executeApi(event, '/api/spotify')">
             <label for="message24">Enter Message:</label>
             <input type="text" id="message24" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown23')">
@@ -560,9 +726,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/facebook" onsubmit="executeApi(event, '/api/facebook')">
             <label for="message23">Enter Message:</label>
             <input type="text" id="message23" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown22')">
@@ -573,9 +741,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/terabox" onsubmit="executeApi(event, '/api/terabox')">
             <label for="message22">Enter Message:</label>
             <input type="text" id="message22" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown21')">
@@ -586,9 +756,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/twitter" onsubmit="executeApi(event, '/api/twitter')">
             <label for="message21">Enter Message:</label>
             <input type="text" id="message21" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown20')">
@@ -599,9 +771,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/instagram" onsubmit="executeApi(event, '/api/instagram')">
             <label for="message20">Enter Message:</label>
             <input type="text" id="message20" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown19')">
@@ -612,9 +786,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/tiktok" onsubmit="executeApi(event, '/api/tiktok')">
             <label for="message19">Enter Message:</label>
             <input type="text" id="message19" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown18')">
@@ -625,9 +801,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/capcut" onsubmit="executeApi(event, '/api/capcut')">
             <label for="message18">Enter Message:</label>
             <input type="text" id="message18" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown17')">
@@ -638,9 +816,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/aluxi" onsubmit="executeApi(event, '/api/aluxi')">
             <label for="message17">Enter Message:</label>
             <input type="text" id="message17" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown1')">
@@ -651,9 +831,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/llama3" onsubmit="executeApi(event, '/api/llama3')">
             <label for="message1">Enter Message:</label>
             <input type="text" id="message1" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown2')">
@@ -664,9 +846,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/Renvy" onsubmit="executeApi(event, '/api/Renvy')">
             <label for="message2">Enter Message:</label>
             <input type="text" id="message2" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown3')">
@@ -677,9 +861,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/DegreeGuru" onsubmit="executeApi(event, '/api/DegreeGuru')">
             <label for="message3">Enter Message:</label>
             <input type="text" id="message3" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
 <div class="btn" onclick="toggleDropdown('dropdown4')">
@@ -690,9 +876,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/SmartContract" onsubmit="executeApi(event, '/api/SmartContract')">
             <label for="message4">Enter Message:</label>
             <input type="text" id="message4" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown5')">
@@ -703,9 +891,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/BlackboxAIChat" onsubmit="executeApi(event, '/api/BlackboxAIChat')">
             <label for="message5">Enter Message:</label>
             <input type="text" id="message5" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
 
@@ -717,9 +907,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/simi" onsubmit="executeApi(event, '/api/simi')">
             <label for="message6">Enter Message:</label>
             <input type="text" id="message6" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
         </div>
 
@@ -731,9 +923,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/letmegpt" onsubmit="executeApi(event, '/api/letmegpt')">
             <label for="message7">Enter Message:</label>
             <input type="text" id="message7" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
       
@@ -745,9 +939,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/gpt4o" onsubmit="executeApi(event, '/api/gpt4o')">
             <label for="message8">Enter Message:</label>
             <input type="text" id="message8" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
       
@@ -759,8 +955,6 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/txt2img" onsubmit="executeApi(event, '/api/txt2img')">
             <label for="message9">Enter Message:</label>
             <input type="text" id="message9" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit" href="#sdha">Execute</button>
           </form>
       </div>
@@ -773,9 +967,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/pinterest" onsubmit="executeApi(event, '/api/pinterest')">
             <label for="message10">Enter Message:</label>
             <input type="text" id="message10" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
       
@@ -787,9 +983,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/gptpic" onsubmit="executeApi(event, '/api/gptpic')">
             <label for="message11">Enter Message:</label>
             <input type="text" id="message11" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
       
@@ -801,9 +999,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/halodoc" onsubmit="executeApi(event, '/api/halodoc')">
             <label for="message12">Enter Message:</label>
             <input type="text" id="message12" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
             <div class="btn" onclick="toggleDropdown('dropdown13')">
@@ -814,9 +1014,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/Rusdi" onsubmit="executeApi(event, '/api/Rusdi')">
             <label for="message13">Enter Message:</label>
             <input type="text" id="message13" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown14')">
@@ -827,8 +1029,6 @@ transform: translate(-50%, -50%) scale(1);
     <form class="form-group" onsubmit="logicgpt(event)">
         <label for="message14">Enter Message:</label>
         <input type="text" id="message14" name="message" required>
-        <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
         <label for="prompt14">Enter Prompt:</label>
         <input type="text" id="prompt14" name="prompt" required>
         <button type="submit">Execute</button>
@@ -842,9 +1042,11 @@ transform: translate(-50%, -50%) scale(1);
           <form class="form-group" action="/api/gemini" onsubmit="executeApi(event, '/api/gemini')">
             <label for="message15">Enter Message:</label>
             <input type="text" id="message15" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
             <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>            <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
           </form>
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown16')">
@@ -852,14 +1054,22 @@ transform: translate(-50%, -50%) scale(1);
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown16" class="dropdown-content">
-          <form class="form-group" action="/api/prodia" onsubmit="executeApi(event, '/api/prodia')">
-            <label for="message16">Enter Message:</label>
-            <input type="text" id="message16" name="message" required>
-            <label for="apiKey">Enter API Key:</label>
-<input type="text" id="apiKey" name="apiKey" placeholder="Entar apiKey" required>
-            <button type="submit">Execute</button>
-          </form>
-      </div>
+    <form class="form-group" action="/api/prodia" onsubmit="executeApi(event, '/api/prodia', 'result16')">
+        <label for="message16">Enter Message:</label>
+        <input type="text" id="message16" name="message" required>
+        <button type="submit">Execute</button>
+        <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span>
+            <span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span>
+        </div>
+        <div class="info-row"><span>200</span><span>Success</span></div>
+        <div class="info-row"><span>404</span><span>Not Found</span></div>
+        <div class="info-row"><span>400</span><span>Bad Request</span></div>
+        <div class="info-row"><span>500</span><span>Internal server error</span></div>
+    </form>
+    <!-- Result untuk dropdown ini -->
+    <div id="result16" class="result" style="display:none;"></div>
+</div>
        </div>
        <section id="sdha"></section>
       <div id="result" class="result" style="display:none;"></div>
@@ -966,11 +1176,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault();
     const message = event.target.querySelector('input[name="message"]').value;
     const query = `?message=${encodeURIComponent(message)}`;
-    const apiKey = req.headers['api_key'];
-    if (!apiKey || !API_KEY.includes(apiKey)) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-    fetch(endpoint + query + apiKey)
+    fetch(endpoint + query)
       .then(response => response.json())
       .then(data => {
         const resultElement = document.getElementById('result');
@@ -979,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', function() {
         totalRequests++;
         updateTotalRequests();
         const baseUrl = 'https://api.alvianuxio.my.id';
-        const requestUrl = baseUrl + endpoint + query + apiKey;
+        const requestUrl = baseUrl + endpoint + query;
         const requestUrlElement = document.createElement('p');
         requestUrlElement.textContent = `Request URL: ${requestUrl}`;
         resultElement.appendChild(requestUrlElement);
