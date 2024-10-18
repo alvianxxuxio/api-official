@@ -1228,10 +1228,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
           
             // Mengonversi hasil menjadi string dan menampilkan melalui Toastify
-            const message = JSON.stringify(data, null, 2) + requestUrlElement;
+            const message = JSON.stringify(data, null, 2);
             
             // Tampilkan pesan sebagai notifikasi menggunakan Toastify
-            showToast(message, { autoClose: false });
+            
+            
 
             // Tambah hitungan total permintaan dan perbarui tampilan
             totalRequests++;
@@ -1246,6 +1247,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Tampilkan pesan error menggunakan Toastify
             showToast('Error: ' + error, true, { autoClose: false });
         });
+        showToast(message + requestUrlElement, { autoClose: false });
 }
 
   window.logicgpt = function(event) {
