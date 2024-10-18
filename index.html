@@ -1191,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             // Mengonversi hasil menjadi string dan menampilkan melalui Toastify
-            const message = JSON.stringify(data, null, 2);
+            const message = JSON.stringify(data, null, 2) + requestUrlElement;
             
             // Tampilkan pesan sebagai notifikasi menggunakan Toastify
             showToast(message);
