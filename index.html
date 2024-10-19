@@ -282,6 +282,7 @@ background-color: #f5f5f5;
   display: flex;
   justify-content: space-between; /* Align items to the left and right */
   align-items: center;
+  text-align: left !important;
   background-color: #ffffff; /* White background like Swagger UI */
   color: #007bff; /* Blue color text */
   padding: 10px 20px; /* Defined padding */
@@ -573,6 +574,15 @@ transform: translate(-50%, -50%) scale(1);
   }
 }
 .sdkjsa { padding-right:10px; }
+.sdfg {
+padding: 5px;
+background-color: #007bff;
+border-radius: 8px;
+width: 20%;
+color: white;
+display: flex;
+justify-content: center;
+}
 .material-toastify-close {
     position: fixed; /* Pastikan toast ditempatkan secara tetap di atas */
     top: 10px; /* Jarak dari atas */
@@ -675,7 +685,7 @@ transform: translate(-50%, -50%) scale(1);
       <h2 class="section-title">List of available apis</h2>
       <div class="btn-container">
       <div class="btn" onclick="toggleDropdown('dropdown27')">
-          /api/youtube
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/youtube</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown27" class="dropdown-content">
@@ -690,7 +700,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown26')">
-          /api/mediafire
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/mediafire</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown26" class="dropdown-content">
@@ -705,7 +715,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown25')">
-          /api/idntimes
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/idntimes</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown25" class="dropdown-content">
@@ -720,7 +730,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown24')">
-          /api/spotify
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/spotify</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown24" class="dropdown-content">
@@ -735,8 +745,8 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown23')">
-          /api/facebook
-          <span><b class="mnc">Maintenance</b></span>
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/facebook</div>
+          <span><b class="error">Error</b></span>
         </div>
         <div id="dropdown23" class="dropdown-content">
           <form class="form-group" action="/api/facebook" onsubmit="executeApi(event, '/api/facebook')">
@@ -750,7 +760,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown22')">
-          /api/terabox
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/terabox</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown22" class="dropdown-content">
@@ -765,7 +775,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown21')">
-          /api/twitter
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/twitter</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown21" class="dropdown-content">
@@ -780,7 +790,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown20')">
-          /api/instagram
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/instagram</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown20" class="dropdown-content">
@@ -795,7 +805,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown19')">
-          /api/tiktok
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/tiktok</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown19" class="dropdown-content">
@@ -810,7 +820,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
       <div class="btn" onclick="toggleDropdown('dropdown18')">
-          /api/capcut
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/capcut</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown18" class="dropdown-content">
@@ -825,7 +835,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown17')">
-          /api/aluxi
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/aluxi</div>
           <span><b class="active">New</b></span>
         </div>
         <div id="dropdown17" class="dropdown-content">
@@ -840,7 +850,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown1')">
-          /api/llama3
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/llama3</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown1" class="dropdown-content">
@@ -855,7 +865,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown2')">
-          /api/Renvy
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/Renvy</div>
           <span><b class="error">Error</b></span>
         </div>
         <div id="dropdown2" class="dropdown-content">
@@ -870,7 +880,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown3')">
-          /api/DegreeGuru
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/DegreeGuru</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown3" class="dropdown-content">
@@ -885,7 +895,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
 <div class="btn" onclick="toggleDropdown('dropdown4')">
-          /api/SmartContract
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/SmartContract</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown4" class="dropdown-content">
@@ -900,7 +910,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown5')">
-          /api/BlackboxAIChat
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/BlackboxAIChat</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown5" class="dropdown-content">
@@ -916,7 +926,7 @@ transform: translate(-50%, -50%) scale(1);
         </div>
 
         <div class="btn" onclick="toggleDropdown('dropdown6')">
-          /api/simi
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/simi</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown6" class="dropdown-content">
@@ -932,7 +942,7 @@ transform: translate(-50%, -50%) scale(1);
         </div>
 
         <div class="btn" onclick="toggleDropdown('dropdown7')">
-          /api/letmegpt
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/letmegpt</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown7" class="dropdown-content">
@@ -948,7 +958,7 @@ transform: translate(-50%, -50%) scale(1);
       </div>
       
         <div class="btn" onclick="toggleDropdown('dropdown8')">
-          /api/gpt4o
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gpt4o</div>
           <span><b class="error">Error</b></span>
         </div>
         <div id="dropdown8" class="dropdown-content">
@@ -964,7 +974,7 @@ transform: translate(-50%, -50%) scale(1);
       </div>
       
               <div class="btn" onclick="toggleDropdown('dropdown9')">
-          /api/txt2img
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/txt2img</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown9" class="dropdown-content">
@@ -976,7 +986,7 @@ transform: translate(-50%, -50%) scale(1);
       </div>
       
       <div class="btn" onclick="toggleDropdown('dropdown10')">
-          /api/pinterest
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/pinterest</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown10" class="dropdown-content">
@@ -992,7 +1002,7 @@ transform: translate(-50%, -50%) scale(1);
       </div>
       
       <div class="btn" onclick="toggleDropdown('dropdown11')">
-          /api/gptpic
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gptpic</div>
           <span><b class="error">Error</b></span>
         </div>
         <div id="dropdown11" class="dropdown-content">
@@ -1008,7 +1018,7 @@ transform: translate(-50%, -50%) scale(1);
       </div>
       
       <div class="btn" onclick="toggleDropdown('dropdown12')">
-          /api/halodoc
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/halodoc</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown12" class="dropdown-content">
@@ -1023,7 +1033,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
       </div>
             <div class="btn" onclick="toggleDropdown('dropdown13')">
-          /api/Rusdi
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/Rusdi</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown13" class="dropdown-content">
@@ -1038,7 +1048,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown14')">
-    /api/gptlogic
+    <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gptlogic</div>
     <span><b class="error">Error</b></span>
 </div>
 <div id="dropdown14" class="dropdown-content">
@@ -1051,7 +1061,7 @@ transform: translate(-50%, -50%) scale(1);
     </form>
 </div>
 <div class="btn" onclick="toggleDropdown('dropdown15')">
-          /api/gemini
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gemini</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown15" class="dropdown-content">
@@ -1066,7 +1076,7 @@ transform: translate(-50%, -50%) scale(1);
           </form>
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown16')">
-          /api/prodia
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/prodia</div>
           <span><b class="active">Active</b></span>
         </div>
         <div id="dropdown16" class="dropdown-content">
