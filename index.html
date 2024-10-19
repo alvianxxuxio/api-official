@@ -679,6 +679,13 @@ justify-content: center;
         <div class="info-content" id="total-requests">0</div>
       
       </div>
+      <div class="info-card">
+        <h3 class="info-title">
+    <i class="fas fa-memory"></i>
+    <div class="sdkjsa">RAM Usage</div>
+  </h3>
+  <div class="info-content" id="ram-usage">Calculating...</div>
+</div>
 </div>
 
     <div class="section">
@@ -1336,5 +1343,30 @@ window.onload = function () {
     });
 </script>
   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+  // Jika dijalankan di server-side dengan Node.js (misalnya di Vercel):
+  const os = require('os');
+
+  function getRAMUsage() {
+    const totalMemory = os.totalmem();
+    const freeMemory = os.freemem();
+    const usedMemory = totalMemory - freeMemory;
+
+    return {
+      total: (totalMemory / 1024 / 1024).toFixed(2), // MB
+      used: (usedMemory / 1024 / 1024).toFixed(2)    // MB
+    };
+  }
+
+  // Fungsi untuk menampilkan hasilnya di elemen HTML
+  function displayRAMUsage() {
+    const ramUsage = getRAMUsage();
+    document.getElementById('ram-usage').textContent = 
+      `Used: ${ramUsage.used} MB / Total: ${ramUsage.total} MB`;
+  }
+
+  // Panggil fungsi untuk menampilkan data
+  displayRAMUsage();
+</script>
 </body>
 </html>
