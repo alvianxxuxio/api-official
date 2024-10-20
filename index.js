@@ -1810,19 +1810,24 @@ app.use((req, res, next) => {
     <style>
       body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f5f5f5;
         margin: 0;
         padding: 0;
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
       }
 
       .container {
-        max-width: 600px;
-        margin: 50px auto;
-        padding: 20px;
+        width: 100%;
+        max-width: 1200px; /* Membatasi lebar maksimal */
+        padding: 20px; /* Menambahkan space di sisi atas, bawah, kanan, kiri */
         background-color: #ffffff;
         border-radius: 24px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         text-align: center;
+        box-sizing: border-box;
       }
 
       .alert {
@@ -1874,6 +1879,18 @@ app.use((req, res, next) => {
 
       .footer a:hover {
         text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .container {
+          padding: 5px;
+        }
       }
     </style>
   </head>
