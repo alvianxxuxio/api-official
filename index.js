@@ -1794,7 +1794,54 @@ app.get('/api/blackboxAIChat', async (req, res) => {
 
 // Handle 404 error
 app.use((req, res, next) => {
-  res.status(404).send("Sorry can't find that!");
+  res.status(404).send(`
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="Cache-control" content="no-cache">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+        <title>Website Error</title>
+        <style>
+          .anymhost-top {
+            margin-top: 50px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container anymhost-top text-center">
+            <div class="alert alert-danger text-center">
+              Website error</b> 
+            </div>
+            <div class="card-body">
+              <img src="https://apikita.exonity.xyz/file/terrified-panic.gif" height="250px" max-width="100%">
+              <br><br>
+              <p>Yah, website yang kamu kunjungi saat ini sedang error :(</p>
+              <br><br>
+              <div class="card">
+                <div class="card-header">
+                  Catatan
+                </div>
+                <div class="card-body">
+                  <p class="card-text">404</p>
+                  <p class="card-text">SOMETHING WRONG</p>
+                  <p class="card-text">Check the url and try again</p>
+                </div>
+              </div>
+              <br><br>
+            </div>
+            <div class="alert alert-primary text-center">
+              &copy; Copyright <script>document.write(new Date().getFullYear())</script> <b><a href="https://api.alvianuxio.my.id">ALVIAN UXIO APIs</a></b>
+            </div>
+        </div>
+      </body>
+    </html>
+  `);
 });
 
 // Handle error
