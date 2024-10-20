@@ -1820,9 +1820,11 @@ app.use((req, res, next) => {
       }
 
       .container {
-        width: 100%;
+        display: center;
+        width: 85%;
+        height: 85%;
         max-width: 1200px; /* Membatasi lebar maksimal */
-        padding: 20px; /* Menambahkan space di sisi atas, bawah, kanan, kiri */
+        margin: 20px; /* Menambahkan space di sisi atas, bawah, kanan, kiri */
         background-color: #ffffff;
         border-radius: 24px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -1832,6 +1834,7 @@ app.use((req, res, next) => {
 
       .alert {
         background-color: #ffcccb;
+        width: 83%;
         color: #d32f2f;
         padding: 15px;
         border-radius: 16px;
@@ -1849,7 +1852,8 @@ app.use((req, res, next) => {
 
       .card-header {
         background-color: #bbdefb;
-        border-radius: 12px 12px 0 0;
+        border-radius: 12px;
+        width: 83%;
         padding: 10px;
         font-weight: 500;
         color: #1976d2;
