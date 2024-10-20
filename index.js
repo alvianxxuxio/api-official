@@ -234,6 +234,32 @@ async function simi(text) {
     throw error;
   }
 }
+// aio
+async function aio(query) {
+  try {
+    // Mengirim request ke API widipe dengan parameter URL yang dimasukkan
+    const response = await fetch(`https://widipe.com/download/aio?url=${encodeURIComponent(query)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Mengecek apakah request berhasil
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    // Parsing hasil dari response ke format JSON
+    const data = await response.json();
+
+    // Mengembalikan data yang diterima dari API
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+    return null;
+  }
+}
 
 //openai
 const BASE_URL = 'https://widipe.com/openai?text=';
@@ -1556,6 +1582,30 @@ app.get('/api/openai', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+//openai
+app.get('/api/aio', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+    if (!apikey || apikey !== 'aluxi') {
+        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await aio(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 //letmeGPT
 app.get('/api/letmegpt', async (req, res) => {
   try {
