@@ -55,6 +55,49 @@ async function text2imgAfter(prompt) {
     }
 }
 
+// igstalk
+async function igstalk(username) {
+  let html = await (await fetch("https://dumpoir.io/v/" + username)).text();
+  const $ = cheerio.load(html);
+  const Profile = {
+    image: $("#user-page > div.user > div.row > div > div.user__img")
+      .attr("style")
+      .replace(/(background-image: url\(\'|\'\);)/gi, ""),
+    username: $(".user__title h4").text().trim(),
+    fullName: $(".user__title h1").text().trim(),
+    bio: $(".user__info-desc").text().trim(),
+    posts: $(".list__item").eq(0).text().trim(),
+    followers: $(".list__item").eq(1).text().trim(),
+    following: $(".list__item").eq(2).text().trim(),
+  };
+  const Post = [];
+  $(".content__item").each((index, element) => {
+    const post = {};
+    const img = $(element).find(".content__img").attr("src");
+    const desc = $(element).find(".content__text p").text();
+    const likes = parseInt($(element).find(".bx-like + span").text());
+    const comments = parseInt(
+      $(element).find(".bx-comment-dots + span").text(),
+    );
+    const time = $(element).find(".bx-time + span").text();
+
+    if (!isNaN(likes) && !isNaN(comments) && img && desc && time) {
+      post.image = img;
+      post.description = desc;
+      post.likes = likes;
+      post.comments = comments;
+      post.time = time;
+      Post.push(post);
+    }
+  });
+
+  const result = {
+    Profile: Profile,
+    Post: Post,
+  };
+  return result;
+}
+
 // mediafire 
 async function mf(url) {
     return new Promise(async (resolve, reject) => {
@@ -1583,7 +1626,31 @@ app.get('/api/openai', async (req, res) => {
   }
 });
 
+// igstalk
 //openai
+app.get('/api/igstalk', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+    if (!apikey || apikey !== 'aluxi') {
+        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await igstalk(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//aio
 app.get('/api/aio', async (req, res) => {
   try {
     const { apikey, message } = req.query;
