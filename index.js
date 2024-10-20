@@ -1796,51 +1796,113 @@ app.get('/api/blackboxAIChat', async (req, res) => {
 app.use((req, res, next) => {
   res.status(404).send(`
     <!doctype html>
-    <html lang="en">
-      <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <meta http-equiv="Cache-control" content="no-cache">
-        <meta http-equiv="Pragma" content="no-cache">
-        <meta http-equiv="Expires" content="0">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        
-        <title>Website Error</title>
-        <style>
-          .anymhost-top {
-            margin-top: 50px;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container anymhost-top text-center">
-            <div class="alert alert-danger text-center">
-              Website error</b> 
-            </div>
-            <div class="card-body">
-              <img src="https://apikita.exonity.xyz/file/terrified-panic.gif" height="250px" max-width="100%">
-              <br><br>
-              <p>Yah, website yang kamu kunjungi saat ini sedang error :(</p>
-              <br><br>
-              <div class="card">
-                <div class="card-header">
-                  Catatan
-                </div>
-                <div class="card-body">
-                  <p class="card-text">404</p>
-                  <p class="card-text">SOMETHING WRONG</p>
-                  <p class="card-text">Check the url and try again</p>
-                </div>
-              </div>
-              <br><br>
-            </div>
-            <div class="alert alert-primary text-center">
-              &copy; Copyright <script>document.write(new Date().getFullYear())</script> <b><a href="https://api.alvianuxio.my.id">ALVIAN UXIO APIs</a></b>
-            </div>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <title>Website Error</title>
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .alert {
+        background-color: #ffcccb;
+        color: #d32f2f;
+        padding: 15px;
+        border-radius: 16px;
+        font-size: 18px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .card {
+        background-color: #e3f2fd;
+        border-radius: 16px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+      }
+
+      .card-header {
+        background-color: #bbdefb;
+        border-radius: 12px 12px 0 0;
+        padding: 10px;
+        font-weight: 500;
+        color: #1976d2;
+      }
+
+      .card-body {
+        padding: 20px;
+        font-size: 16px;
+        color: #333333;
+      }
+
+      img {
+        border-radius: 12px;
+        margin-bottom: 20px;
+      }
+
+      .footer {
+        margin-top: 30px;
+        font-size: 14px;
+        color: #757575;
+      }
+
+      .footer a {
+        color: #1976d2;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="alert">
+        Website error!
+      </div>
+      <div class="card-body">
+        <img src="https://apikita.exonity.xyz/file/terrified-panic.gif" height="250px" max-width="100%">
+        <br>
+        <p>Yah, website yang kamu kunjungi saat ini sedang error :(</p>
+        <br>
+        <div class="card">
+          <div class="card-header">
+            Catatan
+          </div>
+          <div class="card-body">
+            <p class="card-text"><b>404</b> - SOMETHING WRONG</p>
+            <p class="card-text">Periksa URL dan coba lagi</p>
+          </div>
         </div>
-      </body>
-    </html>
+      </div>
+      <div class="footer">
+        &copy; Copyright <script>document.write(new Date().getFullYear())</script> <b><a href="https://api.alvianuxio.my.id">ALVIAN UXIO APIs</a></b>
+      </div>
+    </div>
+  </body>
+</html>
   `);
 });
 
