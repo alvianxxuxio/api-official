@@ -111,32 +111,36 @@ async function yt(query) {
         // Check if the query is a YouTube link
         const isYouTubeLink = /youtu(\.)?be/gi.test(query);
         let videoDetails;
+        let videoId; // Define videoId here
 
         if (!isYouTubeLink) {
             // Search for videos if it's not a YouTube link
             const searchResults = await yts(query);
-            return {
-                type: "search",
-                query,
-                total: searchResults.videos.length,
-                videos: searchResults.videos.map(video => ({
-                    title: video.title,
-                    id: video.videoId,
-                    url: video.url,
-                    thumbnail: video.thumbnail || "",
-                    author: video.author,
-                    views: video.views,
-                    published: video.ago,
-                    duration: {
-                        seconds: video.seconds,
-                        timestamp: video.timestamp,
-                    },
-                })),
+            if (searchResults.videos.length === 0) {
+                throw new Error("No videos found for the given query");
+            }
+
+            // Get the first video from search results
+            const topVideo = searchResults.videos[0];
+
+            // Extract video ID and details
+            videoId = topVideo.videoId; // Set videoId here
+            videoDetails = {
+                title: topVideo.title,
+                url: topVideo.url,
+                thumbnail: topVideo.thumbnail || "",
+                author: topVideo.author,
+                views: topVideo.views,
+                published: topVideo.ago,
+                duration: {
+                    seconds: topVideo.seconds,
+                    timestamp: topVideo.timestamp,
+                },
             };
         } else {
             // Extract the video ID from the URL
             const videoIdMatch = /(?:youtu\.be\/|youtube\.com(?:\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|embed\/|v\/|m\/|watch\?(?:[^=]+=[^&]+&)*?v=))([^"&?\/\s]{11})/gm.exec(query);
-            const videoId = videoIdMatch ? videoIdMatch[1] : null;
+            videoId = videoIdMatch ? videoIdMatch[1] : null;
 
             if (!videoId) {
                 throw new Error("Enter a valid YouTube video link!");
@@ -144,33 +148,39 @@ async function yt(query) {
 
             // Fetch video details
             videoDetails = await yts({ videoId });
+        }
 
-            // Prepare headers for the API request
-            const headers = {
-                Accept: "*/*",
-                Origin: "https://id-y2mate.com",
-                Referer: "https://id-y2mate.com/",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-            };
+        // Prepare headers for the API request
+        const headers = {
+            Accept: "*/*",
+            Origin: "https://id-y2mate.com",
+            Referer: "https://id-y2mate.com/",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+        };
 
-            // Request for video download links
-            const response = await axios.post("https://id-y2mate.com/mates/analyzeV2/ajax", new URLSearchParams({
-                k_query: `https://youtube.com/watch?v=${videoId}`,
-                k_page: "home",
-                hl: "",
-                q_auto: "0",
-            }), { headers });
+        // Request for video download links
+        const response = await axios.post("https://id-y2mate.com/mates/analyzeV2/ajax", new URLSearchParams({
+            k_query: videoDetails.url,
+            k_page: "home",
+            hl: "",
+            q_auto: "0",
+        }), { headers });
 
-            if (!response.data || !response.data.links) {
-                throw new Error("Failed to get video & audio");
-            }
+        if (!response.data || !response.data.links) {
+            throw new Error("Failed to get video & audio");
+        }
 
-            // Prepare download links
-            const downloadLinks = { mp3: {}, mp4: {} };
+        // Prepare download links
+        const downloadLinks = { mp3: {}, mp4: {} };
 
-            // Populate mp4 links
-            for (const quality of Object.values(response.data.links.mp4)) {
-                downloadLinks.mp4[quality.q] = async () => {
+        // Populate mp4 links
+        for (const quality of Object.values(response.data.links.mp4)) {
+            const format = quality.f;
+            downloadLinks.mp4[quality.q] = {
+                size: quality.size,
+                format: format,
+                // Immediately resolve the download link
+                url: await (async () => {
                     const convertResponse = await axios.post("https://id-y2mate.com/mates/convertV2/index", new URLSearchParams({
                         vid: videoId,
                         k: quality.k,
@@ -180,17 +190,18 @@ async function yt(query) {
                         throw new Error("Failed to convert video");
                     }
 
-                    return {
-                        size: quality.size,
-                        format: quality.f,
-                        url: convertResponse.data.dlink,
-                    };
-                };
-            }
+                    return convertResponse.data.dlink;
+                })(),
+            };
+        }
 
-            // Populate mp3 links
-            for (const format of Object.values(response.data.links.mp3)) {
-                downloadLinks.mp3[format.f] = async () => {
+        // Populate mp3 links
+        for (const format of Object.values(response.data.links.mp3)) {
+            downloadLinks.mp3[format.f] = {
+                size: format.size,
+                format: format.f,
+                // Immediately resolve the download link
+                url: await (async () => {
                     const convertResponse = await axios.post("https://id-y2mate.com/mates/convertV2/index", new URLSearchParams({
                         vid: videoId,
                         k: format.k,
@@ -200,36 +211,20 @@ async function yt(query) {
                         throw new Error("Failed to convert audio");
                     }
 
-                    return {
-                        size: format.size,
-                        format: format.f,
-                        url: convertResponse.data.dlink,
-                    };
-                };
-            }
-
-            // Return video details and download links
-            return {
-                type: "download",
-                download: {
-                    title: videoDetails.title,
-                    description: videoDetails.description,
-                    url: videoDetails.url,
-                    id: videoDetails.videoId,
-                    duration: {
-                        seconds: videoDetails.seconds,
-                        timestamp: videoDetails.timestamp,
-                    },
-                    views: videoDetails.views,
-                    author: videoDetails.author,
-                    media: {
-                        thumbnail: videoDetails.thumbnail,
-                        image: videoDetails.image,
-                    },
-                    dl: downloadLinks,
-                },
+                    return convertResponse.data.dlink;
+                })(),
             };
         }
+
+        // Return video details and download links
+        return {
+            type: "download",
+            download: {
+                ...videoDetails,
+                dl: downloadLinks,
+            },
+        };
+
     } catch (error) {
         throw new Error(error.message);
     }
