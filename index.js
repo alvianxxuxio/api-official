@@ -1805,6 +1805,7 @@ app.use((req, res, next) => {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     
     <title>Website Error</title>
     <style>
@@ -1820,6 +1821,8 @@ app.use((req, res, next) => {
       }
 
       .container {
+        justify-content: center;
+        align-items: center;
         display: center;
         width: 85%;
         height: 85%;
@@ -1833,6 +1836,8 @@ app.use((req, res, next) => {
       }
 
       .alert {
+        justify-content: center;
+        align-items: center;
         background-color: #ffcccb;
         width: 83%;
         color: #d32f2f;
@@ -1844,6 +1849,8 @@ app.use((req, res, next) => {
       }
 
       .card {
+        justify-content: center;
+        align-items: center;
         background-color: #e3f2fd;
         border-radius: 16px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -1851,6 +1858,8 @@ app.use((req, res, next) => {
       }
 
       .card-header {
+        justify-content: center;
+        align-items: center;
         background-color: #bbdefb;
         border-radius: 12px;
         width: 83%;
@@ -1904,7 +1913,7 @@ app.use((req, res, next) => {
         Website error!
       </div>
       <div class="card-body">
-        <img src="https://apikita.exonity.xyz/file/terrified-panic.gif" height="250px" max-width="100%">
+        <h3><i class="fas fa-exclamation-triangle" height="250px" max-width="100%"></i></h3>
         <br>
         <p>Yah, website yang kamu kunjungi saat ini sedang error :(</p>
         <br>
