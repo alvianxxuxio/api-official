@@ -1015,22 +1015,6 @@ async function gemini(query) {
     }
 }
 
-//aio
-const BASE_URL = 'https://widipe.com/download/aio?url=';
-async function aio(query) {
-    try {
-        const response = await axios.get(`${BASE_URL}${encodeURIComponent(query)}`);
-        if (response.status === 200 && response.data && response.data.result) {
-            return response.data.result;
-        } else {
-            throw new Error('Tidak ada respons atau hasil dari AI');
-        }
-    } catch (error) {
-        console.error(error);
-        throw new Error('Terjadi kesalahan saat menghubungi AI');
-    }
-}
-
 //prodia
 
 async function prodia(text) {
@@ -1171,29 +1155,6 @@ app.get('/api/gemini', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gemini(message);
-    res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
-  creator: "ALVIAN UXIO Inc",
-  data: {
-    response: response
-  }
-});
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-//aio
-app.get('/api/aio', async (req, res) => {
-  try {
-    const { apikey, message } = req.query;
-    if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
-    }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
-    }
-    const response = await aio(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
