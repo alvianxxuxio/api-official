@@ -3,6 +3,7 @@ const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
+const yts = require("yt-search");
 const moment = require("moment-timezone");
 const {
   GoogleGenerativeAI,
@@ -98,6 +99,141 @@ async function igstalk(username) {
   return result;
 }
 
+
+// youtube
+async function yt(query) {
+    try {
+        // Ensure the query is provided
+        if (!query || query.trim() === "") {
+            throw new Error("Enter either a YouTube link for downloading or a query for searching");
+        }
+
+        // Check if the query is a YouTube link
+        const isYouTubeLink = /youtu(\.)?be/gi.test(query);
+        let videoDetails;
+
+        if (!isYouTubeLink) {
+            // Search for videos if it's not a YouTube link
+            const searchResults = await yts(query);
+            return {
+                type: "search",
+                query,
+                total: searchResults.videos.length,
+                videos: searchResults.videos.map(video => ({
+                    title: video.title,
+                    id: video.videoId,
+                    url: video.url,
+                    thumbnail: video.thumbnail || "",
+                    author: video.author,
+                    views: video.views,
+                    published: video.ago,
+                    duration: {
+                        seconds: video.seconds,
+                        timestamp: video.timestamp,
+                    },
+                })),
+            };
+        } else {
+            // Extract the video ID from the URL
+            const videoIdMatch = /(?:youtu\.be\/|youtube\.com(?:\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|embed\/|v\/|m\/|watch\?(?:[^=]+=[^&]+&)*?v=))([^"&?\/\s]{11})/gm.exec(query);
+            const videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+            if (!videoId) {
+                throw new Error("Enter a valid YouTube video link!");
+            }
+
+            // Fetch video details
+            videoDetails = await yts({ videoId });
+
+            // Prepare headers for the API request
+            const headers = {
+                Accept: "*/*",
+                Origin: "https://id-y2mate.com",
+                Referer: "https://id-y2mate.com/",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+            };
+
+            // Request for video download links
+            const response = await axios.post("https://id-y2mate.com/mates/analyzeV2/ajax", new URLSearchParams({
+                k_query: `https://youtube.com/watch?v=${videoId}`,
+                k_page: "home",
+                hl: "",
+                q_auto: "0",
+            }), { headers });
+
+            if (!response.data || !response.data.links) {
+                throw new Error("Failed to get video & audio");
+            }
+
+            // Prepare download links
+            const downloadLinks = { mp3: {}, mp4: {} };
+
+            // Populate mp4 links
+            for (const quality of Object.values(response.data.links.mp4)) {
+                downloadLinks.mp4[quality.q] = async () => {
+                    const convertResponse = await axios.post("https://id-y2mate.com/mates/convertV2/index", new URLSearchParams({
+                        vid: videoId,
+                        k: quality.k,
+                    }), { headers });
+
+                    if (!convertResponse.data || convertResponse.data.status !== "ok") {
+                        throw new Error("Failed to convert video");
+                    }
+
+                    return {
+                        size: quality.size,
+                        format: quality.f,
+                        url: convertResponse.data.dlink,
+                    };
+                };
+            }
+
+            // Populate mp3 links
+            for (const format of Object.values(response.data.links.mp3)) {
+                downloadLinks.mp3[format.f] = async () => {
+                    const convertResponse = await axios.post("https://id-y2mate.com/mates/convertV2/index", new URLSearchParams({
+                        vid: videoId,
+                        k: format.k,
+                    }), { headers });
+
+                    if (!convertResponse.data || convertResponse.data.status !== "ok") {
+                        throw new Error("Failed to convert audio");
+                    }
+
+                    return {
+                        size: format.size,
+                        format: format.f,
+                        url: convertResponse.data.dlink,
+                    };
+                };
+            }
+
+            // Return video details and download links
+            return {
+                type: "download",
+                download: {
+                    title: videoDetails.title,
+                    description: videoDetails.description,
+                    url: videoDetails.url,
+                    id: videoDetails.videoId,
+                    duration: {
+                        seconds: videoDetails.seconds,
+                        timestamp: videoDetails.timestamp,
+                    },
+                    views: videoDetails.views,
+                    author: videoDetails.author,
+                    media: {
+                        thumbnail: videoDetails.thumbnail,
+                        image: videoDetails.image,
+                    },
+                    dl: downloadLinks,
+                },
+            };
+        }
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
 // mediafire 
 async function mf(url) {
     return new Promise(async (resolve, reject) => {
@@ -1672,6 +1808,30 @@ app.get('/api/aio', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// youtube
+app.get('/api/ytdl', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+    if (!apikey || apikey !== 'aluxi') {
+        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await yt(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 //letmeGPT
 app.get('/api/letmegpt', async (req, res) => {
