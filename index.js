@@ -1,6 +1,4 @@
 const express = require('express');
-const { v4: uuidv4 } = require('uuid');
-const app = express();
 const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
@@ -23,8 +21,6 @@ app.set("json spaces", 2);
 
 // Middleware untuk CORS
 app.use(cors());
-let apiKeys = [];
-const secretToken = 'alxu'; // Token rahasia yang hanya kamu ketahui
 
 //txt2img
 async function txt2img(prompt) {
@@ -1709,58 +1705,6 @@ app.get('/api/blackboxAIChat', async (req, res) => {
   }
 });
 
-// Endpoint untuk menampilkan halaman create API key (admin only)
-app.get('/admin/create', (req, res) => {
-    // Halaman HTML dengan form untuk memasukkan token dan create API key
-    res.send(`
-        <html>
-            <body>
-                <h2>Create API Key</h2>
-                <form action="/admin/create" method="POST">
-                    <label for="token">Enter Secret Token:</label><br>
-                    <input type="text" id="token" name="token" required><br><br>
-                    <button type="submit">Create API Key</button>
-                </form>
-            </body>
-        </html>
-    `);
-});
-
-// Endpoint POST untuk memproses form dan membuat API key
-app.post('/admin/create', (req, res) => {
-    const { token } = req.body;
-
-    // Cek apakah token yang dikirim valid
-    if (token !== secretToken) {
-        return res.status(403).json({ error: 'Forbidden: Invalid token' });
-    }
-
-    // Buat API key baru
-    const newApiKey = uuidv4();
-    apiKeys.push(newApiKey); // Simpan API key
-
-    // Tampilkan API key yang baru dibuat
-    res.send(`
-        <html>
-            <body>
-                <h2>API Key Created</h2>
-                <p>Your new API Key: <strong>${newApiKey}</strong></p>
-                <a href="/admin/create">Create Another</a>
-            </body>
-        </html>
-    `);
-});
-
-// Endpoint lain seperti check-apikey dan aluxi
-app.get('/api/check-apikey', (req, res) => {
-    const { apikey } = req.query;
-
-    if (apiKeys.includes(apikey)) {
-        res.json({ message: 'API key is valid', apikey });
-    } else {
-        res.status(403).json({ error: 'Forbidden: Invalid API key' });
-    }
-});
 // Handle 404 error
 app.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!");
