@@ -490,6 +490,79 @@ async function videy(url) {
     }
 }
 
+// anime
+async function anime(t) {
+  return new Promise((i, e) => {
+    const n = t;
+    axios
+      .get(`https://kusonime.com/?s=${n}&post_type=post`)
+      .then(({ data: t }) => {
+        const e = cheerio.load(t);
+        let n = [];
+        e("div.content > h2 > a")
+          .get()
+          .map((t) => {
+            n.push(e(t).attr("href"));
+          }),
+          axios.get(n[0]).then(({ data: t }) => {
+            const e = cheerio.load(t),
+              n = e('div[class="post-thumb"] > h1').text(),
+              a = e('div[class="post-thumb"] > img').attr("src"),
+              s = e("div.info > p:nth-child(1)").text().split(":")[1].trim(),
+              d = e("div.info > p:nth-child(2)").text().split(":")[1].trim(),
+              r = e("div.info > p:nth-child(3)").text().split(":")[1].trim(),
+              o = e("div.info > p:nth-child(4)").text().split(":")[1].trim(),
+              l = e("div.info > p:nth-child(5)").text().split(":")[1].trim(),
+              h = e("div.info > p:nth-child(6)").text().split(":")[1].trim(),
+              c = e("div.info > p:nth-child(7)").text().split(":")[1].trim(),
+              p = e("div.info > p:nth-child(8)").text().split(":")[1].trim(),
+              m = e("div.info > p:nth-child(9)").text().split(":")[1].trim(),
+              u = e("div.info > p:nth-child(10)").text().split(":")[1].trim(),
+              v = e("div.kategoz > span").text(),
+              f = e("div.lexot > p:nth-child(3)").text();
+            let g = [];
+            e('div[class="venser"]')
+              .find('div[class="lexot"]')
+              .children('div[class="dlbod"]')
+              .children('div[class="smokeddl"]')
+              .first()
+              .children('div[class="smokeurl"]')
+              .each((t, i) => {
+                const n = [],
+                  a = e(i).children("strong").text();
+                e(i)
+                  .children("a")
+                  .each((t, i) => {
+                    const a = e(i).attr("href"),
+                      s = e(i).text();
+                    n.push({ url: a, name: s });
+                  }),
+                  g.push({ reso: a, list: n });
+              }),
+              i({
+                status: !0,
+                title: n,
+                title_jp: s,
+                view: v,
+                thumb: a,
+                genre: d,
+                season: r,
+                producers: o,
+                type: l,
+                status_anime: h,
+                total_episode: c,
+                score: p,
+                duration: m,
+                released: u,
+                description: f,
+                result: g,
+              });
+          });
+      })
+      .catch(e);
+  });
+}
+
 //openai
 const BASE_URL = 'https://widipe.com/openai?text=';
 async function openai(query) {
@@ -1800,6 +1873,29 @@ app.get('/api/openai', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await openai(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// anime
+app.get('/api/anime', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+    if (!apikey || apikey !== 'aluxi') {
+        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await anime(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
