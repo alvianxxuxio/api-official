@@ -491,76 +491,89 @@ async function videy(url) {
 }
 
 // anime
-async function anime(t) {
-  return new Promise((i, e) => {
-    const n = t;
-    axios
-      .get(`https://kusonime.com/?s=${n}&post_type=post`)
-      .then(({ data: t }) => {
-        const e = cheerio.load(t);
-        let n = [];
-        e("div.content > h2 > a")
-          .get()
-          .map((t) => {
-            n.push(e(t).attr("href"));
-          }),
-          axios.get(n[0]).then(({ data: t }) => {
-            const e = cheerio.load(t),
-              n = e('div[class="post-thumb"] > h1').text(),
-              a = e('div[class="post-thumb"] > img').attr("src"),
-              s = e("div.info > p:nth-child(1)").text().split(":")[1].trim(),
-              d = e("div.info > p:nth-child(2)").text().split(":")[1].trim(),
-              r = e("div.info > p:nth-child(3)").text().split(":")[1].trim(),
-              o = e("div.info > p:nth-child(4)").text().split(":")[1].trim(),
-              l = e("div.info > p:nth-child(5)").text().split(":")[1].trim(),
-              h = e("div.info > p:nth-child(6)").text().split(":")[1].trim(),
-              c = e("div.info > p:nth-child(7)").text().split(":")[1].trim(),
-              p = e("div.info > p:nth-child(8)").text().split(":")[1].trim(),
-              m = e("div.info > p:nth-child(9)").text().split(":")[1].trim(),
-              u = e("div.info > p:nth-child(10)").text().split(":")[1].trim(),
-              v = e("div.kategoz > span").text(),
-              f = e("div.lexot > p:nth-child(3)").text();
-            let g = [];
-            e('div[class="venser"]')
-              .find('div[class="lexot"]')
-              .children('div[class="dlbod"]')
-              .children('div[class="smokeddl"]')
-              .first()
-              .children('div[class="smokeurl"]')
-              .each((t, i) => {
-                const n = [],
-                  a = e(i).children("strong").text();
-                e(i)
-                  .children("a")
-                  .each((t, i) => {
-                    const a = e(i).attr("href"),
-                      s = e(i).text();
-                    n.push({ url: a, name: s });
-                  }),
-                  g.push({ reso: a, list: n });
-              }),
-              i({
-                status: !0,
-                title: n,
-                title_jp: s,
-                view: v,
-                thumb: a,
-                genre: d,
-                season: r,
-                producers: o,
-                type: l,
-                status_anime: h,
-                total_episode: c,
-                score: p,
-                duration: m,
-                released: u,
-                description: f,
-                result: g,
-              });
+async function anime(query) {
+  try {
+    // Fetch the search results page
+    const searchResponse = await axios.get(`https://kusonime.com/?s=${query}&post_type=post`);
+    const $ = cheerio.load(searchResponse.data);
+
+    // Extract the first anime link from the search results
+    const animeLinks = [];
+    $('div.content > h2 > a').each((i, element) => {
+      animeLinks.push($(element).attr('href'));
+    });
+
+    if (animeLinks.length === 0) {
+      throw new Error('No anime found.');
+    }
+
+    // Fetch the anime details page from the first result
+    const animePageResponse = await axios.get(animeLinks[0]);
+    const $animePage = cheerio.load(animePageResponse.data);
+
+    // Extract details from the anime page
+    const title = $animePage('div[class="post-thumb"] > h1').text();
+    const thumb = $animePage('div[class="post-thumb"] > img').attr('src');
+    const title_jp = $animePage('div.info > p:nth-child(1)').text().split(":")[1].trim();
+    const genre = $animePage('div.info > p:nth-child(2)').text().split(":")[1].trim();
+    const season = $animePage('div.info > p:nth-child(3)').text().split(":")[1].trim();
+    const producers = $animePage('div.info > p:nth-child(4)').text().split(":")[1].trim();
+    const type = $animePage('div.info > p:nth-child(5)').text().split(":")[1].trim();
+    const status_anime = $animePage('div.info > p:nth-child(6)').text().split(":")[1].trim();
+    const total_episode = $animePage('div.info > p:nth-child(7)').text().split(":")[1].trim();
+    const score = $animePage('div.info > p:nth-child(8)').text().split(":")[1].trim();
+    const duration = $animePage('div.info > p:nth-child(9)').text().split(":")[1].trim();
+    const released = $animePage('div.info > p:nth-child(10)').text().split(":")[1].trim();
+    const view = $animePage('div.kategoz > span').text();
+    const description = $animePage('div.lexot > p:nth-child(3)').text();
+
+    // Extract download links
+    let downloadLinks = [];
+    $animePage('div[class="venser"]')
+      .find('div[class="lexot"]')
+      .children('div[class="dlbod"]')
+      .children('div[class="smokeddl"]')
+      .first()
+      .children('div[class="smokeurl"]')
+      .each((i, element) => {
+        const resolution = $(element).children('strong').text();
+        let links = [];
+
+        $(element)
+          .children('a')
+          .each((i, anchor) => {
+            const url = $(anchor).attr('href');
+            const name = $(anchor).text();
+            links.push({ url, name });
           });
-      })
-      .catch(e);
-  });
+
+        downloadLinks.push({ resolution, links });
+      });
+
+    // Return the anime details
+    return {
+      status: true,
+      title,
+      title_jp,
+      view,
+      thumb,
+      genre,
+      season,
+      producers,
+      type,
+      status_anime,
+      total_episode,
+      score,
+      duration,
+      released,
+      description,
+      result: downloadLinks
+    };
+
+  } catch (error) {
+    console.error(error);
+    return { status: false, message: 'Failed to get anime details.' };
+  }
 }
 
 //openai
