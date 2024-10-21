@@ -435,6 +435,33 @@ async function aio(query) {
   }
 }
 
+// gdrive
+async function GDriveDl(url) {
+	let id = (url.match(/\/?id=(.+)/i) || url.match(/\/d\/(.*?)\//))?.[1]
+	if (!id) return reply('ID Not Found')
+	let res = await fetch(`https://drive.google.com/uc?id=${id}&authuser=0&export=download`, {
+		method: 'post',
+		headers: {
+			'accept-encoding': 'gzip, deflate, br',
+			'content-length': 0,
+			'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+			'origin': 'https://drive.google.com',
+			'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+			'x-client-data': 'CKG1yQEIkbbJAQiitskBCMS2yQEIqZ3KAQioo8oBGLeYygE=',
+			'x-drive-first-party': 'DriveWebUi',
+			'x-json-requested': 'true' 
+		}
+	})
+	let { fileName, sizeBytes, downloadUrl } =  JSON.parse((await res.text()).slice(4))
+	if (!downloadUrl) return reply('Link Download Limit!')
+	let data = await fetch(downloadUrl)
+	if (data.status !== 200) throw data.statusText
+	return {
+		downloadUrl, fileName,
+		fileSize: (sizeBytes / 1024 / 1024).toFixed(2),
+		mimetype: data.headers.get('content-type')
+	}
+}
 //openai
 const BASE_URL = 'https://widipe.com/openai?text=';
 async function openai(query) {
@@ -1757,8 +1784,30 @@ app.get('/api/openai', async (req, res) => {
   }
 });
 
+// gdrive
+app.get('/api/gdrive', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+    if (!apikey || apikey !== 'aluxi') {
+        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await GDriveDl(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // igstalk
-//openai
 app.get('/api/igstalk', async (req, res) => {
   try {
     const { apikey, message } = req.query;
