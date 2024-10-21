@@ -462,6 +462,34 @@ async function GDriveDl(url) {
 		mimetype: data.headers.get('content-type')
 	}
 }
+// videy
+async function videy(url) {
+    try {
+        const parsedUrl = new URL(url);
+        const id = parsedUrl.searchParams.get('id');
+        
+        if (!id || id.length !== 9) {
+            throw new Error('ID video tidak valid.');
+        }
+        
+        let tipeFile = id[8] === '2' ? '.mov' : '.mp4';
+
+        const response = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36'
+            }
+        });
+
+        const $ = cheerio.load(response.data);
+
+        const tautanVideo = `https://cdn.videy.co/${id}${tipeFile}`;
+        return tautanVideo;
+    } catch (error) {
+        console.error('Kesalahan saat mengambil tautan video:', error.message);
+        return null;
+    }
+}
+
 //openai
 const BASE_URL = 'https://widipe.com/openai?text=';
 async function openai(query) {
@@ -1772,6 +1800,30 @@ app.get('/api/openai', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await openai(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// videy 
+//openai
+app.get('/api/videy', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+    if (!apikey || apikey !== 'aluxi') {
+        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await videy(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
