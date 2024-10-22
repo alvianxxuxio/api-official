@@ -578,24 +578,7 @@ async function anime(query) {
 }
 
 //groq ai
-const groq = new Groq({ apiKey: "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" }); //apikey free untukmu gausah ambil2 dari web
 
-async function groqai(teks) {
-//fungsi proses pengambilan respon dari ai groq dari pesan mu
-  const completion = await groq.chat.completions
-    .create({
-      messages: [
-        {
-          role: "user",
-          content: teks
-        },
-      ],
-      model: "mixtral-8x7b-32768",
-    })
-    .then((chatCompletion) => {
-      m.reply(chatCompletion.choices[0]?.message?.content || "");
-    });
-}
 //openai
 const BASE_URL = 'https://widipe.com/openai?text=';
 async function openai(query) {
