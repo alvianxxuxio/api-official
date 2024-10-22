@@ -5,6 +5,7 @@ const path = require('path');
 const axios = require('axios');
 const yts = require("yt-search");
 const moment = require("moment-timezone");
+const Groq = require("groq-sdk");
 const {
   GoogleGenerativeAI,
   HarmCategory,
@@ -576,6 +577,25 @@ async function anime(query) {
   }
 }
 
+//groq ai
+const groq = new Groq({ apiKey: "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" }); //apikey free untukmu gausah ambil2 dari web
+
+async function groqai(teks) {
+//fungsi proses pengambilan respon dari ai groq dari pesan mu
+  const completion = await groq.chat.completions
+    .create({
+      messages: [
+        {
+          role: "user",
+          content: teks
+        },
+      ],
+      model: "mixtral-8x7b-32768",
+    })
+    .then((chatCompletion) => {
+      m.reply(chatCompletion.choices[0]?.message?.content || "");
+    });
+}
 //openai
 const BASE_URL = 'https://widipe.com/openai?text=';
 async function openai(query) {
@@ -1898,6 +1918,29 @@ app.get('/api/openai', async (req, res) => {
   }
 });
 
+//groq ai
+//openai
+app.get('/api/groq-ai', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+    if (!apikey || apikey !== 'aluxi') {
+        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await groqai(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // anime
 app.get('/api/anime', async (req, res) => {
   try {
