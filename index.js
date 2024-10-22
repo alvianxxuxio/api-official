@@ -1342,40 +1342,20 @@ async function gptlogic(inputText, customPrompt) {
   }
 }
 
-//gemini
+//openai
+const gemurl = 'https://widipe.com/openai?text=';
 async function gemini(query) {
-  try {
-    return await new Promise(async(resolve, reject) => {
-      options = {
-        model: "gemini-pro",
-        messages: options?.messages,
-        temperature: options?.temperature || 0.9,
-        top_p: options?.top_p || 0.7,
-        top_k: options?.top_p || 40,
-      }
-      if(!options?.messages) return reject("missing messages input payload!");
-      if(!Array.isArray(options?.messages)) return reject("invalid array in messages input payload!");
-      if(isNaN(options?.top_p)) return reject("invalid number in top_p payload!");
-      if(isNaN(options?.top_k)) return reject("invalid number in top_k payload!");
-      axios.post("https://api.acloudapp.com/v1/completions", options, {
-        headers: {
-          authorization: "sk-9jL26pavtzAHk9mdF0A5AeAfFcE1480b9b06737d9eC62c1e"
+    try {
+        const response = await axios.get(`${gemurl}${encodeURIComponent(query)}`);
+        if (response.status === 200 && response.data && response.data.result) {
+            return response.data.result;
+        } else {
+            throw new Error('Tidak ada respons atau hasil dari AI');
         }
-      }).then(res => {
-        const data = res.data;
-        if(!data.choices[0].message.content) return reject("failed get response message!")
-        resolve({
-          success: true,
-          answer: data.choices[0].message.content
-        })
-      }).catch(reject)
-    })
-  } catch (e) {
-    return {
-      success: false,
-      errors: [e]
+    } catch (error) {
+        console.error(error);
+        throw new Error('Terjadi kesalahan saat menghubungi AI');
     }
-  }
 }
 
 //prodia
