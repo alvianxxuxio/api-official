@@ -1466,7 +1466,7 @@ app.get('/api/Rusdi', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1489,7 +1489,7 @@ app.get('/api/llama3', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1512,7 +1512,7 @@ app.get('/api/gemini', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1535,7 +1535,7 @@ app.get('/api/halodoc', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1558,7 +1558,7 @@ app.get('/api/gptpic', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1581,7 +1581,7 @@ app.get('/api/prodia', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1604,7 +1604,7 @@ app.get('/api/txt2img', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1627,7 +1627,7 @@ app.get('/api/pinterest', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1650,7 +1650,7 @@ app.get('/api/instagram', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1673,7 +1673,7 @@ app.get('/api/spotify', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1697,7 +1697,7 @@ app.get('/api/idntimes', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1720,7 +1720,7 @@ app.get('/api/capcut', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1743,7 +1743,7 @@ app.get('/api/mediafire', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1766,7 +1766,7 @@ app.get('/api/facebook', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1789,7 +1789,7 @@ app.get('/api/terabox', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1812,7 +1812,7 @@ app.get('/api/tiktok', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1836,7 +1836,7 @@ app.get('/api/twitter', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1858,7 +1858,7 @@ app.get('/api/gpt4o', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1882,7 +1882,7 @@ app.get('/api/openai', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1906,7 +1906,7 @@ app.get('/api/anime', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1930,7 +1930,7 @@ app.get('/api/videy', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1953,7 +1953,7 @@ app.get('/api/gdrive', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1976,7 +1976,7 @@ app.get('/api/igstalk', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1999,7 +1999,7 @@ app.get('/api/aio', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2022,7 +2022,7 @@ app.get('/api/ytdl', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2046,7 +2046,7 @@ app.get('/api/letmegpt', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2070,7 +2070,7 @@ app.get('/api/simi', async (req, res) => {
   try {
     const { apikey, message }= req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2094,7 +2094,7 @@ app.get('/api/ragbot', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2117,7 +2117,7 @@ app.get('/api/degreeguru', async (req, res) => {
   try {
     const { apikey, message }= req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2140,7 +2140,7 @@ app.get('/api/Renvy', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2163,7 +2163,7 @@ app.get('/api/aluxi', async (req, res) => {
   try {
     const { apikey, message }= req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2186,7 +2186,7 @@ app.get('/api/smartcontract', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2209,7 +2209,7 @@ app.get('/api/blackboxAIChat', async (req, res) => {
   try {
     const { apikey, message } = req.query;
     if (!apikey || apikey !== 'aluxi') {
-        return res.status(403).json({ error: 'Gagal: Apikey tidak valid atau tidak ditemukan' });
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
