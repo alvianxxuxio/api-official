@@ -409,30 +409,21 @@ async function simi(text) {
   }
 }
 // aio
-async function aio(query) {
-  try {
-    // Mengirim request ke API widipe dengan parameter URL yang dimasukkan
-    const response = await fetch(`https://widipe.com/download/aio?url=${encodeURIComponent(query)}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+/*
+Scrape aio 
+Cuma ytdl nya mati jir😂
+By rian
+Jangan delete wm
+*/
+async function aio(url) {
+const { data } = await axios({
+        method: 'POST',
+        url: 'https://aiovd.com/wp-json/aio-dl/video-data/',
+        data: `url=${encodeURIComponent(url)}`
     });
-
-    // Mengecek apakah request berhasil
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-
-    // Parsing hasil dari response ke format JSON
-    const data = await response.json();
-
-    // Mengembalikan data yang diterima dari API
-    return data;
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-    return null;
-  }
+let an = data
+let a = data.medias
+return a
 }
 
 // gdrive
