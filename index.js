@@ -101,134 +101,46 @@ async function igstalk(username) {
 
 
 // youtube
-async function yt(query) {
-    try {
-        // Ensure the query is provided
-        if (!query || query.trim() === "") {
-            throw new Error("Enter either a YouTube link for downloading or a query for searching");
+const yt = async (query) => {
+  try {
+    const response = await axios.get(`https://mxmxk-helper.hf.space/yt?query=${query}`);
+    
+    if (response.data && response.data.result) {
+      const result = response.data.result;
+
+      return {
+        success: true,
+        result: {
+          type: result.type,
+          videoId: result.videoId,
+          url: result.url,
+          title: result.title,
+          description: result.description,
+          image: result.image,
+          thumbnail: result.thumbnail,
+          seconds: result.seconds,
+          timestamp: result.timestamp,
+          duration: result.duration,
+          ago: result.ago,
+          views: result.views,
+          author: {
+            name: result.author.name,
+            url: result.author.url
+          },
+          download: {
+            audio: `https://mxmxk-helper.hf.space/yt/dl?url=${result.url}&type=audio&quality=128`,
+            video: `https://mxmxk-helper.hf.space/yt/dl?url=${result.url}&type=video&quality=1080`
+          }
         }
-
-        // Check if the query is a YouTube link
-        const isYouTubeLink = /youtu(\.)?be/gi.test(query);
-        let videoDetails;
-        let videoId; // Define videoId here
-
-        if (!isYouTubeLink) {
-            // Search for videos if it's not a YouTube link
-            const searchResults = await yts(query);
-            if (searchResults.videos.length === 0) {
-                throw new Error("No videos found for the given query");
-            }
-
-            // Get the first video from search results
-            const topVideo = searchResults.videos[0];
-
-            // Extract video ID and details
-            videoId = topVideo.videoId; // Set videoId here
-            videoDetails = {
-                title: topVideo.title,
-                url: topVideo.url,
-                thumbnail: topVideo.thumbnail || "",
-                author: topVideo.author,
-                views: topVideo.views,
-                published: topVideo.ago,
-                duration: {
-                    seconds: topVideo.seconds,
-                    timestamp: topVideo.timestamp,
-                },
-            };
-        } else {
-            // Extract the video ID from the URL
-            const videoIdMatch = /(?:youtu\.be\/|youtube\.com(?:\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|shorts\/)|embed\/|v\/|m\/|watch\?(?:[^=]+=[^&]+&)*?v=))([^"&?\/\s]{11})/gm.exec(query);
-            videoId = videoIdMatch ? videoIdMatch[1] : null;
-
-            if (!videoId) {
-                throw new Error("Enter a valid YouTube video link!");
-            }
-
-            // Fetch video details
-            videoDetails = await yts({ videoId });
-        }
-
-        // Prepare headers for the API request
-        const headers = {
-            Accept: "*/*",
-            Origin: "https://id-y2mate.com",
-            Referer: "https://id-y2mate.com/",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-        };
-
-        // Request for video download links
-        const response = await axios.post("https://id-y2mate.com/mates/analyzeV2/ajax", new URLSearchParams({
-            k_query: videoDetails.url,
-            k_page: "home",
-            hl: "",
-            q_auto: "0",
-        }), { headers });
-
-        if (!response.data || !response.data.links) {
-            throw new Error("Failed to get video & audio");
-        }
-
-        // Prepare download links
-        const downloadLinks = { mp3: {}, mp4: {} };
-
-        // Populate mp4 links
-        for (const quality of Object.values(response.data.links.mp4)) {
-            const format = quality.f;
-            downloadLinks.mp4[quality.q] = {
-                size: quality.size,
-                format: format,
-                // Immediately resolve the download link
-                url: await (async () => {
-                    const convertResponse = await axios.post("https://id-y2mate.com/mates/convertV2/index", new URLSearchParams({
-                        vid: videoId,
-                        k: quality.k,
-                    }), { headers });
-
-                    if (!convertResponse.data || convertResponse.data.status !== "ok") {
-                        throw new Error("Failed to convert video");
-                    }
-
-                    return convertResponse.data.dlink;
-                })(),
-            };
-        }
-
-        // Populate mp3 links
-        for (const format of Object.values(response.data.links.mp3)) {
-            downloadLinks.mp3[format.f] = {
-                size: format.size,
-                format: format.f,
-                // Immediately resolve the download link
-                url: await (async () => {
-                    const convertResponse = await axios.post("https://id-y2mate.com/mates/convertV2/index", new URLSearchParams({
-                        vid: videoId,
-                        k: format.k,
-                    }), { headers });
-
-                    if (!convertResponse.data || convertResponse.data.status !== "ok") {
-                        throw new Error("Failed to convert audio");
-                    }
-
-                    return convertResponse.data.dlink;
-                })(),
-            };
-        }
-
-        // Return video details and download links
-        return {
-            type: "download",
-            download: {
-                ...videoDetails,
-                dl: downloadLinks,
-            },
-        };
-
-    } catch (error) {
-        throw new Error(error.message);
+      };
+    } else {
+      return { success: false, message: 'No results found' };
     }
-}
+  } catch (error) {
+    console.error('Error fetching YouTube content:', error);
+    return { success: false, message: 'Error fetching YouTube content' };
+  }
+};
 // mediafire 
 async function mf(url) {
     return new Promise(async (resolve, reject) => {
