@@ -1261,6 +1261,24 @@ async function gemini(query) {
     }
 }
 
+//brat
+const UrlBrat = "https://brat.caliphdev.com/api/brat";
+async function Brat(query) {
+    if (!query) throw new Error("Query tidak boleh kosong.");
+    const fullUrl = `${UrlBrat}?text=${encodeURIComponent(query)}`;
+    
+    try {
+        const response = await fetch(fullUrl);
+        if (!response.ok) throw new Error(`API Error: ${response.status} ${response.statusText}`);
+
+        const data = await response.json();
+        return data.response || "Tidak ada respons dari API Brat.";
+    } catch (error) {
+        console.error("Error saat memanggil Brat API:", error.message);
+        throw new Error("Gagal mengambil data dari Brat API.");
+    }
+}
+
 //prodia
 
 async function prodia(text) {
@@ -1401,6 +1419,29 @@ app.get('/api/gemini', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gemini(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//Brat 
+app.get('/api/Brat', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+    if (!apikey || apikey !== 'aluxi') {
+        return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await Brat(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",

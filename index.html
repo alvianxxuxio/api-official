@@ -14,7 +14,815 @@
   <meta property="og:type" content="website" />
 <script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js" type="text/javascript"></script>
 <style type="text/css">
-  @import url("data:text/css;base64,ICAvKiBDb250YWluZXIgZm9yIHRoZSBBUEkgbGlzdCAqLw0KLmluZm8tY2FyZHMgew0KICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjVmNWY1OyAvKiBMaWdodCBncmF5IGJhY2tncm91bmQgKi8NCiAgYm9yZGVyLXJhZGl1czogMTVweDsgLyogUm91bmRlZCBjb3JuZXJzICovDQogIHBhZGRpbmc6IDIwcHg7DQogIGJveC1zaGFkb3c6IDAgNHB4IDEycHggcmdiYSgwLCAwLCAwLCAwLjEpOyAvKiBTb2Z0IHNoYWRvdyAqLw0KICBtYXgtd2lkdGg6IDEwMCU7DQp9DQoNCi8qIEVhY2ggQVBJIGl0ZW0gKi8NCi5pbmZvLWNhcmQgew0KICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZmZmOyAvKiBXaGl0ZSBjYXJkIGZvciBlYWNoIGl0ZW0gKi8NCiAgYm9yZGVyLXJhZGl1czogMTBweDsgLyogUm91bmRlZCBjb3JuZXJzICovDQogIGJvcmRlci1sZWZ0OiA1cHggc29saWQgIzIxOTZmMzsgLyogQ29sb3ItY29kZWQgYm9yZGVyICovDQogIHBhZGRpbmc6IDE1cHg7DQogIG1hcmdpbi1ib3R0b206IDE1cHg7DQogIGJveC1zaGFkb3c6IDAgMnB4IDhweCByZ2JhKDAsIDAsIDAsIDAuMSk7IC8qIFN1YnRsZSBzaGFkb3cgKi8NCiAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuM3MgZWFzZSwgYmFja2dyb3VuZC1jb2xvciAwLjNzIGVhc2U7DQp9DQoNCi8qIEhvdmVyIGVmZmVjdCBmb3IgQVBJIGl0ZW1zICovDQouaW5mby1jYXJkOmhvdmVyIHsNCiAgdHJhbnNmb3JtOiBzY2FsZSgxLjAyKTsgLyogU2xpZ2h0IHpvb20gb24gaG92ZXIgKi8NCiAgYmFja2dyb3VuZC1jb2xvcjogI2U4ZjRmZDsgLyogTGlnaHQgYmx1ZSBiYWNrZ3JvdW5kIG9uIGhvdmVyICovDQp9DQoNCi8qIFRpdGxlIG9mIGVhY2ggQVBJIGl0ZW0gKi8NCi5pbmZvLXRpdGxlIHsNCiAgZm9udC1zaXplOiAxLjJyZW07DQogIGZvbnQtd2VpZ2h0OiBib2xkOw0KICBjb2xvcjogIzAwMDsNCiAgdGV4dC1hbGlnbjogbGVmdDsNCiAgcGFkZGluZy1ib3R0b206IDhweDsNCiAgbWFyZ2luLWJvdHRvbTogMTBweDsNCiAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkICMyMTk2ZjM7IC8qIExpZ2h0IGJsdWUgdW5kZXJsaW5lICovDQp9DQoNCi8qIENvbnRlbnQgZGVzY3JpcHRpb24gb2YgZWFjaCBBUEkgaXRlbSAqLw0KLmluZm8tY29udGVudCB7DQogIGZvbnQtc2l6ZTogMXJlbTsNCiAgY29sb3I6ICM2MDYwNjA7DQogIHRleHQtYWxpZ246IGxlZnQ7DQp9DQoNCi8qIE1ldGhvZCBidXR0b24gc3R5bGVzICovDQpidXR0b24uYXBpLW1ldGhvZCB7DQogIHBhZGRpbmc6IDVweCAxMHB4Ow0KICBmb250LXNpemU6IDAuOXJlbTsNCiAgZm9udC13ZWlnaHQ6IGJvbGQ7DQogIGNvbG9yOiAjZmZmZmZmOw0KICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjhhNzQ1OyAvKiBEZWZhdWx0IGdyZWVuICovDQogIGJvcmRlci1yYWRpdXM6IDVweDsNCiAgY3Vyc29yOiBwb2ludGVyOw0KICBib3JkZXI6IG5vbmU7DQogIG1hcmdpbi10b3A6IDEwcHg7DQp9DQoNCi8qIFNwZWNpZmljIGNvbG9yIGNvZGluZyBmb3IgZGlmZmVyZW50IEhUVFAgbWV0aG9kcyAqLw0KYnV0dG9uLmFwaS1tZXRob2QucG9zdCB7DQogIGJhY2tncm91bmQtY29sb3I6ICNmZmMxMDc7IC8qIFllbGxvdyBmb3IgUE9TVCAqLw0KfQ0KDQpidXR0b24uYXBpLW1ldGhvZC5wdXQgew0KICBiYWNrZ3JvdW5kLWNvbG9yOiAjMTdhMmI4OyAvKiBCbHVlIGZvciBQVVQgKi8NCn0NCg0KYnV0dG9uLmFwaS1tZXRob2QuZGVsZXRlIHsNCiAgYmFja2dyb3VuZC1jb2xvcjogI2RjMzU0NTsgLyogUmVkIGZvciBERUxFVEUgKi8NCn0NCg0KLyogQWRqdXN0IGJ1dHRvbiBob3ZlciBlZmZlY3RzICovDQpidXR0b24uYXBpLW1ldGhvZDpob3ZlciB7DQogIGJhY2tncm91bmQtY29sb3I6ICM0NDQ0NDQ7DQogIGNvbG9yOiAjZmZmZmZmOw0KICB0cmFuc2Zvcm06IHNjYWxlKDAuOTgpOw0KfQ0KDQovKiBNYWtlIHRleHQgd3JhcCBwcm9wZXJseSAqLw0KLmluZm8tY29udGVudCB7DQogIHdvcmQtd3JhcDogYnJlYWstd29yZDsNCiAgb3ZlcmZsb3ctd3JhcDogYnJlYWstd29yZDsNCn0NCmJvZHkgew0KICBmb250LWZhbWlseTogJ1JvYm90bycsIHNhbnMtc2VyaWY7DQogIGJhY2tncm91bmQtaW1hZ2U6IHVybCgiaHR0cHM6Ly9maWxlcy5jYXRib3gubW9lL2N5NnRlYy5qcGciKTsNCiAgICAgIGJhY2tncm91bmQtcmVwZWF0OiBuby1yZXBlYXQ7DQogICAgICBiYWNrZ3JvdW5kLXNpemU6IGNvdmVyOw0KICAgICAgd2lkdGg6IDEwMCU7DQogIGNvbG9yOiAjMDAwMDAwOyAvKiBNZW5ndWJhaCB0ZWtzIG1lbmphZGkgaGl0YW0gKi8NCiAgbWFyZ2luOiAwOw0KICBwYWRkaW5nOiAwOw0KICBkaXJlY3Rpb246IGx0cjsNCiAgYm94LXNpemluZzogYm9yZGVyLWJveDsgLyogTWVuZ2F0dXIgYm94LXNpemluZyAqLw0KfQ0KDQoqLCAqOjpiZWZvcmUsICo6OmFmdGVyIHsNCiAgYm94LXNpemluZzogaW5oZXJpdDsgLyogTWVtYXN0aWthbiBzZW11YSBlbGVtZW4gbWVuZ2lrdXRpIGF0dXJhbiBib3gtc2l6aW5nICovDQp9DQoNCi5jb250YWluZXIgew0KICBkaXNwbGF5OiBibG9jazsgLyogQ29ycmVjdCBkaXNwbGF5IHByb3BlcnR5ICovDQogIG1hcmdpbjogMjBweCBhdXRvOyAvKiBDZW50ZXIgdGhlIGNvbnRhaW5lciBob3Jpem9udGFsbHkgKi8NCiAgcGFkZGluZzogMjBweDsgLyogQ29uc2lzdGVudCBwYWRkaW5nIGZvciBpbm5lciBjb250ZW50ICovDQogIG1heC13aWR0aDogOTAlOyAvKiBMaW1pdCB3aWR0aCBmb3IgYmV0dGVyIGNvbnRyb2wgKi8NCiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgyNDAsIDI0OCwgMjU1LCAwLjYpOyAvKiBTbGlnaHRseSB0cmFuc3BhcmVudCBsaWdodCBibHVlICovDQogIGNvbG9yOiAjMzMzMzMzOyAvKiBEYXJrIHRleHQgZm9yIHJlYWRhYmlsaXR5ICovDQogIGJvcmRlci1yYWRpdXM6IDhweDsgLyogU29mdGVyIHJvdW5kZWQgY29ybmVycyAqLw0KICBib3gtc2hhZG93OiAwIDFweCAzcHggcmdiYSgwLCAwLCAwLCAwLjEpLCAwIDFweCAycHggcmdiYSgwLCAwLCAwLCAwLjA2KTsgLyogU29mdCBzaGFkb3cgKi8NCiAgb3ZlcmZsb3c6IGhpZGRlbjsgLyogSGlkZSBvdmVyZmxvdyAqLw0KICBib3JkZXI6IDFweCBzb2xpZCByZ2JhKDE3MywgMjE2LCAyMzAsIDAuNCk7IC8qIExpZ2h0IGJsdWUgYm9yZGVyICovDQp9DQoNCi5jb250YWluZXIgKiB7DQogIGFuaW1hdGlvbjogc2xpZGUtaW4gMC44cyBlYXNlLW91dCBmb3J3YXJkczsNCn0NCg0KQGtleWZyYW1lcyBzbGlkZS1pbiB7DQogIGZyb20gew0KICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgtMjBweCk7DQogICAgb3BhY2l0eTogMDsNCiAgfQ0KICB0byB7DQogICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKDApOw0KICAgIG9wYWNpdHk6IDE7DQogIH0NCn0NCg0KLmFib3V0LW1lIHsNCiAgdGV4dC1hbGlnbjogY2VudGVyOw0KICBtYXJnaW4tYm90dG9tOiAzMHB4Ow0KfQ0KDQoucHJvZmlsZS1waWMtY29udGFpbmVyIHsNCiAgcG9zaXRpb246IGNlbnRlcjsNCiAgZGlzcGxheTogY2VudGVyOw0KICBtYXJnaW4tYm90dG9tOiAyMHB4Ow0KfQ0KI2VmZmV0c2FsanUgew0KICAgICAgcG9zaXRpb246IGZpeGVkOw0KICAgICAgdG9wOiAwOw0KICAgICAgbGVmdDogMDsNCiAgICAgIHdpZHRoOiAxMDAlOw0KICAgICAgaGVpZ2h0OiAxMDAlOw0KICAgICAgcG9pbnRlci1ldmVudHM6IG5vbmU7DQogICAgICB6LWluZGV4OiAwOw0KICAgIH0NCiAgICANCi5wcm9maWxlLXBpYyB7DQogIHdpZHRoOiA4MHB4OyAvKiBNZW5ndXJhbmdpIHVrdXJhbiBhdmF0YXIgKi8NCiAgaGVpZ2h0OiA4MHB4Ow0KICBkaXNwbGF5OiBjZW50ZXI7DQogIGJvcmRlci1yYWRpdXM6IDUwJTsNCiAgb2JqZWN0LWZpdDogY292ZXI7DQogIGJvcmRlcjogMnB4IHNvbGlkICM2ZDZkNmQ7DQp9DQoNCi5yb3RhdGluZy1saW5lc3Mgew0KICBwb3NpdGlvbjogZml4ZWQ7DQogIHdpZHRoOiA5MHB4OyAvKiBVa3VyYW4gbGluZ2thcmFuIGxlYmloIGtlY2lsICovDQogIGhlaWdodDogOTBweDsNCiANCiAgYm9yZGVyLXJhZGl1czogNTAlOw0KICBib3JkZXI6IDJweCBkYXNoZWQgIzZkNmQ2ZDsNCiAgYW5pbWF0aW9uOiByb3RhdGUgNHMgbGluZWFyIGluZmluaXRlOw0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogIGZyb20gew0KICAgIHRyYW5zZm9ybTogcm90YXRlKDBkZWcpOw0KICB9DQogIHRvIHsNCiAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpOw0KICB9DQp9DQoNCi5hYm91dC1tZSBoMSB7DQogIGZvbnQtc2l6ZTogMi4ycmVtOw0KICBtYXJnaW4tYm90dG9tOiAxNXB4Ow0KICBjb2xvcjogIzAwMDAwMDsNCn0NCg0KLmFib3V0LW1lIHAgew0KICBmb250LXNpemU6IDEuMXJlbTsNCiAgbWFyZ2luLWJvdHRvbTogMjBweDsNCiAgY29sb3I6ICMwMDAwMDA7DQp9DQoNCmJ1dHRvbiB7DQogIGRpc3BsYXk6IGJsb2NrOw0KICBwYWRkaW5nOiAxMnB4IDIwcHg7DQogIA0KICBmb250LXNpemU6IDFyZW07DQogIGNvbG9yOiAjMDAwMDAwOw0KICBiYWNrZ3JvdW5kLWNvbG9yOiAjZDNkM2QzOw0KICBib3JkZXItcmFkaXVzOiAyMHB4Ow0KICB0ZXh0LWRlY29yYXRpb246IG5vbmU7DQogIHRyYW5zaXRpb246IHRyYW5zZm9ybSAwLjJzIGVhc2UgLGJhY2tncm91bmQtY29sb3IgMC4zcyBlYXNlOw0KICBjdXJzb3I6IHBvaW50ZXI7DQogIG1hcmdpbjogMTBweCBhdXRvOw0KICB3aWR0aDogZml0LWNvbnRlbnQ7DQogIGJvcmRlcjogbm9uZTsNCn0NCg0KYnV0dG9uOmFjdGl2ZSB7DQogIHRyYW5zZm9ybTogc2NhbGUoMC45NSk7IC8qIE1lbmd1cmFuZ2kgdWt1cmFuIHRvbWJvbCBzZWRpa2l0IHNhYXQgZGlrbGlrICovDQp9DQoNCmJ1dHRvbjpob3ZlciB7DQogIHRyYW5zZm9ybTogc2NhbGUoMC45MCk7DQogIGJhY2tncm91bmQtY29sb3I6ICM0NDQ0NDQ7DQp9DQoNCi5jb250ZW50IHsNCiAgZGlzcGxheTogbm9uZTsNCn0NCg0KLnNlY3Rpb24gew0KICBtYXJnaW4tYm90dG9tOiAzMHB4Ow0KfQ0KDQouc2VjdGlvbi10aXRsZSB7DQogIG1hcmdpbi1ib3R0b206IDE1cHg7DQogIGZvbnQtc2l6ZTogMS40cmVtOw0KICBib3JkZXItYm90dG9tOiAycHggc29saWQgIzQ0NDQ0NDsNCiAgcGFkZGluZy1ib3R0b206IDhweDsNCiAgdGV4dC1hbGlnbjogY2VudGVyOw0KICBjb2xvcjogI2ZmZjsNCn0NCg0KLmluZm8tY2F3cmQgew0KICBkaXNwbGF5OiBjZW50ZXI7DQogIGp1c3RpZnktY29udGVudDogY2VudGVyOw0KYmFja2dyb3VuZC1jb2xvcjogI2Y1ZjVmNTsNCiAgcGFkZGluZzogMTVweDsNCiAgYm9yZGVyLXJhZGl1czogMTVweDsNCiAgbWFyZ2luOiAxNXB4Ow0KICB0ZXh0LWFsaWduOiBjZW50ZXI7DQp9DQouaW5mby1jYXJkcyB7DQogIGRpc3BsYXk6IGdyaWQ7DQogIGdyaWQtdGVtcGxhdGUtY29sdW1uczogcmVwZWF0KGF1dG8tZml0LCBtaW5tYXgoMTUwcHgsIDFmcikpOw0KICBnYXA6IDE1cHg7DQogIGJhY2tncm91bmQtY29sb3I6ICNmNWY1ZjU7DQogIHBhZGRpbmc6IDE1cHg7DQogIGJvcmRlci1yYWRpdXM6IDE1cHg7DQogIG1hcmdpbi1ib3R0b206IDIwcHg7DQp9DQoNCi5pbmZvLXRpdGxlIHsNCiAgZGlzcGxheTogY2VudGVyOw0KICBmb250LXNpemU6IDEuMXJlbTsNCiAgbWFyZ2luLWJvdHRvbTogOHB4Ow0KICBjb2xvcjogIzAwMDsNCiAgdGV4dC1hbGlnbjogY2VudGVyOw0KfQ0KDQouaW5mby1jb250ZW50IHsNCiAgZGlzcGxheTogY2VudGVyOw0KICBmb250LXNpemU6IDFyZW07DQogIGNvbG9yOiAjNjA2MDYwOw0KICB0ZXh0LWFsaWduOiBjZW50ZXI7DQp9DQoNCi5idG4tY29udGFpbmVyIHsNCiAgZGlzcGxheTogZmxleDsNCiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsNCiAgZ2FwOiAxMnB4Ow0KfQ0KDQouYnRuIHsNCiAgZGlzcGxheTogZmxleDsNCiAganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOyAvKiBBbGlnbiBpdGVtcyB0byB0aGUgbGVmdCBhbmQgcmlnaHQgKi8NCiAgYWxpZ24taXRlbXM6IGNlbnRlcjsNCiAgdGV4dC1hbGlnbjogbGVmdCAhaW1wb3J0YW50Ow0KICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZmZmOyAvKiBXaGl0ZSBiYWNrZ3JvdW5kIGxpa2UgU3dhZ2dlciBVSSAqLw0KICBjb2xvcjogIzAwN2JmZjsgLyogQmx1ZSBjb2xvciB0ZXh0ICovDQogIHBhZGRpbmc6IDEwcHggMjBweDsgLyogRGVmaW5lZCBwYWRkaW5nICovDQogIGZvbnQtc2l6ZTogMXJlbTsNCiAgZm9udC13ZWlnaHQ6IGJvbGQ7IC8qIEJvbGQgdGV4dCBmb3IgYmV0dGVyIHZpc2liaWxpdHkgKi8NCiAgYm9yZGVyLXJhZGl1czogMTNweDsgLyogU2xpZ2h0bHkgbGVzcyByb3VuZGVkIHRvIHJlc2VtYmxlIFN3YWdnZXIgVUkgKi8NCiAgYm9yZGVyOiAycHggc29saWQgIzAwN2JmZjsgLyogQmx1ZSBib3JkZXIgdG8gbWF0Y2ggdGV4dCBjb2xvciAqLw0KICBjdXJzb3I6IHBvaW50ZXI7DQogIHRyYW5zaXRpb246IGJhY2tncm91bmQtY29sb3IgMC4zcyBlYXNlLCBjb2xvciAwLjNzIGVhc2UsIHRyYW5zZm9ybSAwLjJzIGVhc2U7DQogIHRleHQtYWxpZ246IGxlZnQ7IC8qIEVuc3VyZSBsZWZ0IGFsaWdubWVudCAqLw0KfQ0KDQovKiBIb3ZlciBlZmZlY3QgdG8gbWltaWMgU3dhZ2dlciBVSSAqLw0KLmJ0bjpob3ZlciB7DQogIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsgLyogTGlnaHQgYmFja2dyb3VuZCBvbiBob3ZlciAqLw0KICBjb2xvcjogYmxhY2s7IC8qIERhcmsgdGV4dCBvbiBob3ZlciAqLw0KICB0cmFuc2Zvcm06IHNjYWxlKDEuMDIpOyAvKiBTbGlnaHRseSBsYXJnZXIgb24gaG92ZXIgKi8NCn0NCg0KLyogQWN0aXZlIHN0YXRlIHRvIGdpdmUgYSBwcmVzc2VkIGZlZWwgKi8NCi5idG46YWN0aXZlIHsNCiAgYmFja2dyb3VuZC1jb2xvcjogIzAwNTZiMzsgLyogRGFya2VyIGJsdWUgd2hlbiBwcmVzc2VkICovDQogIGNvbG9yOiAjZmZmZmZmOyAvKiBXaGl0ZSB0ZXh0ICovDQogIHRyYW5zZm9ybTogc2NhbGUoMC45OCk7IC8qIFNsaWdodGx5IHNtYWxsZXIgb24gY2xpY2sgKi8NCn0NCg0KLmRyb3Bkb3duLWNvbnRlbnQgew0KICBkaXNwbGF5OiBub25lOw0KICBmbGV4LWRpcmVjdGlvbjogY29sdW1uOw0KICBnYXA6IDEwcHg7DQogIG1hcmdpbi10b3A6IDEwcHg7DQogIGJhY2tncm91bmQtY29sb3I6ICNmOWY5Zjk7IC8qIExpZ2h0IGJhY2tncm91bmQgbGlrZSBTd2FnZ2VyIFVJIGRyb3Bkb3ducyAqLw0KICBwYWRkaW5nOiAxNXB4OyAvKiBQYWRkaW5nIGZvciBkcm9wZG93biBjb250ZW50ICovDQogIGJvcmRlcjogMXB4IHNvbGlkICNkZGQ7IC8qIExpZ2h0IGdyYXkgYm9yZGVyIGFyb3VuZCBkcm9wZG93biAqLw0KICBib3JkZXItcmFkaXVzOiAxMHB4OyAvKiBTbGlnaHQgcm91bmRpbmcgZm9yIGEgY2xlYW4gbG9vayAqLw0KICBib3gtc2hhZG93OiAwIDRweCA2cHggcmdiYSgwLCAwLCAwLCAwLjEpOyAvKiBTdWJ0bGUgc2hhZG93IGZvciBkZXB0aCAqLw0KfQ0KDQovKiBTaG93IGRyb3Bkb3duIHdoZW4gYnV0dG9uIGlzIGFjdGl2ZSAqLw0KLmJ0bi5hY3RpdmUgKyAuZHJvcGRvd24tY29udGVudCB7DQogIGRpc3BsYXk6IGZsZXg7DQp9DQoNCi8qIFN0eWxlIGZvciBlYWNoIEFQSSBpdGVtIGluIHRoZSBkcm9wZG93biAqLw0KLmRyb3Bkb3duLWNvbnRlbnQgLmFwaS1pdGVtIHsNCiAgZGlzcGxheTogZmxleDsNCiAganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOw0KICBhbGlnbi1pdGVtczogY2VudGVyOw0KICBwYWRkaW5nOiAxMHB4Ow0KICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZmZmOyAvKiBXaGl0ZSBiYWNrZ3JvdW5kIGZvciBlYWNoIEFQSSBpdGVtICovDQogIGJvcmRlcjogMXB4IHNvbGlkICNlMGUwZTA7IC8qIExpZ2h0IGdyYXkgYm9yZGVyIGFyb3VuZCBlYWNoIGl0ZW0gKi8NCiAgYm9yZGVyLXJhZGl1czogOHB4OyAvKiBTbGlnaHRseSByb3VuZGVkIGNvcm5lcnMgKi8NCiAgdHJhbnNpdGlvbjogYmFja2dyb3VuZC1jb2xvciAwLjNzIGVhc2UsIHRyYW5zZm9ybSAwLjJzIGVhc2U7DQp9DQoNCi8qIEhvdmVyIGVmZmVjdCBmb3IgZWFjaCBBUEkgaXRlbSAqLw0KLmRyb3Bkb3duLWNvbnRlbnQgLmFwaS1pdGVtOmhvdmVyIHsNCiAgYmFja2dyb3VuZC1jb2xvcjogbGlnaHRncmF5Ow0KICB0cmFuc2Zvcm06IHNjYWxlKDEuMDIpOyAvKiBTbGlnaHQgc2NhbGUgZWZmZWN0IG9uIGhvdmVyICovDQp9DQoNCi8qIEFQSSBpdGVtIHRpdGxlIHN0eWxlICovDQouZHJvcGRvd24tY29udGVudCAuYXBpLWl0ZW0gLmFwaS10aXRsZSB7DQogIGZvbnQtc2l6ZTogMXJlbTsNCiAgZm9udC13ZWlnaHQ6IGJvbGQ7DQogIGNvbG9yOiAjMzMzOyAvKiBEYXJrIHRleHQgY29sb3IgKi8NCn0NCg0KLyogQVBJIGl0ZW0gZGVzY3JpcHRpb24gc3R5bGUgKi8NCi5kcm9wZG93bi1jb250ZW50IC5hcGktaXRlbSAuYXBpLWRlc2NyaXB0aW9uIHsNCiAgZm9udC1zaXplOiAwLjlyZW07DQogIGNvbG9yOiAjNzc3OyAvKiBMaWdodGVyIHRleHQgZm9yIGRlc2NyaXB0aW9uICovDQp9DQoNCg0KLmZvcm0tZ3JvdXAgew0KICBtYXJnaW4tYm90dG9tOiAxNXB4Ow0KfQ0KDQouZm9ybS1ncm91cCBsYWJlbCB7DQogIGRpc3BsYXk6IGJsb2NrOw0KICBtYXJnaW4tYm90dG9tOiA1cHg7DQogIGZvbnQtc2l6ZTogMXJlbTsNCiAgY29sb3I6ICMwMDAwMDA7DQp9DQoNCi5mb3JtLWdyb3VwIGlucHV0LCAuZm9ybS1ncm91cCBidXR0b24gew0KICB3aWR0aDogMTAwJTsNCiAgcGFkZGluZzogMTJweDsNCiAgYm9yZGVyLXJhZGl1czogMTNweDsNCiAgYm9yZGVyOiAxcHggc29saWQgYmxhY2s7DQogIGJhY2tncm91bmQtY29sb3I6ICNmZmY7DQogIGNvbG9yOiAjMDAwMDAwOw0KICBmb250LXNpemU6IDFyZW07DQogIGJveC1zaXppbmc6IGJvcmRlci1ib3g7DQp9DQouZm9ybS1ncm91cCBpbnB1dDpmb2N1cyB7DQogICAgb3V0bGluZTogbm9uZTsgLyogTWVuZ2hpbGFuZ2thbiBvdXRsaW5lIHNhYXQgaW5wdXQgZGkgZm9rdXMgKi8NCiAgICBib3JkZXI6IDFweCBzb2xpZCAjY2NjOyAvKiBNZW5nYXR1ciBib3JkZXIgc2VzdWFpIGtlYnV0dWhhbiAqLw0KICAgIGJveC1zaGFkb3c6IG5vbmU7IC8qIE1lbmdoaWxhbmdrYW4gc2hhZG93IGF0YXUgZWZlayBoaWdobGlnaHQgKi8NCn0NCg0KLmZvcm0tZ3JvdXAgYnV0dG9uIHsNCiAgbWFyZ2luLXRvcDogMTBweDsNCiAgY3Vyc29yOiBwb2ludGVyOw0KICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmOw0KICB0cmFuc2l0aW9uOiBiYWNrZ3JvdW5kLWNvbG9yIDAuM3MgZWFzZTsNCn0NCg0KLmZvcm0tZ3JvdXAgYnV0dG9uOmhvdmVyIHsNCiAgYmFja2dyb3VuZC1jb2xvcjogI2MwYzBjMDsNCn0NCg0KLnJlc3VsdCB7DQogIGJhY2tncm91bmQtY29sb3I6ICNmYWZhZmE7IC8qIExpZ2h0ZXIsIGNsZWFuIGJhY2tncm91bmQgc2ltaWxhciB0byBTd2FnZ2VyIFVJICovDQogIHBhZGRpbmc6IDE1cHg7IC8qIEluY3JlYXNlZCBwYWRkaW5nIGZvciBiZXR0ZXIgc3BhY2luZyAqLw0KICBib3JkZXItcmFkaXVzOiA4cHg7IC8qIFNtb290aCwgcm91bmRlZCBjb3JuZXJzICovDQogIG1hcmdpbi10b3A6IDIwcHg7DQogIGNvbG9yOiAjMzMzMzMzOyAvKiBEYXJrZXIgdGV4dCBmb3IgY29udHJhc3QgKi8NCiAgd29yZC13cmFwOiBicmVhay13b3JkOyAvKiBFbnN1cmUgbG9uZyB3b3JkcyB3cmFwIHByb3Blcmx5ICovDQogIG92ZXJmbG93LXdyYXA6IGJyZWFrLXdvcmQ7IC8qIFN1cHBvcnQgZm9yIGRpZmZlcmVudCBicm93c2VycyAqLw0KICBtYXgtd2lkdGg6IDEwMCU7IC8qIEVuc3VyZSBpdCBkb2VzbuKAmXQgZXhjZWVkIGl0cyBjb250YWluZXIgKi8NCiAgYm94LXNpemluZzogYm9yZGVyLWJveDsgLyogSW5jbHVkZSBwYWRkaW5nIHdpdGhpbiB0aGUgdG90YWwgd2lkdGggKi8NCiAgYm9yZGVyOiAxcHggc29saWQgI2RjZGNkYzsgLyogTGlnaHQgZ3JheSBib3JkZXIgZm9yIGRlZmluaXRpb24gKi8NCiAgYm94LXNoYWRvdzogMCAxcHggM3B4IHJnYmEoMCwgMCwgMCwgMC4xMiksIDAgMXB4IDJweCByZ2JhKDAsIDAsIDAsIDAuMjQpOyAvKiBTdWJ0bGUgc2hhZG93ICovDQp9DQoNCi8qIEhvdmVyIGVmZmVjdCBmb3IgYSBzbGlnaHQgcG9wLW91dCAqLw0KLnJlc3VsdDpob3ZlciB7DQogIGJhY2tncm91bmQtY29sb3I6ICNmZmZmZmY7IC8qIEJyaWdodGVyIGJhY2tncm91bmQgb24gaG92ZXIgKi8NCiAgYm94LXNoYWRvdzogMCA0cHggNnB4IHJnYmEoMCwgMCwgMCwgMC4xKSwgMCAycHggNHB4IHJnYmEoMCwgMCwgMCwgMC4wOCk7IC8qIERlZXBlciBzaGFkb3cgb24gaG92ZXIgKi8NCiAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKC0ycHgpOyAvKiBTbWFsbCBsaWZ0IGVmZmVjdCAqLw0KICB0cmFuc2l0aW9uOiBiYWNrZ3JvdW5kLWNvbG9yIDAuM3MgZWFzZSwgYm94LXNoYWRvdyAwLjNzIGVhc2UsIHRyYW5zZm9ybSAwLjJzIGVhc2U7DQp9DQoNCg0KLyogVG9tYm9sIGV4ZWN1dGUgKi8NCmJ1dHRvbiNleGVjdXRlIHsNCiAgZGlzcGxheTogYmxvY2s7DQogIHBhZGRpbmc6IDEycHggMjBweDsNCiAgZm9udC1zaXplOiAxcmVtOw0KICBjb2xvcjogI2ZmZmZmZjsNCiAgYmFja2dyb3VuZC1jb2xvcjogIzMzMzMzMzsNCiAgYm9yZGVyLXJhZGl1czogMjBweDsNCiAgY3Vyc29yOiBwb2ludGVyOw0KICBtYXJnaW46IDEwcHggYXV0bzsNCiAgYm9yZGVyOiBub25lOw0KfQ0KDQpidXR0b24jZXhlY3V0ZTpob3ZlciB7DQogIGJhY2tncm91bmQtY29sb3I6ICM0NDQ0NDQ7DQp9DQoNCi5tb2RhbCB7DQogIGRpc3BsYXk6IG5vbmU7IC8qIEhpZGRlbiBieSBkZWZhdWx0ICovDQogIHBvc2l0aW9uOiBmaXhlZDsNCiAgdG9wOiAwOw0KICBsZWZ0OiAwOw0KICB3aWR0aDogMTAwJTsNCiAgaGVpZ2h0OiAxMDAlOw0KICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNCk7IC8qIFNlbWktdHJhbnNwYXJlbnQgYmFja2dyb3VuZCAqLw0KICB6LWluZGV4OiA5OTk5OyAvKiBFbnN1cmVzIHRoZSBtb2RhbCBpcyBvbiB0b3AgKi8NCiAgYWxpZ24taXRlbXM6IGNlbnRlcjsNCiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7DQphbmltYXRpb246IHNsaWRlLWluIDJzIGVhc2Utb3V0IGZvcndhcmRzOw0KfQ0KDQoubW9kYWwtY29udGVudCB7DQogIGJhY2tncm91bmQtY29sb3I6ICNmNWY1ZjU7IC8qIExpZ2h0IGJhY2tncm91bmQgKi8NCiAgYm9yZGVyLXJhZGl1czogMjhweDsgLyogUm91bmQgY29ybmVycyAqLw0KICBwYWRkaW5nOiAyMHB4Ow0KICB3aWR0aDogOTAlOw0KICBtYXgtd2lkdGg6IDQwMHB4Ow0KICBib3gtc2hhZG93OiAwIDhweCAxNnB4IHJnYmEoMCwgMCwgMCwgMC4yKTsgLyogU29mdCBzaGFkb3cgKi8NCiAgdGV4dC1hbGlnbjogY2VudGVyOw0KYW5pbWF0aW9uOiBzbGlkZS1pbiAycyBlYXNlLW91dCBmb3J3YXJkczsNCiAgYW5pbWF0aW9uOiBmYWRlSW4gMC40cyBlYXNlLW91dDsgLyogU21vb3RoIHBvcC11cCAqLw0KfQ0KDQoubW9kYWwtY29udGVudCBoMiB7DQogIGZvbnQtc2l6ZTogMS44cmVtOw0KICBtYXJnaW4tYm90dG9tOiAxNXB4Ow0KICBjb2xvcjogIzAwMDAwMDsNCn0NCg0KLm1vZGFsLWNvbnRlbnQgcCB7DQogIGZvbnQtc2l6ZTogMXJlbTsNCiAgbWFyZ2luLWJvdHRvbTogMjBweDsNCiAgY29sb3I6ICM1ZjYzNjg7DQp9DQoudmlldy1kb2NzLWJ0biwgLndoYXRzYXBwLWNoYXQtYnRuLCAud2hhdHNhcHAtY2hhbm5lbC1idG4gew0KICAgIGRpc3BsYXk6IGJsb2NrOw0KICAgIHBhZGRpbmc6IDE1cHggMzBweDsNCiAgICBmb250LXNpemU6IDEuMnJlbTsNCiAgICB3aWR0aDogOTAlICFpbXBvcnRhbnQ7DQogICAgY29sb3I6ICMwMDA7DQogICAgYmFja2dyb3VuZC1jb2xvcjogI2QzZDNkMzsNCiAgICBib3JkZXItcmFkaXVzOiAxMHB4Ow0KICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsNCiAgICB0cmFuc2l0aW9uOiBiYWNrZ3JvdW5kLWNvbG9yIDAuM3MgZWFzZTsNCiAgICBjdXJzb3I6IHBvaW50ZXI7DQogICAgbWFyZ2luOiAxMHB4IGF1dG87DQogICAgd2lkdGg6IGZpdC1jb250ZW50Ow0KICB9DQogIC52aWV3LWRvY3MtYnRuOmhvdmVyLCAud2hhdHNhcHAtY2hhdC1idG46aG92ZXIsIC53aGF0c2FwcC1jaGFubmVsLWJ0bjpob3ZlciB7DQogICAgY29sb3I6ICNmZmY7DQp0cmFuc2Zvcm06IHNjYWxlKDAuOTUpOw0KICB9DQoudmlldy1kb2NzLWJ0bjphY3RpdmUsIC53aGF0c2FwcC1jaGF0LWJ0bjphY3RpdmUsIC53aGF0c2FwcC1jaGFubmVsLWJ0bjphY3RpdmUgew0KdHJhbnNmb3JtOiBzY2FsZSgwLjk1KTsNCi52aWV3LWRvY3MtYnRuOmFjdGl2ZTo6YmVmb3JlLCAud2hhdHNhcHAtY2hhdC1idG46YWN0aXZlOjpiZWZvcmUsIC53aGF0c2FwcC1jaGFubmVsLWJ0bjphY3RpdmU6OmJlZm9yZSB7DQp0cmFuc2Zvcm06IHRyYW5zbGF0ZSgtNTAlLCAtNTAlKSBzY2FsZSgxKTsNCiAgICAgICAgICAgIHRyYW5zaXRpb246IHRyYW5zZm9ybSAwLjNzIGVhc2U7DQogIH0NCiAgfQ0KIC5hY3RpdmUgew0KIGNvbG9yOiBncmVlbjsNCiB9DQogLm1uYyB7DQogY29sb3I6IHllbGxvdzsNCiB9DQogLmVycm9yIHsNCiBjb2xvcjogcmVkOw0KIH0gDQogLyogVW50dWsgbGF5YXIgZGVza3RvcCAobGViaWggZGFyaSAxMDI0cHgpICovDQovKiBVbnR1ayBsYXlhciBkZXNrdG9wIChsZWJpaCBkYXJpIDEwMjRweCkgKi8NCkBtZWRpYSAobWluLXdpZHRoOiAxMDI0cHgpIHsNCiAgLmNvbnRhaW5lciB7DQogICAgbWFyZ2luLXRvcDogMTAlICFpbXBvcnRhbnQ7DQogICAgbWF4LXdpZHRoOiA3MCU7DQogICAgbWFyZ2luLWxlZnQ6IGF1dG87DQogICAgbWFyZ2luLXJpZ2h0OiBhdXRvOw0KICAgIHBhZGRpbmc6IDQwcHg7DQogIH0NCg0KICAucHJvZmlsZS1waWMgew0KICAgIHdpZHRoOiAxNTBweDsNCiAgICBoZWlnaHQ6IDE1MHB4Ow0KICB9DQoNCiAgLmFib3V0LW1lIGgxIHsNCiAgICBmb250LXNpemU6IDNyZW07DQogIH0NCg0KICAuYWJvdXQtbWUgcCB7DQogICAgZm9udC1zaXplOiAxLjVyZW07DQogIH0NCg0KICAubW9kYWwtY29udGVudCB7DQogICAgbWF4LXdpZHRoOiA2MDBweDsNCiAgfQ0KDQogIC52aWV3LWRvY3MtYnRuLCAud2hhdHNhcHAtY2hhdC1idG4sIC53aGF0c2FwcC1jaGFubmVsLWJ0biB7DQogICAgZm9udC1zaXplOiAxLjVyZW07DQogICAgcGFkZGluZzogMjBweCA0MHB4Ow0KICB9DQp9DQoNCi8qIFVudHVrIHRhYmxldCAoNzY4cHggLSAxMDI0cHgpICovDQpAbWVkaWEgKG1pbi13aWR0aDogNzY4cHgpIGFuZCAobWF4LXdpZHRoOiAxMDI0cHgpIHsNCiAgLm1hdGVyaWFsLXRvYXN0aWZ5IHsNCiAgICAgICAgICAgICAgICBmb250LXNpemU6IDEycHg7DQogICAgICAgICAgICAgICAgcGFkZGluZzogOHB4IDE2cHg7DQogIH0NCiAgLmNvbnRhaW5lciB7DQogICAgbWFyZ2luLXRvcDogMTUlICFpbXBvcnRhbnQ7DQogICAgbWF4LXdpZHRoOiA4NSU7IC8qIExlYmFyIGNvbnRhaW5lciBsZWJpaCBrZWNpbCAqLw0KICAgIHBhZGRpbmc6IDMwcHg7IC8qIEt1cmFuZ2kgcGFkZGluZyAqLw0KICAgIG1hcmdpbi1sZWZ0OiBhdXRvOyAvKiBQYXN0aWthbiBjb250YWluZXIgY2VudGVyaW5nICovDQogICAgbWFyZ2luLXJpZ2h0OiBhdXRvOyAvKiBQYXN0aWthbiBjb250YWluZXIgY2VudGVyaW5nICovDQogIH0NCg0KICAucHJvZmlsZS1waWMgew0KICAgIHdpZHRoOiAxMjBweDsNCiAgICBoZWlnaHQ6IDEyMHB4Ow0KICB9DQoNCiAgLmFib3V0LW1lIGgxIHsNCiAgICBmb250LXNpemU6IDIuNXJlbTsNCiAgfQ0KDQogIC5hYm91dC1tZSBwIHsNCiAgICBmb250LXNpemU6IDEuM3JlbTsNCiAgfQ0KDQogIC52aWV3LWRvY3MtYnRuLCAud2hhdHNhcHAtY2hhdC1idG4sIC53aGF0c2FwcC1jaGFubmVsLWJ0biB7DQogICAgZm9udC1zaXplOiAxLjJyZW07DQogICAgcGFkZGluZzogMThweCAzMHB4Ow0KICB9DQp9DQouc2RranNhIHsgcGFkZGluZy1yaWdodDoxMHB4OyB9DQouc2RmZyB7DQpwYWRkaW5nOiA1cHg7DQpiYWNrZ3JvdW5kLWNvbG9yOiAjMDA3YmZmOw0KYm9yZGVyLXJhZGl1czogOHB4Ow0Kd2lkdGg6IDIwJTsNCmNvbG9yOiB3aGl0ZTsNCmRpc3BsYXk6IGZsZXg7DQpqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsNCn0NCi5tYXRlcmlhbC10b2FzdGlmeS1jbG9zZSB7DQogICAgcG9zaXRpb246IGZpeGVkOyAvKiBQYXN0aWthbiB0b2FzdCBkaXRlbXBhdGthbiBzZWNhcmEgdGV0YXAgZGkgYXRhcyAqLw0KICAgIHRvcDogMTBweDsgLyogSmFyYWsgZGFyaSBhdGFzICovDQogICAgcmlnaHQ6IDEwcHg7IC8qIEphcmFrIGRhcmkga2FuYW4gKi8NCiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmOyAvKiBCYWNrZ3JvdW5kIHB1dGloICovDQogICAgY29sb3I6ICMwMDA7IC8qIFRla3MgaGl0YW0gKi8NCiAgICBib3JkZXItcmFkaXVzOiAxMnB4OyAvKiBNZW1idWF0IHN1ZHV0IGJ1bGF0IHNlc3VhaSBNYXRlcmlhbCBZb3UgKi8NCiAgICBwYWRkaW5nOiAxNnB4OyAvKiBQYWRkaW5nIHlhbmcgY3VrdXAgdW50dWsga2VueWFtYW5hbiAqLw0KICAgIG92ZXJmbG93LXk6IHNjcm9sbDsNCiAgICBtYXgtaGVpZ2h0OiA1NSU7DQogICAgbWF4LXdpZHRoOiA4NSU7DQogICAgZm9udC1mYW1pbHk6ICdSb2JvdG8nLCBzYW5zLXNlcmlmOyAvKiBGb250IHlhbmcgbGViaWggYmVyc2loICovDQogICAgYm94LXNoYWRvdzogMHB4IDRweCA2cHggcmdiYSgwLCAwLCAwLCAwLjEpOyAvKiBUYW1iYWhrYW4gYmF5YW5nYW4gbGVtYnV0ICovDQogICAgei1pbmRleDogOTk5OTk7IC8qIFRpbmdrYXRrYW4gei1pbmRleCBsZWJpaCB0aW5nZ2kgKi8NCiAgICBvcGFjaXR5OiAwLjk1OyAvKiBTZWRpa2l0IHRyYW5zcGFyYW4gKi8NCn0NCiAubWF0ZXJpYWwtdG9hc3RpZnkgew0KICAgIHBvc2l0aW9uOiBmaXhlZDsgLyogUGFzdGlrYW4gdG9hc3QgZGl0ZW1wYXRrYW4gc2VjYXJhIHRldGFwIGRpIGF0YXMgKi8NCiAgICB0b3A6IDEwcHg7IC8qIEphcmFrIGRhcmkgYXRhcyAqLw0KICAgIHJpZ2h0OiAxMHB4OyAvKiBKYXJhayBkYXJpIGthbmFuICovDQogICAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZjsgLyogQmFja2dyb3VuZCBwdXRpaCAqLw0KICAgIGNvbG9yOiAjMDAwOyAvKiBUZWtzIGhpdGFtICovDQogICAgYm9yZGVyLXJhZGl1czogMTJweDsgLyogTWVtYnVhdCBzdWR1dCBidWxhdCBzZXN1YWkgTWF0ZXJpYWwgWW91ICovDQogICAgcGFkZGluZzogMTZweDsgLyogUGFkZGluZyB5YW5nIGN1a3VwIHVudHVrIGtlbnlhbWFuYW4gKi8NCiAgICBmb250LWZhbWlseTogJ1JvYm90bycsIHNhbnMtc2VyaWY7IC8qIEZvbnQgeWFuZyBsZWJpaCBiZXJzaWggKi8NCiAgICBib3gtc2hhZG93OiAwcHggNHB4IDZweCByZ2JhKDAsIDAsIDAsIDAuMSk7IC8qIFRhbWJhaGthbiBiYXlhbmdhbiBsZW1idXQgKi8NCiAgICB6LWluZGV4OiA5OTk5OTsgLyogVGluZ2thdGthbiB6LWluZGV4IGxlYmloIHRpbmdnaSAqLw0KICAgIG9wYWNpdHk6IDAuOTU7IC8qIFNlZGlraXQgdHJhbnNwYXJhbiAqLw0KfQ0KLmluZm8tcm93IHsNCiAgICAgICAgICAgIGRpc3BsYXk6IGZsZXg7DQogICAgICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47DQogICAgICAgICAgICBmb250LXNpemU6IDFyZW07DQogICAgICAgICAgICBjb2xvcjogIzc1NzU3NTsNCiAgICAgICAgICAgIG1hcmdpbjogNXB4IDA7DQogICAgICAgIH0=");
+  /* Container for the API list */
+.info-cards {
+  background-color: #f5f5f5; /* Light gray background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 100%;
+}
+
+/* Each API item */
+.info-card {
+  background-color: #ffffff; /* White card for each item */
+  border-radius: 10px; /* Rounded corners */
+  border-left: 5px solid #2196f3; /* Color-coded border */
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover effect for API items */
+.info-card:hover {
+  transform: scale(1.02); /* Slight zoom on hover */
+  background-color: #e8f4fd; /* Light blue background on hover */
+}
+
+/* Title of each API item */
+.info-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  text-align: left;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #2196f3; /* Light blue underline */
+}
+
+/* Content description of each API item */
+.info-content {
+  font-size: 1rem;
+  color: #606060;
+  text-align: left;
+}
+
+/* Method button styles */
+button.api-method {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #28a745; /* Default green */
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  margin-top: 10px;
+}
+
+/* Specific color coding for different HTTP methods */
+button.api-method.post {
+  background-color: #ffc107; /* Yellow for POST */
+}
+
+button.api-method.put {
+  background-color: #17a2b8; /* Blue for PUT */
+}
+
+button.api-method.delete {
+  background-color: #dc3545; /* Red for DELETE */
+}
+
+/* Adjust button hover effects */
+button.api-method:hover {
+  background-color: #444444;
+  color: #ffffff;
+  transform: scale(0.98);
+}
+
+/* Make text wrap properly */
+.info-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+/* CSS Reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Set default styles for body */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-image: url("https://files.catbox.moe/32py0r.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #000000;
+  direction: ltr;
+  margin: 0;
+  padding: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit; /* Memastikan semua elemen mengikuti aturan box-sizing */
+}
+
+.container {
+  display: block; /* Correct display property */
+  width: 75%;
+  margin: 20px auto; /* Center the container horizontally */
+  padding: 20px; /* Consistent padding for inner content */ /* Limit width for better control */
+  background-color: rgba(240, 248, 255, 0.6); /* Slightly transparent light blue */
+  color: #333333; /* Dark text for readability */
+  border-radius: 8px; /* Softer rounded corners */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06); /* Soft shadow */
+  overflow: hidden; /* Hide overflow */
+  border: 1px solid rgba(173, 216, 230, 0.4); /* Light blue border */
+}
+
+.container * {
+  animation: slide-in 0.8s ease-out forwards;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.about-me {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-pic-container {
+  position: center;
+  display: center;
+  margin-bottom: 20px;
+}
+#effetsalju {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+.profile-pic {
+  width: 80px; /* Mengurangi ukuran avatar */
+  height: 80px;
+  display: center;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #6d6d6d;
+}
+
+.rotating-liness {
+  position: fixed;
+  width: 90px; /* Ukuran lingkaran lebih kecil */
+  height: 90px;
+ 
+  border-radius: 50%;
+  border: 2px dashed #6caade;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.about-me h1 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #000000;
+}
+
+.about-me p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+button {
+  display: block;
+  padding: 12px 20px;
+  
+  font-size: 1rem;
+  color: #000000;
+  background-color: #d3d3d3;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: transform 0.2s ease ,background-color 0.3s ease;
+  cursor: pointer;
+  margin: 10px auto;
+  width: fit-content;
+  border: none;
+}
+
+button:active {
+  transform: scale(0.95); /* Mengurangi ukuran tombol sedikit saat diklik */
+}
+
+button:hover {
+  transform: scale(0.90);
+  background-color: #444444;
+}
+
+.content {
+  display: none;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  border-bottom: 2px solid #444444;
+  padding-bottom: 8px;
+  text-align: center;
+  color: #fff;
+}
+
+.info-cawrd {
+  display: center;
+  justify-content: center;
+background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 15px;
+  text-align: center;
+}
+.info-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.info-title {
+  display: center;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #000;
+  text-align: center;
+}
+
+.info-content {
+  display: center;
+  font-size: 1rem;
+  color: #606060;
+  text-align: center;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn {
+  display: flex;
+  justify-content: space-between; /* Align items to the left and right */
+  align-items: center;
+  text-align: left !important;
+  background-color: #eaf0f2ab; /* White background like Swagger UI */
+  color: #007bff; /* Blue color text */
+  padding: 10px 20px; /* Defined padding */
+  font-size: 1rem;
+  font-weight: bold; /* Bold text for better visibility */
+  border-radius: 13px; /* Slightly less rounded to resemble Swagger UI */
+  border: 2px solid #007bff; /* Blue border to match text color */
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  text-align: left; /* Ensure left alignment */
+}
+
+/* Hover effect to mimic Swagger UI */
+.btn:hover {
+  background-color: lightgray; /* Light background on hover */
+  color: black; /* Dark text on hover */
+  transform: scale(1.02); /* Slightly larger on hover */
+}
+
+/* Active state to give a pressed feel */
+.btn:active {
+  background-color: #0056b3; /* Darker blue when pressed */
+  color: #ffffff; /* White text */
+  transform: scale(0.98); /* Slightly smaller on click */
+}
+
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  background-color: #f9f9f9; /* Light background like Swagger UI dropdowns */
+  padding: 15px; /* Padding for dropdown content */
+  border: 1px solid #ddd; /* Light gray border around dropdown */
+  border-radius: 10px; /* Slight rounding for a clean look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Show dropdown when button is active */
+.btn.active + .dropdown-content {
+  display: flex;
+}
+
+/* Style for each API item in the dropdown */
+.dropdown-content .api-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff; /* White background for each API item */
+  border: 1px solid #e0e0e0; /* Light gray border around each item */
+  border-radius: 8px; /* Slightly rounded corners */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for each API item */
+.dropdown-content .api-item:hover {
+  background-color: lightgray;
+  transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+/* API item title style */
+.dropdown-content .api-item .api-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333; /* Dark text color */
+}
+
+/* API item description style */
+.dropdown-content .api-item .api-description {
+  font-size: 0.9rem;
+  color: #777; /* Lighter text for description */
+}
+
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #000000;
+}
+
+.form-group input, .form-group button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 13px;
+  border: 1px solid black;
+  background-color: #fff;
+  color: #000000;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+.form-group input:focus {
+    outline: none; /* Menghilangkan outline saat input di fokus */
+    border: 1px solid #ccc; /* Mengatur border sesuai kebutuhan */
+    box-shadow: none; /* Menghilangkan shadow atau efek highlight */
+}
+
+.form-group button {
+  margin-top: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+  background-color: #c0c0c0;
+}
+
+.result {
+  background-color: #fafafa; /* Lighter, clean background similar to Swagger UI */
+  padding: 15px; /* Increased padding for better spacing */
+  border-radius: 8px; /* Smooth, rounded corners */
+  margin-top: 20px;
+  color: #333333; /* Darker text for contrast */
+  word-wrap: break-word; /* Ensure long words wrap properly */
+  overflow-wrap: break-word; /* Support for different browsers */
+  max-width: 100%; /* Ensure it doesnâ€™t exceed its container */
+  box-sizing: border-box; /* Include padding within the total width */
+  border: 1px solid #dcdcdc; /* Light gray border for definition */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); /* Subtle shadow */
+}
+
+/* Hover effect for a slight pop-out */
+.result:hover {
+  background-color: #ffffff; /* Brighter background on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); /* Deeper shadow on hover */
+  transform: translateY(-2px); /* Small lift effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+
+/* Tombol execute */
+button#execute {
+  display: block;
+  padding: 12px 20px;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #333333;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 10px auto;
+  border: none;
+}
+
+button#execute:hover {
+  background-color: #444444;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent background */
+  z-index: 9999; /* Ensures the modal is on top */
+  align-items: center;
+  justify-content: center;
+animation: slide-in 2s ease-out forwards;
+}
+
+.modal-content {
+  background-color: #f5f5f5; /* Light background */
+  border-radius: 28px; /* Round corners */
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  text-align: center;
+animation: slide-in 2s ease-out forwards;
+  animation: fadeIn 0.4s ease-out; /* Smooth pop-up */
+}
+
+.modal-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #000000;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #5f6368;
+}
+.view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
+    display: block;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    width: 69% !important;
+    max-width: 80%;
+    color: #000;
+    background-color: #d3d3d3;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    margin: 10px auto;
+    width: fit-content;
+  }
+  .view-docs-btn:hover, .whatsapp-chat-btn:hover, .whatsapp-channel-btn:hover {
+    color: #fff;
+transform: scale(0.95);
+  }
+.view-docs-btn:active, .whatsapp-chat-btn:active, .whatsapp-channel-btn:active {
+transform: scale(0.95);
+.view-docs-btn:active::before, .whatsapp-chat-btn:active::before, .whatsapp-channel-btn:active::before {
+transform: translate(-50%, -50%) scale(1);
+            transition: transform 0.3s ease;
+  }
+  }
+ .active {
+ color: green;
+ }
+ .mnc {
+ color: yellow;
+ }
+ .error {
+ color: red;
+ } 
+ /* Untuk layar desktop (lebih dari 1024px) */
+/* Untuk layar desktop (lebih dari 1024px) */
+@media (min-width: 1024px) {
+  .container {
+    margin-top: 10% !important;
+    max-width: 100%%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px;
+  }
+
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+  }
+
+  .about-me h1 {
+    font-size: 3rem;
+  }
+
+  .about-me p {
+    font-size: 1.5rem;
+  }
+
+  .modal-content {
+    max-width: 600px;
+  }
+
+  .view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
+    font-size: 1.5rem;
+    padding: 20px 40px;
+  }
+}
+
+/* Untuk tablet (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .material-toastify {
+                font-size: 12px;
+                padding: 8px 16px;
+  }
+  .container {
+    margin-top: 15% !important;
+    max-width: 100%; /* Lebar container lebih kecil */
+    padding: 30px; /* Kurangi padding */
+    margin-left: auto; /* Pastikan container centering */
+    margin-right: auto; /* Pastikan container centering */
+  }
+
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+  }
+
+  .about-me h1 {
+    font-size: 2.5rem;
+  }
+
+  .about-me p {
+    font-size: 1.3rem;
+  }
+
+  .view-docs-btn, .whatsapp-chat-btn, .whatsapp-channel-btn {
+    font-size: 1.2rem;
+    padding: 18px 30px;
+  }
+}
+.sdkjsa { padding-right:10px; }
+.sdfg {
+padding: 5px;
+background-color: #007bff;
+border-radius: 8px;
+width: 20%;
+color: white;
+display: flex;
+justify-content: center;
+}
+.material-toastify-close {
+    position: fixed; /* Pastikan toast ditempatkan secara tetap di atas */
+    top: 10px; /* Jarak dari atas */
+    right: 10px; /* Jarak dari kanan */
+    background-color: #fff; /* Background putih */
+    color: #000; /* Teks hitam */
+    border-radius: 12px; /* Membuat sudut bulat sesuai Material You */
+    padding: 16px; /* Padding yang cukup untuk kenyamanan */
+    overflow-y: scroll;
+    max-height: 55%;
+    max-width: 85%;
+    font-family: 'Roboto', sans-serif; /* Font yang lebih bersih */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan lembut */
+    z-index: 99999; /* Tingkatkan z-index lebih tinggi */
+    opacity: 0.95; /* Sedikit transparan */
+}
+ .material-toastify {
+    position: fixed; /* Pastikan toast ditempatkan secara tetap di atas */
+    top: 10px; /* Jarak dari atas */
+    right: 10px; /* Jarak dari kanan */
+    background-color: #fff; /* Background putih */
+    color: #000; /* Teks hitam */
+    border-radius: 12px; /* Membuat sudut bulat sesuai Material You */
+    padding: 16px; /* Padding yang cukup untuk kenyamanan */
+    font-family: 'Roboto', sans-serif; /* Font yang lebih bersih */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan lembut */
+    z-index: 99999; /* Tingkatkan z-index lebih tinggi */
+    opacity: 0.95; /* Sedikit transparan */
+}
+.info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            color: #757575;
+            margin: 5px 0;
+        }
+</style>
+<style>
+  
+    /* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #1e1e1e;
+  color: white;
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  height:70px;
+  background: linear-gradient(80deg, #3db6eb, #12478a);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+header nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+header .nav-links {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+}
+
+header .nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+header .nav-links a:hover {
+  background-color: #1976d2;
+}
+
+header .menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  display: none;
+}
+
+/* Dropdown Menu */
+.dropdown-menus {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: linear-gradient(80deg, #3db6eb, #12478a);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  border: 1px solid black;
+  z-index: 1000;
+}
+
+.dropdown-menus.show {
+  display: block;
+}
+
+.dropdown-items {
+  color: white;
+  padding: 10px 15px;
+  text-align: left;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 0px !important;
+  transition: background-color 0.3s ease;
+  border-bottom: 1px solid black;
+}
+
+.dropdown-itemd {
+  color: white;
+  padding: 10px 15px;
+  text-align: left;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 0px !important;
+  transition: background-color 0.3s ease;
+  border-bottom: 0px solid black;
+}
+
+.dropdown-items:hover {
+  background: linear-gradient(80deg, #12478a, #3db6eb);
+  border-radius: 50px !important;
+  border: 1px solid black;
+  animation: fadeIn 1s;
+}
+.dropdown-itemd:hover {
+  background: linear-gradient(80deg, #12478a, #3db6eb);
+  border-radius: 50px !important;
+  border: 1px solid black;
+  animation: fadeIn 1s;
+}
+
+/* Main Content */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.profile-pic-container {
+  position: relative;
+  display: inline-block;
+  margin: 20px 0;
+}
+
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+}
+
+.rotating-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  border: 3px dashed #004bf5;
+  border-radius: 50%;
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header .nav-links {
+    display: none;
+  }
+
+  header .menu-btn {
+    display: block;
+  }
+}
+  
 </style>
 <style>
 .sdjhu { width: 85%; padding: 2px: }
@@ -30,23 +838,47 @@
   </div>
 </div>
   
-<div class="container">
-<marquee style='color: white;text-shadow: h-shadow black;font-weight: bold;padding-bottom:4px;'>Gunakanlah api dengan bijak, dan api ini gratis dan tidak diperjual belikan</marquee>
-  <div class="about-me">
-    <h1 style='color: white;'>ALVIAN UXIO - API</h1>
-    <div class="profile-pic-container">
-      <img src="https://files.catbox.moe/r2c1pe.jpg" alt="Profile Picture" class="profile-pic">
-      <div class="rotating-lines"></div>
+    <header>
+    <div class="logo">
+      <img src="https://files.catbox.moe/r2c1pe.jpg" alt="Logo">
+      <span>ALVIAN UXIO - API</span>
     </div>
-    <p style='color: white'>We provide api for everyone support us to continue growing </p>
-    <button class="view-docs-btn" onclick="viewDocs()">Show playground docs</button>
-    <button class="whatsapp-chat-btn" onclick="location.href='https://wa.me/6285895988045'">Chat WhatsApp</button>
-    <button class="whatsapp-channel-btn" onclick="location.href='https://about.alvianuxio.my.id'">About ALVIAN UXIO</button>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#docs">Docs</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#status">Status</a></li>
+      </ul>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </nav>
+  </header>
+
+  <!-- Dropdown Menu -->
+  <div class="dropdown-menus">
+    <button id="cjs" class="dropdown-items" onclick="viewDocs()">Show Playground Docs</button>
+    <button class="dropdown-items" onclick="location.href='https://wa.me/6285895988045'">Chat WhatsApp</button>
+    <button class="dropdown-itemd" onclick="location.href='https://about.alvianuxio.my.id'">About ALVIAN UXIO</button>
   </div>
-  <div class="content">
-    <h1>API Documentation</h1>
+
+  <!-- Main Content -->
+      <marquee class="container" style="color: black;">
+      Gunakanlah api dengan bijak, dan api ini gratis dan tidak diperjual belikan
+    </marquee>
+    <div class="about-me">
+        <div class="container">
+      <h1 style="color: white;">ALVIAN UXIO - API</h1>
+      <div class="profile-pic-container">
+        <img src="https://files.catbox.moe/r2c1pe.jpg" alt="Profile Picture" class="profile-pic">
+        <div class="rotating-lines"></div>
+      </div>
+      <p style="color: white">We provide API for everyone. Support us to continue growing.</p>
+      <button class="button" onclick="viewDocs()">GET STARTED</button>
+    </div>
+  </div>
+  <div class="content" style='padding:15px;'>
+   <div class="container" style='color: black;'><h1>API Documentation</h1>
     <p>Welcome to the API documentation for our service. Below you will find information about the available endpoints and how to use them.</p>
-     
+     </div>
   <div class="section">
     <h2 class="section-title">Information</h2>
     <div class="info-card">
@@ -95,8 +927,29 @@
 </div>
 
     <div class="section">
+            <div class="container">
       <h2 class="section-title">List of available apis</h2>
       <div class="btn-container">
+      <div class="btn" onclick="toggleDropdown('dropdown35')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/groq-ai</div>
+          <span><b class="error">New</b></span>
+        </div>
+        <div id="dropdown35" class="dropdown-content">
+          <form class="form-group" action="/api/Brat" onsubmit="executeApi(event, '/api/Brat')">
+            <label for="message35">Enter Message:</label>
+            <input type="text" id="message35" name="message" required>
+              <!-- Input for API Key -->
+        <label for="apikey35">Enter API Key:</label>
+        <input type="text" id="apikey35" name="apikey" value="aluxi" required>
+            <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
       <div class="btn" onclick="toggleDropdown('dropdown34')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/groq-ai</div>
           <span><b class="error">Error</b></span>
@@ -758,9 +1611,9 @@
     </div></section>
 
 
-    <div class="section">
+    <div class="section" style='color: black;'>
       <h2 class="section-title">Usage</h2>
-      <div class="info-card">
+      <div class="info-card" style='padding:35px;'>
       <p>To use the endpoints, send a GET request to the desired endpoint with the following query parameter:</p>
       
       <ul>
@@ -770,9 +1623,9 @@
     </div>
     
 
-    <div class="section">
+    <div class="section" style='color: black;'>
       <h2 class="section-title">Response</h2>
-      <div class="info-card">
+      <div class="info-card" style='padding:35px;color:black;'>
       <p>The response will be in JSON format with the following structure:</p>
       <pre class="sdjhu">
 {
@@ -788,17 +1641,18 @@
 
     <div class="section" style='color:black;'>
       <h2 class="section-title">Rules</h2>
-      <div class="info-card">
+      <div class="info-card" style='padding:40px;'>
         <div>
           <ol>
-            <li>Don't flood requests</li>
-            <li>The owner can change the conditions on this website at any time to maintain the quality of the website.</li>
-            <li>All the features here are free and unlimited request.</li>
-            <li>The owner is not responsible for what you do when using this website.</li>
+            <li>Please do not flood requests to ensure smooth performance.</li>
+            <li>The owner may update website terms anytime for quality maintenance.</li>
+            <li>Features are free with unlimited requests.</li>
+            <li>The owner is not liable for user actions on this site.</li>
           </ol>
         </div>
       </div>
     </div>
+  </div>
   </div>
 </div>
 
@@ -953,13 +1807,36 @@ window.executeApi = function(event, endpoint) {
   }
 
   // Show main content on View Docs button click
-  window.viewDocs = function() {
+  window.viewDocs = function () {
+        const aboutMe = document.querySelector('.about-me');
+        const content = document.querySelector('.content');
+        const button = document.getElementById("cjs");
 
-    document.querySelector('.about-me').style.display = 'none';
-    document.querySelector('.content').style.display = 'block';
-    const audio = new Audio('https://files.catbox.moe/xretye.mp4');
-    audio.play();
-  }
+        if (aboutMe.style.display === 'none') {
+            // Kembali ke halaman utama
+            aboutMe.style.display = 'block';
+            content.style.display = 'none';
+            button.textContent = "Show Playground Docs";
+        } else {
+            // Tampilkan Playground Docs
+            aboutMe.style.display = 'none';
+            content.style.display = 'block';
+            const audio = new Audio('https://files.catbox.moe/xretye.mp4');
+            audio.play();
+            button.textContent = "Back to Home";
+        }
+    };
+
+    // Fungsi untuk kembali ke tampilan awal
+    window.goHome = function () {
+        document.querySelector('.about-me').style.display = 'block';
+        document.querySelector('.content').style.display = 'none';
+
+        // Ubah kembali tombol ke fungsi awal
+        const button = document.getElementById("cjs");
+        button.textContent = "Show Playground Docs";
+        button.setAttribute("onclick", "viewDocs()");
+    };
 
   // Update total requests on initial load
   updateTotalRequests();
@@ -1011,6 +1888,11 @@ window.onload = function () {
         showToast("Maaf tindakan ini tidak di izinkan"); // Tampilkan pesan pop-up toast
     });
 </script>
+  <script>
+    function toggleMenu() {
+      document.querySelector('.dropdown-menus').classList.toggle('show');
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 </html>
