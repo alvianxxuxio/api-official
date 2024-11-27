@@ -26,7 +26,6 @@
       <div class="container">
       <h1 id="auth-title">Login</h1>
       <div class="form-container">
-        <!-- Form Login -->
         <form id="login-form">
           <input type="email" id="login-email" placeholder="Email" required>
           <input type="password" id="login-password" placeholder="Password" required>
@@ -34,7 +33,6 @@
           <p>Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
         </form>
 
-        <!-- Form Register -->
         <form id="register-form" class="hidden">
           <input type="text" id="register-username" placeholder="Username" required>
           <input type="email" id="register-email" placeholder="Email" required>
@@ -48,7 +46,7 @@
       </div>
     </div>
 
-    <!-- Bagian aplikasi utama -->
+
     <div id="app-section" class="hidden">
 <div id="popup-modal" class="modal">
   <div class="modal-content">
@@ -74,7 +72,6 @@
     </nav>
   </header>
 
-  <!-- Dropdown Menu -->
   <div class="dropdown-menus">
     <button id="cjs" class="dropdown-items" onclick="viewDocs()">Docs</button>
     <button class="dropdown-items" onclick="location.href='https://wa.me/6285895988045'">Contact Us</button>
@@ -82,7 +79,6 @@
     <button class="dropdown-itemd" onclick="location.href='https://about.alvianuxio.my.id'">About</button>
   </div>
 
-  <!-- Main Content -->
       <marquee class="container" style="color: black;">
       Gunakanlah api dengan bijak, dan api ini gratis dan tidak diperjual belikan
     </marquee>
@@ -164,7 +160,7 @@
           <form class="form-group" action="/api/ytdl" onsubmit="executeApi(event, '/api/ytdl')">
             <label for="message27">Enter Query or Url:</label>
             <input type="text" id="message27" name="message" required>
-              <!-- Input for API Key -->
+
         <label for="apikey27">Enter API Key:</label>
         <input type="text" id="apikey27" name="apikey" value="aluxi" required>
             <button type="submit">Execute</button>
@@ -203,7 +199,7 @@
           <form class="form-group" action="/api/videy" onsubmit="executeApi(event, '/api/videy')">
             <label for="message32">Enter Url:</label>
             <input type="text" id="message32" name="message" required>
-              <!-- Input for API Key -->
+
         <label for="apikey32">Enter API Key:</label>
         <input type="text" id="apikey32" name="apikey" value="aluxi" required>
             <button type="submit">Execute</button>
@@ -223,7 +219,6 @@
           <form class="form-group" action="/api/gdrive" onsubmit="executeApi(event, '/api/gdrive')">
             <label for="message31">Enter Url:</label>
             <input type="text" id="message31" name="message" required>
-              <!-- Input for API Key -->
         <label for="apikey31">Enter API Key:</label>
         <input type="text" id="apikey31" name="apikey" value="aluxi" required>
             <button type="submit">Execute</button>
@@ -376,7 +371,6 @@
           <form class="form-group" action="/api/anime" onsubmit="executeApi(event, '/api/anime')">
             <label for="message33">Enter Anime Name:</label>
             <input type="text" id="message33" name="message" required>
-              <!-- Input for API Key -->
         <label for="apikey33">Enter API Key:</label>
         <input type="text" id="apikey33" name="apikey" value="aluxi" required>
             <button type="submit">Execute</button>
@@ -404,7 +398,7 @@
           <form class="form-group" action="/api/openai" onsubmit="executeApi(event, '/api/openai')">
             <label for="message28">Enter Message:</label>
             <input type="text" id="message28" name="message" required>
-              <!-- Input for API Key -->
+
         <label for="apikey28">Enter API Key:</label>
         <input type="text" id="apikey28" name="apikey" value="aluxi" required>
             <button type="submit">Execute</button>
@@ -658,7 +652,6 @@
         <div class="info-row"><span>400</span><span>Bad Request</span></div>
         <div class="info-row"><span>500</span><span>Internal server error</span></div>
     </form>
-    <!-- Result untuk dropdown ini -->
     <div id="result16" class="result" style="display:none;"></div>
 </div>
     <div class="btn" onclick="toggleDropdown('dropdown34')">
@@ -669,7 +662,7 @@
           <form class="form-group" action="/api/groq-ai" onsubmit="executeApi(event, '/api/groq-ai')">
             <label for="message34">Enter Message:</label>
             <input type="text" id="message34" name="message" required>
-              <!-- Input for API Key -->
+
         <label for="apikey34">Enter API Key:</label>
         <input type="text" id="apikey34" name="apikey" value="aluxi" required>
             <button type="submit">Execute</button>
@@ -703,7 +696,7 @@
           <form class="form-group" action="/api/igstalk" onsubmit="executeApi(event, '/api/igstalk')">
             <label for="message30">Enter Username:</label>
             <input type="text" id="message30" name="message" required>
-              <!-- Input for API Key -->
+
         <label for="apikey30">Enter API Key:</label>
         <input type="text" id="apikey30" name="apikey" value="aluxi" required>
             <button type="submit">Execute</button>
@@ -865,7 +858,6 @@
 </div>
 </div>
 <script>
-  // Periksa status login saat halaman dimuat
 document.addEventListener("DOMContentLoaded", () => {
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   if (loggedInUser) {
@@ -889,14 +881,14 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('totalRequests', totalRequests);
   }
 
-  // Fetch IP Address
+
   fetch('https://api.ipify.org?format=json')
     .then(response => response.json())
     .then(data => {
       document.getElementById('ip').textContent = data.ip;
     });
 
-  // Update Time
+  
   function updateTime() {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0');
@@ -909,7 +901,7 @@ document.addEventListener('DOMContentLoaded', function() {
   setInterval(updateTime, 1000);
   updateTime();
 
-  // Update Date
+  
   function updateDate() {
     const now = new Date();
     const year = now.getFullYear();
@@ -920,7 +912,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   updateDate();
 
-  // Fetch Battery Status
+  
   navigator.getBattery().then(function(battery) {
     function updateBatteryStatus() {
       const level = Math.round(battery.level * 100) + '%';
@@ -930,33 +922,30 @@ document.addEventListener('DOMContentLoaded', function() {
     battery.addEventListener('levelchange', updateBatteryStatus);
   });
 
-  // Toggle dropdown content visibility
+  
   window.toggleDropdown = function(dropdownId) {
     const dropdown = document.getElementById(dropdownId);
     dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  // Execute API request
-  // Execute API request
 window.executeApi = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
     const message = form.querySelector('input[name="message"]').value;
     const apikey = form.querySelector('input[name="apikey"]').value;
 
-    // Check if apikey is provided
     if (!apikey) {
         console.error('API key is missing.');
-        return; // Exit the function if no API key
+        return; 
     }
 
     const query = `?message=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apikey)}`;
     
-    // Buat URL lengkap
+
     const baseUrl = 'https://api.alvianuxio.my.id';
     const requestUrl = baseUrl + endpoint + query;
 
-    // Lakukan permintaan API
+    
     fetch(endpoint + query)
         .then(response => {
             if (!response.ok) {
@@ -965,7 +954,7 @@ window.executeApi = function(event, endpoint) {
             return response.json();
         })
         .then(data => {
-            // Mengonversi hasil menjadi string dan menampilkan melalui Toastify
+            
             const message = JSON.stringify(data, null, 2);
             const osbjs = `
             ${message}
@@ -973,20 +962,19 @@ window.executeApi = function(event, endpoint) {
             Request :
             ${requestUrl}
             `
-            // Tampilkan pesan sebagai notifikasi menggunakan Toastify
             showToast(osbjs, true);
 
-            // Tambah hitungan total permintaan dan perbarui tampilan
+            
             totalRequests++;
             updateTotalRequests();
 
-            // Buat elemen untuk menunjukkan URL permintaan (opsional, jika diperlukan di halaman)
+
             const requestUrlElement = document.createElement('p');
             requestUrlElement.textContent = `Request URL: ${requestUrl}`;
-            document.body.appendChild(requestUrlElement); // Tempatkan di halaman jika diperlukan
+            document.body.appendChild(requestUrlElement);
         })
         .catch(error => {
-            // Tampilkan pesan error menggunakan Toastify
+            
             showToast('Error: ' + error, true);
         });
 }
@@ -1025,19 +1013,18 @@ window.executeApi = function(event, endpoint) {
       });
   }
 
-  // Show main content on View Docs button click
   window.viewDocs = function () {
         const aboutMe = document.querySelector('.about-me');
         const content = document.querySelector('.content');
         const button = document.getElementById("cjs");
 
         if (aboutMe.style.display === 'none') {
-            // Kembali ke halaman utama
+            
             aboutMe.style.display = 'block';
             content.style.display = 'none';
             button.textContent = "Docs";
         } else {
-            // Tampilkan Playground Docs
+            
             aboutMe.style.display = 'none';
             content.style.display = 'block';
             const audio = new Audio('https://files.catbox.moe/xretye.mp4');
@@ -1046,18 +1033,17 @@ window.executeApi = function(event, endpoint) {
         }
     };
 
-    // Fungsi untuk kembali ke tampilan awal
     window.goHome = function () {
         document.querySelector('.about-me').style.display = 'block';
         document.querySelector('.content').style.display = 'none';
 
-        // Ubah kembali tombol ke fungsi awal
+        
         const button = document.getElementById("cjs");
         button.textContent = "Docs";
         button.setAttribute("onclick", "viewDocs()");
     };
 
-  // Update total requests on initial load
+  
   updateTotalRequests();
 });
 </script>
