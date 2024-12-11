@@ -1351,7 +1351,7 @@ app.get('/apikey/create', (req, res) => {
 });
 
 // Route untuk menangani pembuatan API key baru
-app.post('/key/create', (req, res) => {
+app.post('/keys/create', (req, res) => {
   const { customApikey } = req.body;
 
   if (!customApikey) {
