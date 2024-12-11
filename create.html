@@ -13,7 +13,8 @@
       margin: 10px 0;
       padding: 10px;
       font-size: 16px;
-      width: 100%;
+      width: 90%;
+      border-radius: 13px;
     }
     button {
       padding: 10px 20px;
@@ -59,12 +60,12 @@
 
       const apikey = document.getElementById('apikey').value;
       
-      const response = await fetch('/apikey/create', {
+      const response = await fetch('/key/create', {  // URL yang benar untuk mengirimkan data
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ customApikey: apikey })
+        body: JSON.stringify({ customApikey: apikey })  // Mengirimkan custom API key
       });
 
       const data = await response.json();

@@ -1347,11 +1347,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/apikey/create', (req, res) => {
-  res.sendFile(path.join(__dirname, 'create.html'));
+  res.sendFile(path.join(__dirname, 'create.html')); // Mengarahkan ke create.html
 });
 
 // Route untuk menangani pembuatan API key baru
-app.post('/apikey/create', (req, res) => {
+app.post('/key/create', (req, res) => {
   const { customApikey } = req.body;
 
   if (!customApikey) {
