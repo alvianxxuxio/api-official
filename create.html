@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create API Key</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .response {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Create Your Custom API Key</h1>
+  <form id="apiKeyForm">
+    <label for="apikey">Enter Custom API Key:</label>
+    <input type="text" id="apikey" name="apikey" placeholder="Enter your custom API key" required />
+    <button type="submit">Create API Key</button>
+  </form>
+
+  <div id="response" class="response" style="display: none;"></div>
+
+  <script>
+    document.getElementById('apiKeyForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const apikey = document.getElementById('apikey').value;
+      
+      const response = await fetch('/apikey/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ customApikey: apikey })
+      });
+
+      const data = await response.json();
+      const responseElement = document.getElementById('response');
+      
+      if (response.ok) {
+        responseElement.classList.add('success');
+        responseElement.classList.remove('error');
+        responseElement.style.display = 'block';
+        responseElement.textContent = `Success! Your new API key: ${data.apiKey}`;
+      } else {
+        responseElement.classList.add('error');
+        responseElement.classList.remove('success');
+        responseElement.style.display = 'block';
+        responseElement.textContent = `Error: ${data.error}`;
+      }
+    });
+  </script>
+
+</body>
+</html>

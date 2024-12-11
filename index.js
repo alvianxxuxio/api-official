@@ -1346,6 +1346,33 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/apikey/create', (req, res) => {
+  res.sendFile(path.join(__dirname, 'create.html'));
+});
+
+// Route untuk menangani pembuatan API key baru
+app.post('/apikey/create', (req, res) => {
+  const { customApikey } = req.body;
+
+  if (!customApikey) {
+    return res.status(400).json({ error: 'Custom API key is required' });
+  }
+
+  // Mengecek apakah API key yang dimasukkan sudah ada dalam validApiKeys
+  if (validApiKeys.includes(customApikey)) {
+    return res.status(400).json({ error: 'API key already exists' });
+  }
+
+  // Menambahkan API key baru ke validApiKeys
+  validApiKeys.push(customApikey);
+
+  // Mengembalikan respons dengan API key yang baru dibuat
+  return res.status(201).json({
+    message: 'API key created successfully',
+    apiKey: customApikey,
+    validApiKeys: validApiKeys
+  });
+});
 
 //GPT logic
 app.get('/api/gptlogic', async (req, res) => {
