@@ -690,7 +690,26 @@
     </div>
     <div class="content-container">
   
-      
+          <div class="btn" onclick="toggleDropdown('dropdown35')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/remini</div>
+          <span><b class="error">New</b></span>
+        </div>
+        <div id="dropdown35" class="dropdown-content">
+          <form class="form-group" action="/api/remini" onsubmit="executeApi(event, '/api/remini')">
+            <label for="message35">Enter Message:</label>
+            <input type="text" id="message35" name="message" required>
+
+        <label for="apikey35">Enter API Key:</label>
+        <input type="text" id="apikey35" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
       <div class="btn" onclick="toggleDropdown('dropdown30')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/igstalk</div>
           <span><b class="error">Error</b></span>
