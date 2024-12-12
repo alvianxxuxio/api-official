@@ -24,6 +24,25 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+
+//remini
+async function remini(imageBuffer) {
+  try {
+    const response = await fetch("https://lexica.qewertyy.dev/upscale", {
+      body: JSON.stringify({
+        image_data: Buffer.from(imageBuffer, "base64"),
+        format: "binary",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+    return Buffer.from(await response.arrayBuffer());
+  } catch {
+    return null;
+  }
+}
 //txt2img
 async function txt2img(prompt) {
     const Api = "https://ai-api.magicstudio.com/api/ai-art-generator";
@@ -145,32 +164,31 @@ const yt = async (query) => {
 // mediafire 
 async function mf(url) {
     return new Promise(async (resolve, reject) => {
-           const response = await fetch(url);
-            const html = await response.text();
-            const $ = cheerio.load(html);
+        try {
+            const response = await require("undici").fetch(url);
+            const data = await response.text();
+            const $ = cheerio.load(data);
+            
+            let name = $('.dl-info > div > div.filename').text();
+            let link = $('#downloadButton').attr('href');
+          let det = $('ul.details').html().replace(/\s/g, "").replace(/<\/li><li>/g, '\n').replace(/<\/?li>|<\/?span>/g, '');
+            let type = $('.dl-info > div > div.filetype').text();
 
-            const type = $('.dl-info').find('.filetype > span').text().trim();
-            const filename = $('.dl-info').find('.intro .filename').text();
-            const size = $('.details li:contains("File size:") span').text();
-            const uploaded = $('.details li:contains("Uploaded:") span').text()
-         const ext =
-      /\(\.(.*?)\)/
-        .exec($(".dl-info").find(".filetype > span").eq(1).text())?.[1]
-        ?.trim() || "bin";
-          const mimetype = lookup(ext.toLowerCase());
-           const download = $(".input").attr('href');
-            resolve({
-                filename,
-                type,
-                size,
-                uploaded,
-                ext,
-                mimetype,
-                download
-            });
-    }).catch(e => reject({
-     msg: "Gagal mengambil data dari link tersebut"
-})); 
+        
+
+            const hasil = {
+                filename: name,
+                filetype: type,
+                link: link,
+                detail: det
+            };
+
+            resolve(hasil);
+        } catch (err) {
+            console.error(err);
+            reject(err);
+        }
+    });
 }
 
 //tiktok
@@ -1637,6 +1655,28 @@ if (!apikey || !validApiKeys.includes(apikey)) {
   }
 });
 
+//remini
+app.get('/api/remini', async (req, res) => {
+  try {
+    const { apikey, message } = req.query;
+if (!apikey || !validApiKeys.includes(apikey)) {
+    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+}
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    const response = await remini(message);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // spotify
 app.get('/api/spotify', async (req, res) => {
   try {
