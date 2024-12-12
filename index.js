@@ -4,6 +4,8 @@ const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
 const yts = require("yt-search");
+const { createCanvas } = require('canvas');
+const Jimp = require('jimp');
 const moment = require("moment-timezone");
 const {
   GoogleGenerativeAI,
@@ -145,31 +147,32 @@ const yt = async (query) => {
 // mediafire 
 async function mf(url) {
     return new Promise(async (resolve, reject) => {
-        try {
-            const response = await require("undici").fetch(url);
-            const data = await response.text();
-            const $ = cheerio.load(data);
-            
-            let name = $('.dl-info > div > div.filename').text();
-            let link = $('#downloadButton').attr('href');
-          let det = $('ul.details').html().replace(/\s/g, "").replace(/<\/li><li>/g, '\n').replace(/<\/?li>|<\/?span>/g, '');
-            let type = $('.dl-info > div > div.filetype').text();
+           const response = await fetch(url);
+            const html = await response.text();
+            const $ = cheerio.load(html);
 
-        
-
-            const hasil = {
-                filename: name,
-                filetype: type,
-                link: link,
-                detail: det
-            };
-
-            resolve(hasil);
-        } catch (err) {
-            console.error(err);
-            reject(err);
-        }
-    });
+            const type = $('.dl-info').find('.filetype > span').text().trim();
+            const filename = $('.dl-info').find('.intro .filename').text();
+            const size = $('.details li:contains("File size:") span').text();
+            const uploaded = $('.details li:contains("Uploaded:") span').text()
+         const ext =
+      /\(\.(.*?)\)/
+        .exec($(".dl-info").find(".filetype > span").eq(1).text())?.[1]
+        ?.trim() || "bin";
+          const mimetype = lookup(ext.toLowerCase());
+           const download = $(".input").attr('href');
+            resolve({
+                filename,
+                type,
+                size,
+                uploaded,
+                ext,
+                mimetype,
+                download
+            });
+    }).catch(e => reject({
+     msg: "Gagal mengambil data dari link tersebut"
+})); 
 }
 
 //tiktok
@@ -811,24 +814,35 @@ async function gptpic(captionInput) {
 }
 
 // terabox 
-async function terabox(query) {
-    const apiKey = 'fFUzSrI1ZcD3';
-    const url = `https://api.botwa.space/api/terabox?url=${query}&apikey=${apiKey}`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (response.ok) {
-            // Menampilkan hasil data dari API
-            return data;
-        } else {
-            throw new Error(`Error: ${data.message || 'Terabox scrape failed'}`);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        return { success: false, message: error.message };
-    }
+async function terabox(url) {
+return new Promise(async(resolve, reject) => {
+await axios.post('https://teradl-api.dapuntaratya.com/generate_file', {
+   mode: 1,
+   url: url
+}).then(async(a) => {
+const array = []
+for (let x of a.data.list) {
+let dl = await axios.post('https://teradl-api.dapuntaratya.com/generate_link', {
+       js_token: a.data.js_token,
+       cookie: a.data.cookie,
+       sign: a.data.sign,
+       timestamp: a.data.timestamp,
+       shareid: a.data.shareid,
+       uk: a.data.uk,
+       fs_id: x.fs_id
+     }).then(i => i.data).catch(e => e.response.data)
+;
+  if (!dl.download_link) return
+    array.push({
+          fileName: x.name,
+          type: x.type,
+          thumb: x.image,
+          ...dl.download_link
+         });
+      }
+      resolve(array);
+    }).catch(e => reject(e.response.data));
+ })
 }
 
 // idntimes
@@ -1108,34 +1122,54 @@ async function twiterdl(query) {
 }
 
 // facebook
-async function fb(query) {
-  try {
-    const response = await fetch("https://skizo.tech/api/fb", {
-      method: "POST",
-      body: JSON.stringify({
-        url: query,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "alvianuxio",
-      },
-    });
+async function fb(url) {
+    let results = {};
+    while(Object.keys(results).length === 0) {
+        let { data } = await axios
+            .post(
+                "https://getmyfb.com/process",
+                `id=${encodeURIComponent(url)}&locale=id`,
+                {
+                    headers: {
+                        "HX-Request": true,
+                        "HX-Trigger": "form",
+                        "HX-Target": "target",
+                        "HX-Current-URL": "https://getmyfb.com/id",
+                        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+                        "User-Agent":
+                            "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36",
+                        Referer: "https://getmyfb.com/id",
+                    },
+                },
+            ).catch((e) => e.response);
 
-    // Ambil teks mentah dari respons
-    const responseText = await response.text();
-    
-    // Cek apakah teks bisa diubah menjadi JSON
-    try {
-      const data = JSON.parse(responseText);
-      return data;
-    } catch (jsonError) {
-      // Jika gagal parsing JSON, tampilkan teks mentah
-      console.error("Failed to parse JSON, response was:", responseText);
+        const $ = cheerio.load(data);
+
+        const caption = $(".results-item-text").text().trim();
+        const imageUrl = $(".results-item-image").attr("src");
+
+        let newLinksFound = false;
+        let array = []
+        $(".results-list li").each(function (i, element) {
+            const title = $(element).find(".results-item-text").text().trim();
+            const downloadLink = $(element).find("a").attr("href");
+            const quality = $(element).text().trim().split("(")[0];
+            if(downloadLink) {
+                newLinksFound = true;
+               array.push(downloadLink);
+            }
+        });
+      results =  {
+         metadata: {
+             title: caption,
+             image: imageUrl,
+           },
+          media: array,
+       }
+     console.log(results);
+     break
     }
-
-  } catch (error) {
-    console.error("Error:", error);
-  }
+    return results
 }
 
 
@@ -1263,21 +1297,81 @@ async function gemini(query) {
 }
 
 //brat
-const UrlBrat = "https://brat.caliphdev.com/api/brat";
-async function Brat(query) {
-    if (!query) throw new Error("Query tidak boleh kosong.");
-    const fullUrl = `${UrlBrat}?text=${encodeURIComponent(query)}`;
-    
-    try {
-        const response = await fetch(fullUrl);
-        if (!response.ok) throw new Error(`API Error: ${response.status} ${response.statusText}`);
+async function Brat(teks) {
+  let width = 512;
+  let height = 512;
+  let margin = 20;
+  let wordSpacing = 50; 
+  
+  let canvas = createCanvas(width, height);
+  let ctx = canvas.getContext('2d');
 
-        const data = await response.json();
-        return data.response || "Tidak ada respons dari API Brat.";
-    } catch (error) {
-        console.error("Error saat memanggil Brat API:", error.message);
-        throw new Error("Gagal mengambil data dari Brat API.");
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, width, height);
+
+  let fontSize = 80;
+  let lineHeightMultiplier = 1.3;
+
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = 'black';
+
+  let words = teks.split(' ');
+  let lines = [];
+
+  let rebuildLines = () => {
+    lines = [];
+    let currentLine = '';
+
+    for (let word of words) {
+      let testLine = currentLine ? `${currentLine} ${word}` : word;
+      let lineWidth =
+        ctx.measureText(testLine).width + (currentLine.split(' ').length - 1) * wordSpacing;
+
+      if (lineWidth < width - 2 * margin) {
+        currentLine = testLine;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
     }
+
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+  };
+
+  ctx.font = `${fontSize}px Sans-serif`;
+  rebuildLines();
+
+  while (lines.length * fontSize * lineHeightMultiplier > height - 2 * margin) {
+    fontSize -= 2;
+    ctx.font = `${fontSize}px Sans-serif`;
+    rebuildLines();
+  }
+  
+  let lineHeight = fontSize * lineHeightMultiplier;
+  let y = margin;
+
+  for (let line of lines) {
+    let wordsInLine = line.split(' ');
+    let x = margin;
+
+    for (let word of wordsInLine) {
+      ctx.fillText(word, x, y);
+      x += ctx.measureText(word).width + wordSpacing;
+    }
+    
+    y += lineHeight;
+  }
+
+  let buffer = canvas.toBuffer('image/png');
+  let image = await Jimp.read(buffer);
+
+  image.blur(3);
+  let blurredBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
+
+  return blurredBuffer;
 }
 
 //prodia
