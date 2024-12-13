@@ -815,7 +815,7 @@
         <div id="dropdown12" class="dropdown-content">
           <form class="form-group" action="/api/halodoc" onsubmit="search(event, '/api/halodoc')">
             <label for="message12">Enter Message:</label>
-            <input type="text" id="message12" name="message" required>
+            <input type="text" id="message12" name="search" required>
             <label for="apikey12">Enter API Key:</label>
         <input type="text" id="apikey12" name="apikey" placeholder="Enter Your ApiKeys" required>
             <button type="submit">Execute</button>
@@ -1028,13 +1028,13 @@ window.search = function(event, endpoint) {
         .then(data => {
             
             const message = JSON.stringify(data, null, 2);
-            const osbjs = `
+            const sres = `
             ${message}
             
             Request :
             ${requestUrl}
             `
-            showToast(osbjs, true);
+            showToast(sres, true);
 
             
             totalRequests++;
@@ -1078,13 +1078,13 @@ window.url = function(event, endpoint) {
         .then(data => {
             
             const message = JSON.stringify(data, null, 2);
-            const osbjs = `
+            const urlres = `
             ${message}
             
             Request :
             ${requestUrl}
             `
-            showToast(osbjs, true);
+            showToast(urlres, true);
 
             
             totalRequests++;
@@ -1128,13 +1128,13 @@ window.text = function(event, endpoint) {
         .then(data => {
             
             const message = JSON.stringify(data, null, 2);
-            const osbjs = `
+            const textres = `
             ${message}
             
             Request :
             ${requestUrl}
             `
-            showToast(osbjs, true);
+            showToast(textres, true);
 
             
             totalRequests++;
