@@ -2276,7 +2276,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await simi(message);
+    const response = await simi(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2323,7 +2323,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await degreeGuru(message);
+    const response = await degreeGuru(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
