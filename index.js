@@ -1650,7 +1650,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await llama3(message);
+    const response = await llama3(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1673,7 +1673,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await gemini(message);
+    const response = await gemini(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1804,14 +1804,14 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //pinterest
 app.get('/api/pinterest', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, search } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
-    const response = await pinterest(message);
+    const response = await pinterest(search);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1834,7 +1834,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await igdl(message);
+    const response = await igdl(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1879,7 +1879,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await spotifydl(message);
+    const response = await spotifydl(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1926,7 +1926,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await capcut(message);
+    const response = await capcut(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1949,7 +1949,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await mf(message);
+    const response = await mf(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1972,7 +1972,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await fb(message);
+    const response = await fb(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1995,7 +1995,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await terabox(message);
+    const response = await terabox(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2018,7 +2018,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await tiktok(message);
+    const response = await tiktok(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2042,7 +2042,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await twiterdl(message);
+    const response = await twiterdl(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2064,7 +2064,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await gpt4o(message);
+    const response = await gpt4o(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2112,7 +2112,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await anime(message);
+    const response = await anime(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2136,7 +2136,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await videy(message);
+    const response = await videy(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2159,7 +2159,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await GDriveDl(message);
+    const response = await GDriveDl(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2228,7 +2228,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await yt(message);
+    const response = await yt(url);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2252,7 +2252,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await letmegpt(message);
+    const response = await letmegpt(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2346,7 +2346,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await Renvy(message);
+    const response = await Renvy(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2392,7 +2392,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await smartContract(message);
+    const response = await smartContract(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2415,7 +2415,7 @@ if (!apikey || !validApiKeys.includes(apikey)) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await blackboxAIChat(message);
+    const response = await blackboxAIChat(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
