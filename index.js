@@ -1643,12 +1643,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //llama3
 app.get('/api/llama3', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await llama3(message);
     res.status(200).json({
@@ -1666,12 +1666,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //gemini
 app.get('/api/gemini', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gemini(message);
     res.status(200).json({
@@ -1827,12 +1827,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //igdl
 app.get('/api/instagram', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await igdl(message);
     res.status(200).json({
@@ -1872,12 +1872,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // spotify
 app.get('/api/spotify', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await spotifydl(message);
     res.status(200).json({
@@ -1919,12 +1919,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // capcut
 app.get('/api/capcut', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await capcut(message);
     res.status(200).json({
@@ -1942,12 +1942,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // mediafire
 app.get('/api/mediafire', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await mf(message);
     res.status(200).json({
@@ -1965,12 +1965,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // facebook
 app.get('/api/facebook', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await fb(message);
     res.status(200).json({
@@ -1988,12 +1988,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // terabox
 app.get('/api/terabox', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await terabox(message);
     res.status(200).json({
@@ -2011,12 +2011,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //tiktok
 app.get('/api/tiktok', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await tiktok(message);
     res.status(200).json({
@@ -2035,12 +2035,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // twitter
 app.get('/api/twitter', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await twiterdl(message);
     res.status(200).json({
@@ -2057,12 +2057,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //gpt4o
 app.get('/api/gpt4o', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gpt4o(message);
     res.status(200).json({
@@ -2081,12 +2081,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //openai
 app.get('/api/openai', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await openai(message);
     res.status(200).json({
@@ -2105,12 +2105,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // anime
 app.get('/api/anime', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await anime(message);
     res.status(200).json({
@@ -2129,12 +2129,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //openai
 app.get('/api/videy', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await videy(message);
     res.status(200).json({
@@ -2152,12 +2152,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // gdrive
 app.get('/api/gdrive', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await GDriveDl(message);
     res.status(200).json({
@@ -2221,12 +2221,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // youtube
 app.get('/api/ytdl', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await yt(message);
     res.status(200).json({
@@ -2245,12 +2245,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //letmeGPT
 app.get('/api/letmegpt', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await letmegpt(message);
     res.status(200).json({
@@ -2269,12 +2269,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //simi
 app.get('/api/simi', async (req, res) => {
   try {
-    const { apikey, message }= req.query;
+    const { apikey, text }= req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await simi(message);
     res.status(200).json({
@@ -2316,12 +2316,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // Endpoint untuk degreeGuru
 app.get('/api/degreeguru', async (req, res) => {
   try {
-    const { apikey, message }= req.query;
+    const { apikey, text }= req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await degreeGuru(message);
     res.status(200).json({
@@ -2339,12 +2339,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // Endpoint untuk Renvy AI
 app.get('/api/Renvy', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await Renvy(message);
     res.status(200).json({
@@ -2385,12 +2385,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // Endpoint untuk smartContract
 app.get('/api/smartcontract', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await smartContract(message);
     res.status(200).json({
@@ -2408,12 +2408,12 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 // Endpoint untuk blackboxAIChat
 app.get('/api/blackboxAIChat', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await blackboxAIChat(message);
     res.status(200).json({
