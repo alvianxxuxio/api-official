@@ -4,12 +4,6 @@ const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
 const yts = require("yt-search");
-const { SignJWT } = require('jose')
-const FormData = require('form-data');
-const { createCanvas } = require('canvas');
-const Jimp = require('jimp');
-const { Octokit } = require("@octokit/rest");
-const ytdl = require("ytdl-core");
 const moment = require("moment-timezone");
 const {
   GoogleGenerativeAI,
@@ -30,8 +24,25 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
-// remini
 
+//remini
+async function remini(imageBuffer) {
+  try {
+    const response = await fetch("https://lexica.qewertyy.dev/upscale", {
+      body: JSON.stringify({
+        image_data: Buffer.from(imageBuffer, "base64"),
+        format: "binary",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+    return Buffer.from(await response.arrayBuffer());
+  } catch {
+    return null;
+  }
+}
 //txt2img
 async function txt2img(prompt) {
     const Api = "https://ai-api.magicstudio.com/api/ai-art-generator";
@@ -1495,6 +1506,7 @@ async function gemini(query) {
 
 //brat
 
+
 //prodia
 
 async function prodia(text) {
@@ -1677,14 +1689,14 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //Brat 
 app.get('/api/Brat', async (req, res) => {
   try {
-    const { apikey, text } = req.query;
+    const { apikey, message } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!text) {
-      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
-    const response = await Brat(text);
+    const response = await Brat(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1700,14 +1712,14 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //halodoc
 app.get('/api/halodoc', async (req, res) => {
   try {
-    const { apikey, search } = req.query;
+    const { apikey, message } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!search) {
-      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
-    const response = await halodoc(search);
+    const response = await halodoc(message);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
