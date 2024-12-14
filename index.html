@@ -1131,8 +1131,6 @@ window.check = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
     const message = form.querySelector('input[name="apiKey"]').value;
-    const apikey = form.querySelector('input[name="apikey"]').value;
-
     const query = `?apiKey=${encodeURIComponent(message)}`;
     
 
