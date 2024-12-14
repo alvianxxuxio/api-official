@@ -2279,6 +2279,7 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gpt4o(text);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2506,6 +2507,7 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await letmegpt(text);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2534,6 +2536,7 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await simi(text);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2590,6 +2593,7 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await degreeGuru(text);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2617,6 +2621,7 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await Renvy(text);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2672,6 +2677,7 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await smartContract(text);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2699,6 +2705,7 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await blackboxAIChat(text);
+    apiKeyDetails.usage += 1;
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
