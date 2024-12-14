@@ -1679,7 +1679,9 @@ app.get('/apikey/check', (req, res) => {
   const isValid = validApiKeys.includes(apiKey);
 
   res.status(200).json({
-    message: isValid ? 'API key valid.' : 'API key tidak valid.',
+    status: "200",    
+    key: apiKey;
+    Info: isValid ? 'API key valid.' : 'API key tidak valid.',
     valid: isValid,
   });
 });
@@ -1708,7 +1710,7 @@ app.get('/admin/create', async (req, res) => {
     validApiKeys.push(create);
 
     res.status(200).json({
-      message: 'API key berhasil dibuat!',
+      status: 'API key berhasil dibuat!',
       information: `https://go.alvianuxio.my.id/contact`,
       creator: "ALVIAN UXIO Inc",
       data: {
