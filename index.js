@@ -1675,21 +1675,36 @@ app.get('/apikey/check', (req, res) => {
     return res.status(400).json({ error: 'Parameter "apiKey" tidak ditemukan.' });
   }
 
-  // Cek apakah API key ada di validApiKeys
-  const isValid = validApiKeys.includes(apiKey);
+  // Temukan API key dalam validApiKeys
+  const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apiKey);
+
+  if (!apiKeyDetails) {
+    return res.status(404).json({
+      status: "404",
+      key: apiKey,
+      info: 'API key tidak valid.',
+      valid: false,
+    });
+  }
+
+  // Cek apakah API key sudah kedaluwarsa
+  const isExpired = apiKeyDetails.expired && apiKeyDetails.expired < Date.now();
 
   res.status(200).json({
-    status: isValid ? "200" : "404",    
+    status: isExpired ? "403" : "200",
     key: apiKey,
-    Info: isValid ? 'API key valid.' : 'API key tidak valid.',
-    valid: isValid,
+    info: isExpired ? 'API key telah kedaluwarsa.' : 'API key valid.',
+    valid: !isExpired,
+    limit: apiKeyDetails.limit,
+    premium: apiKeyDetails.premium,
+    expired: isExpired ? new Date(apiKeyDetails.expired).toISOString() : null,
   });
 });
 
 // create apikey
 app.get('/admin/create', async (req, res) => {
   try {
-    const { create, password } = req.query;
+    const { create, password, limit, premium, expired } = req.query;
 
     // Cek apakah parameter password ada dan benar
     if (!password || password !== adminPassword) {
@@ -1702,19 +1717,27 @@ app.get('/admin/create', async (req, res) => {
     }
 
     // Cek apakah API key sudah ada di validApiKeys
-    if (validApiKeys.includes(create)) {
+    if (validApiKeys.some(key => key.key === create)) {
       return res.status(400).json({ error: 'API key sudah ada.' });
     }
 
-    // Tambahkan API key ke array validApiKeys
-    validApiKeys.push(create);
+    // Validasi dan set default untuk limit, premium, dan expired
+    const apiKeyDetails = {
+      key: create,
+      limit: limit ? parseInt(limit) : 3500, // Default limit to 3500 if not provided
+      premium: premium === 'true', // Convert to boolean
+      expired: expired ? convertToTimestamp(expired) : null, // Convert to timestamp or null
+    };
+
+    // Tambahkan API key dan detail ke array validApiKeys
+    validApiKeys.push(apiKeyDetails);
 
     res.status(200).json({
       status: 'API key berhasil dibuat!',
       information: `https://go.alvianuxio.my.id/contact`,
       creator: "ALVIAN UXIO Inc",
       data: {
-        newApiKey: create,
+        newApiKey: apiKeyDetails,
         totalApiKeys: validApiKeys.length,
       },
     });
@@ -1722,28 +1745,14 @@ app.get('/admin/create', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-//llama3
-app.get('/api/llama3', async (req, res) => {
-  try {
-    const { apikey, text } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+
+// Fungsi untuk mengonversi format YY-MM-DD menjadi timestamp
+function convertToTimestamp(dateString) {
+  const [year, month, day] = dateString.split('-').map(Number);
+  const fullYear = year < 100 ? 2000 + year : year; // Tambah 2000 untuk tahun 2 digit
+  // Buat tanggal baru dengan bulan (0-11), sehingga perlu dikurangi 1
+  return new Date(fullYear, month - 1, day).getTime();
 }
-    if (!text) {
-      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
-    }
-    const response = await llama3(text);
-    res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
-  creator: "ALVIAN UXIO Inc",
-  data: {
-    response: response
-  }
-});
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 //gemini
 app.get('/api/gemini', async (req, res) => {
