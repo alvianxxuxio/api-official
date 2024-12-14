@@ -4,6 +4,9 @@ const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
 const yts = require("yt-search");
+const { SignJWT } = require('jose')
+const FormData = require('form-data');
+const ytdl = require("ytdl-core");
 const moment = require("moment-timezone");
 const {
   GoogleGenerativeAI,
@@ -24,23 +27,55 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+// remini
+async function generateJWT() {
+    const generateRandomKey = () => {
+    const keyBuffer = new Uint8Array(32); // 256-bit key
+    crypto.getRandomValues(keyBuffer);
+    return keyBuffer;
+    };
+    const secret = new TextEncoder().encode(generateRandomKey());
 
-//remini
-async function remini(imageBuffer) {
+    const jwt = await new SignJWT({
+        sub: "ignore",
+        platform: "web",
+        exp: Math.floor(Date.now() / 1000) + 300, // 5 menit
+    })
+        .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+        .sign(secret);
+
+    return jwt;
+}
+
+
+async function remini(filePath, token) {
   try {
-    const response = await fetch("https://lexica.qewertyy.dev/upscale", {
-      body: JSON.stringify({
-        image_data: Buffer.from(imageBuffer, "base64"),
-        format: "binary",
-      }),
+    // Membaca file gambar
+    const imageBuffer = await Func.fetchBuffer(filePath)
+
+    // Membuat form-data
+    const formData = new FormData();
+    formData.append('input_image', imageBuffer, 'image.jpg');
+    formData.append('zoom_factor', '2')
+    // Mengirim permintaan POST menggunakan Axios
+    const response = await axios.post('https://api.betterimage.ai/api/enhance/v1', formData, {
       headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
+        ...formData.getHeaders(),
+        'authorization': `Bearer ${generateJWT()}`,
+        'accept': 'application/json',
+        'origin': 'https://betterimage.ai',
+        'referer': 'https://betterimage.ai/',
+        'sec-ch-ua-mobile': '?1',
+        'sec-ch-ua-platform': '"ios"',
+        'user-agent': 'Mozilla/5.0 (Ipad; Pro Os 1990; X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
+      }
     });
-    return Buffer.from(await response.arrayBuffer());
-  } catch {
-    return null;
+
+    // Menampilkan hasil
+    return (response.data);
+  } catch (error) {
+    console.error('Error:', error.response ? error.response.data : error.message);
+    return error.response.data
   }
 }
 //txt2img
@@ -1712,14 +1747,14 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //halodoc
 app.get('/api/halodoc', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, search } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
-    const response = await halodoc(message);
+    const response = await halodoc(search);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
