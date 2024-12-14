@@ -17,6 +17,7 @@ const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const app = express();
 const validApiKeys = ['aluxi', 'alvianuxio', 'admin', 'global', 'world', 'sepuh', 'indonesia'];
+const adminPassword = "alds31"; // Password untuk otorisasi
 const PORT = process.env.PORT || 3000;
 app.enable("trust proxy");
 app.set("json spaces", 2);
@@ -1504,6 +1505,31 @@ async function gemini(query) {
     }
 }
 
+// gsmarena
+async function gsm(query) {
+    try {
+        const response = await axios({
+            method: "get",
+            url: `https://gsmarena.com/results.php3?sQuickSearch=yes&sName=${query}`
+        });
+        const $ = cheerio.load(response.data);
+        const result = [];
+        const devices = $(".makers").find("li");
+        devices.each((i, e) => {
+            const img = $(e).find("img");
+            result.push({
+                id: $(e).find("a").attr("href").replace(".php", ""),
+                name: $(e).find("span").html().split("<br>").join(" "),
+                thumbnail: img.attr("src"),
+                description: img.attr("title")
+            });
+        });
+        return { result }; 
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
 //brat
 
 
@@ -1640,6 +1666,60 @@ if (!apikey || !validApiKeys.includes(apikey)) {
   }
 });
 
+// check apikey
+app.get('/apikey/check', (req, res) => {
+  const { apiKey } = req.query;
+
+  // Cek apakah parameter apiKey ada
+  if (!apiKey) {
+    return res.status(400).json({ error: 'Parameter "apiKey" tidak ditemukan.' });
+  }
+
+  // Cek apakah API key ada di validApiKeys
+  const isValid = validApiKeys.includes(apiKey);
+
+  res.status(200).json({
+    message: isValid ? 'API key valid.' : 'API key tidak valid.',
+    valid: isValid,
+  });
+});
+
+// create apikey
+app.get('/admin/create', async (req, res) => {
+  try {
+    const { create, password } = req.query;
+
+    // Cek apakah parameter password ada dan benar
+    if (!password || password !== adminPassword) {
+      return res.status(403).json({ error: 'Akses ditolak. Password salah atau tidak ditemukan.' });
+    }
+
+    // Cek apakah parameter create ada
+    if (!create) {
+      return res.status(400).json({ error: 'Parameter "create" tidak ditemukan.' });
+    }
+
+    // Cek apakah API key sudah ada di validApiKeys
+    if (validApiKeys.includes(create)) {
+      return res.status(400).json({ error: 'API key sudah ada.' });
+    }
+
+    // Tambahkan API key ke array validApiKeys
+    validApiKeys.push(create);
+
+    res.status(200).json({
+      message: 'API key berhasil dibuat!',
+      information: `https://go.alvianuxio.my.id/contact`,
+      creator: "ALVIAN UXIO Inc",
+      data: {
+        newApiKey: create,
+        totalApiKeys: validApiKeys.length,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //llama3
 app.get('/api/llama3', async (req, res) => {
   try {
@@ -1712,14 +1792,14 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //halodoc
 app.get('/api/halodoc', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, search } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
-    const response = await halodoc(message);
+    const response = await halodoc(search);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1812,6 +1892,29 @@ if (!apikey || !validApiKeys.includes(apikey)) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await pinterest(search);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//gsmarena
+app.get('/api/gsmarena', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey || !validApiKeys.includes(apikey)) {
+    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+}
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await gsm(search);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
