@@ -1680,7 +1680,7 @@ app.get('/apikey/check', (req, res) => {
 
   res.status(200).json({
     status: "200",    
-    key: apiKey;
+    key: apiKey,
     Info: isValid ? 'API key valid.' : 'API key tidak valid.',
     valid: isValid,
   });
