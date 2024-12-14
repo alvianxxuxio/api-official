@@ -1697,7 +1697,7 @@ app.get('/apikey/check', (req, res) => {
     valid: !isExpired,
     limit: apiKeyDetails.limit,
     premium: apiKeyDetails.premium,
-    expired: isExpired ? new Date(apiKeyDetails.expired).toISOString() : null,
+    expired: apiKeyDetails.expired ? new Date(apiKeyDetails.expired).toISOString() : null, // Tampilkan tanggal expired jika ada
   });
 });
 
@@ -1750,7 +1750,6 @@ app.get('/admin/create', async (req, res) => {
 function convertToTimestamp(dateString) {
   const [year, month, day] = dateString.split('-').map(Number);
   const fullYear = year < 100 ? 2000 + year : year; // Tambah 2000 untuk tahun 2 digit
-  // Buat tanggal baru dengan bulan (0-11), sehingga perlu dikurangi 1
   return new Date(fullYear, month - 1, day).getTime();
 }
 
