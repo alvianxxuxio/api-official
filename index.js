@@ -1647,13 +1647,18 @@ app.get('/api/gptlogic', async (req, res) => {
 app.get('/api/Rusdi', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Rusdi(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1698,6 +1703,7 @@ app.get('/apikey/check', (req, res) => {
     limit: apiKeyDetails.limit,
     premium: apiKeyDetails.premium,
     expired: apiKeyDetails.expired ? new Date(apiKeyDetails.expired).toISOString() : null, // Tampilkan tanggal expired jika ada
+    usage: apiKeyDetails.usage // Tambahkan informasi penggunaan API
   });
 });
 
@@ -1723,11 +1729,12 @@ app.get('/admin/create', async (req, res) => {
 
     // Validasi dan set default untuk limit, premium, dan expired
     const apiKeyDetails = {
-      key: create,
-      limit: limit ? parseInt(limit) : 3500, // Default limit to 3500 if not provided
-      premium: premium === 'true', // Convert to boolean
-      expired: expired ? convertToTimestamp(expired) : null, // Convert to timestamp or null
-    };
+  key: create,
+  limit: limit ? parseInt(limit) : 3500,
+  premium: premium === 'true',
+  expired: expired ? convertToTimestamp(expired) : null,
+  usage: 0 // Menyimpan jumlah penggunaan
+};
 
     // Tambahkan API key dan detail ke array validApiKeys
     validApiKeys.push(apiKeyDetails);
@@ -1757,13 +1764,18 @@ function convertToTimestamp(dateString) {
 app.get('/api/gemini', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gemini(text);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1780,13 +1792,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/Brat', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Brat(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1803,13 +1820,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/halodoc', async (req, res) => {
   try {
     const { apikey, search } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!search) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await halodoc(search);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1826,13 +1848,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/gptpic', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gptpic(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1849,13 +1876,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/prodia', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await prodia(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1872,13 +1904,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/txt2img', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await text2imgAfter(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1895,13 +1932,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/pinterest', async (req, res) => {
   try {
     const { apikey, search } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!search) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await pinterest(search);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1918,13 +1960,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/gsmarena', async (req, res) => {
   try {
     const { apikey, search } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!search) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await gsm(search);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1941,13 +1988,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/instagram', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await igdl(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1964,13 +2016,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/remini', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await remini(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1986,13 +2043,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/spotify', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await spotifydl(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2010,13 +2072,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/idntimes', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await idn(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2033,13 +2100,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/capcut', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await capcut(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2056,13 +2128,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/mediafire', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await mf(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2079,13 +2156,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/facebook', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await fb(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2102,13 +2184,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/terabox', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await terabox(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2125,13 +2212,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/tiktok', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await tiktok(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2149,13 +2241,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/twitter', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await twiterdl(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2171,9 +2268,13 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/gpt4o', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
@@ -2195,13 +2296,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/openai', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await openai(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2219,13 +2325,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/anime', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await anime(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2243,13 +2354,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/videy', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await videy(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2266,13 +2382,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/gdrive', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await GDriveDl(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2289,13 +2410,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/igstalk', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await igstalk(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2312,13 +2438,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/aio', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await aio(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2335,13 +2466,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/ytdl', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await yt(url);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2359,9 +2495,13 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/letmegpt', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
@@ -2383,9 +2523,13 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/simi', async (req, res) => {
   try {
     const { apikey, text }= req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
@@ -2407,13 +2551,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/ragbot', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await ragBot(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2430,9 +2579,13 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/degreeguru', async (req, res) => {
   try {
     const { apikey, text }= req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
@@ -2453,9 +2606,13 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/Renvy', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
@@ -2476,13 +2633,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/aluxi', async (req, res) => {
   try {
     const { apikey, message }= req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await simi(message);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2499,9 +2661,13 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/smartcontract', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
@@ -2522,13 +2688,18 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 app.get('/api/blackboxAIChat', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-if (!apikey || !validApiKeys.includes(apikey)) {
-    return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
-}
+const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
+    if (!apiKeyDetails) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+    }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await blackboxAIChat(text);
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
