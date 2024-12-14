@@ -31,56 +31,7 @@ app.set("json spaces", 2);
 app.use(cors());
 
 // remini
-async function generateJWT() {
-    const generateRandomKey = () => {
-    const keyBuffer = new Uint8Array(32); // 256-bit key
-    crypto.getRandomValues(keyBuffer);
-    return keyBuffer;
-    };
-    const secret = new TextEncoder().encode(generateRandomKey());
 
-    const jwt = await new SignJWT({
-        sub: "ignore",
-        platform: "web",
-        exp: Math.floor(Date.now() / 1000) + 300, // 5 menit
-    })
-        .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-        .sign(secret);
-
-    return jwt;
-}
-
-
-async function remini(filePath, token) {
-  try {
-    // Membaca file gambar
-    const imageBuffer = await Func.fetchBuffer(filePath)
-
-    // Membuat form-data
-    const formData = new FormData();
-    formData.append('input_image', imageBuffer, 'image.jpg');
-    formData.append('zoom_factor', '2')
-    // Mengirim permintaan POST menggunakan Axios
-    const response = await axios.post('https://api.betterimage.ai/api/enhance/v1', formData, {
-      headers: {
-        ...formData.getHeaders(),
-        'authorization': `Bearer ${generateJWT()}`,
-        'accept': 'application/json',
-        'origin': 'https://betterimage.ai',
-        'referer': 'https://betterimage.ai/',
-        'sec-ch-ua-mobile': '?1',
-        'sec-ch-ua-platform': '"ios"',
-        'user-agent': 'Mozilla/5.0 (Ipad; Pro Os 1990; X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
-      }
-    });
-
-    // Menampilkan hasil
-    return (response.data);
-  } catch (error) {
-    console.error('Error:', error.response ? error.response.data : error.message);
-    return error.response.data
-  }
-}
 //txt2img
 async function txt2img(prompt) {
     const Api = "https://ai-api.magicstudio.com/api/ai-art-generator";
