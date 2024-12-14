@@ -893,7 +893,7 @@
         <div id="dropdown38" class="dropdown-content">
           <form class="form-group" action="/apikey/check" onsubmit="check(event, '/apikey/check')">
             <label for="message38">Enter Name ApiKey</label>
-            <input type="text" id="message38" name="check" required>
+            <input type="text" id="message38" name="apiKey" required>
             <button type="submit">Execute</button>
             <div class="info-row">
             <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
@@ -1130,7 +1130,7 @@ window.search = function(event, endpoint) {
 window.check = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
-    const message = form.querySelector('input[name="check"]').value;
+    const message = form.querySelector('input[name="apiKey"]').value;
     const apikey = form.querySelector('input[name="apikey"]').value;
 
     const query = `?apiKey=${encodeURIComponent(message)}`;
