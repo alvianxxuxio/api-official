@@ -1820,14 +1820,14 @@ if (!apikey || !validApiKeys.includes(apikey)) {
 //Brat 
 app.get('/api/Brat', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text } = req.query;
 if (!apikey || !validApiKeys.includes(apikey)) {
     return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
 }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await Brat(message);
+    const response = await Brat(text);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
