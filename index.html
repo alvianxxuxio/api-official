@@ -686,12 +686,32 @@
 <div class="containera">
     <div class="headera">
 <span><b>Tools</b></span>
-      <span>6 Endpoints</span>
+      <span>8 Endpoints</span>
     </div>
     <div class="content-container">
+    <div class="btn" onclick="toggleDropdown('dropdown37')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gsmarena</div>
+<div class="active">active</div>
+        </div>
+        <div id="dropdown37" class="dropdown-content">
+          <form class="form-group" action="/api/gsmarena" onsubmit="search(event, '/api/gsmarena')">
+            <label for="message37">Enter Phone name:</label>
+            <input type="text" id="message37" name="text" required>
+
+        <label for="apikey37">Enter API Key:</label>
+        <input type="text" id="apikey37" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
             <div class="btn" onclick="toggleDropdown('dropdown36')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/Brat</div>
-<div class="error">error</div>
+<div class="errors">error</div>
         </div>
         <div id="dropdown36" class="dropdown-content">
           <form class="form-group" action="/api/Brat" onsubmit="text(event, '/api/Brat')">
@@ -845,7 +865,45 @@
             <div class="info-row"><span>500</span><span>Internal server error</span></div>
 <div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
           </form>
-      </div></div>
+      </div>
+      <div class="btn" onclick="toggleDropdown('dropdown37')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gsmarena</div>
+<div class="active">active</div>
+        </div>
+        <div id="dropdown37" class="dropdown-content">
+          <form class="form-group" action="/api/gsmarena" onsubmit="search(event, '/api/gsmarena')">
+            <label for="message37">Enter Phone name:</label>
+            <input type="text" id="message37" name="text" required>
+
+        <label for="apikey37">Enter API Key:</label>
+        <input type="text" id="apikey37" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+            <div class="btn" onclick="toggleDropdown('dropdown38')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/CheckApiKey</div>
+<div class="active">official</div>
+        </div>
+        <div id="dropdown38" class="dropdown-content">
+          <form class="form-group" action="/apikey/check" onsubmit="check(event, '/apikey/check')">
+            <label for="message38">Enter Name ApiKey</label>
+            <input type="text" id="message38" name="check" required>
+            <button type="submit">Execute</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+      </div>
 
        </div>
        <section id="sdha"></section>
@@ -1054,6 +1112,51 @@ window.search = function(event, endpoint) {
             ${requestUrl}
             `
             showToast(sres, true);
+
+            
+            totalRequests++;
+            updateTotalRequests();
+
+
+            const requestUrlElement = document.createElement('p');
+            requestUrlElement.textContent = `Request URL: ${requestUrl}`;
+            document.body.appendChild(requestUrlElement);
+        })
+        .catch(error => {
+            
+            showToast('Error: ' + error, true);
+        });
+}
+window.check = function(event, endpoint) {
+    event.preventDefault();
+    const form = event.target;
+    const message = form.querySelector('input[name="check"]').value;
+    const apikey = form.querySelector('input[name="apikey"]').value;
+
+    const query = `?apiKey=${encodeURIComponent(message)}`;
+    
+
+    const baseUrl = 'https://api.alvianuxio.my.id';
+    const requestUrl = baseUrl + endpoint + query;
+
+    
+    fetch(endpoint + query)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            
+            const message = JSON.stringify(data, null, 2);
+            const kres = `
+            ${message}
+            
+            Request :
+            ${requestUrl}
+            `
+            showToast(kres, true);
 
             
             totalRequests++;
