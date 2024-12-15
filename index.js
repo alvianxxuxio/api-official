@@ -1706,7 +1706,7 @@ app.get('/admin/create', async (req, res) => {
       key: create,
       limit: limit ? parseInt(limit) : 3500,
       premium: premium === "true",
-      expired: expiredTimestamp,
+      expired: new Date(expiredTimestamp).toISOString(), // Use ISO format for better readability
       usage: 0,
     };
 
@@ -1773,7 +1773,13 @@ app.get('/apikey/check', async (req, res) => {
     res.status(isExpired ? 403 : 200).json({
       status: isExpired ? "403" : "200",
       info: isExpired ? 'API key has expired.' : 'API key is valid.',
-      data: isExpired ? null : apiKeyDetails, // Only include details if the API key is valid
+      data: isExpired ? null : {
+        key: apiKeyDetails.key,
+        limit: apiKeyDetails.limit,
+        premium: apiKeyDetails.premium,
+        expired: apiKeyDetails.expired,
+        usage: apiKeyDetails.usage,
+      },
     });
   } catch (error) {
     console.error("Error checking API key:", error); // Log the error
