@@ -1688,17 +1688,30 @@ app.get('/admin/create', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "create" not found.' });
     }
 
-    // Reference to the API key in Firebase
-    const apiKeyRef = ref(database, `apiKeys/${create}`);
+    // Validate and parse expired date
+    let expiredTimestamp;
+    if (expired) {
+      if (isValidDate(expired)) {
+        expiredTimestamp = convertToTimestamp(expired); // Add 23:59:00 automatically
+      } else {
+        return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD.' });
+      }
+    } else {
+      // Set default expiration to 30 days from now
+      expiredTimestamp = Date.now() + (30 * 24 * 60 * 60 * 1000);
+    }
 
     // Prepare API key details
     const apiKeyDetails = {
       key: create,
       limit: limit ? parseInt(limit) : 3500,
       premium: premium === "true",
-      expired: expired ? convertToTimestamp(expired) : Date.now() + (30 * 24 * 60 * 60 * 1000),
+      expired: expiredTimestamp,
       usage: 0,
     };
+
+    // Reference to the API key in Firebase
+    const apiKeyRef = ref(database, `apiKeys/${create}`);
 
     // Save API key to Firebase
     await set(apiKeyRef, apiKeyDetails);
@@ -1713,11 +1726,16 @@ app.get('/admin/create', async (req, res) => {
   }
 });
 
-// Function to convert date to timestamp
+// Function to validate date format (YYYY-MM-DD)
+function isValidDate(dateString) {
+  const regex = /^\d{4}-\d{2}-\d{2}$/; // Match YYYY-MM-DD format
+  return regex.test(dateString);
+}
+
+// Function to convert date to timestamp with default time 23:59:00
 function convertToTimestamp(dateString) {
   const [year, month, day] = dateString.split('-').map(Number);
-  const fullYear = year < 100 ? 2000 + year : year; // Handle two-digit years
-  return new Date(fullYear, month - 1, day).getTime();
+  return new Date(year, month - 1, day, 23, 59, 0).getTime(); // Add 23:59:00
 }
 
 // check apikey
@@ -1741,17 +1759,21 @@ app.get('/apikey/check', async (req, res) => {
 
     const apiKeyDetails = snapshot.val();
 
-    // Convert the expired date string to a Date object for comparison
-    const expirationDate = new Date(apiKeyDetails.expired);
+    // Check if the expired field is valid
+    if (!apiKeyDetails.expired) {
+      return res.status(400).json({ error: 'Expiration date is missing for this API key.' });
+    }
+
+    const expirationDate = new Date(apiKeyDetails.expired); // Convert to Date object
     const currentDate = new Date(); // Get the current date
 
     // Check if the API key is expired
-    const isExpired = expirationDate < currentDate;
+    const isExpired = expirationDate.getTime() < currentDate.getTime();
 
     res.status(isExpired ? 403 : 200).json({
       status: isExpired ? "403" : "200",
       info: isExpired ? 'API key has expired.' : 'API key is valid.',
-      data: apiKeyDetails,
+      data: isExpired ? null : apiKeyDetails, // Only include details if the API key is valid
     });
   } catch (error) {
     console.error("Error checking API key:", error); // Log the error
