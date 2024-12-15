@@ -1740,7 +1740,13 @@ app.get('/apikey/check', async (req, res) => {
     }
 
     const apiKeyDetails = snapshot.val();
-    const isExpired = apiKeyDetails.expired && apiKeyDetails.expired < Date.now();
+
+    // Convert the expired date string to a Date object for comparison
+    const expirationDate = new Date(apiKeyDetails.expired);
+    const currentDate = new Date(); // Get the current date
+
+    // Check if the API key is expired
+    const isExpired = expirationDate < currentDate;
 
     res.status(isExpired ? 403 : 200).json({
       status: isExpired ? "403" : "200",
