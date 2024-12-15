@@ -16,13 +16,8 @@ const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const app = express();
-const { Octokit } = require('@octokit/rest');
-const GITHUB_OWNER = 'alvianxxuxio'; // Ganti dengan nama pengguna GitHub Anda
-const GITHUB_REPO = 'cloud'; // Ganti dengan nama repositori
-const FILE_PATH = 'api-keys.json'; // Path ke file JSON
-const GITHUB_TOKEN = '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'; // Token akses GitHub
-const adminPassword = 'alds31#'; // Ganti dengan password admin
-const octokit = new Octokit({ auth: GITHUB_TOKEN });
+const validApiKeys = ['aluxi', 'alvianuxio', 'admin', 'global', 'world', 'sepuh', 'indonesia'];
+const adminPassword = "alds31"; // Password untuk otorisasi
 const PORT = process.env.PORT || 3000;
 app.enable("trust proxy");
 app.set("json spaces", 2);
@@ -1676,7 +1671,94 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
   }
 });
 
+// check apikey
+app.get('/apikey/check', (req, res) => {
+  const { apiKey } = req.query;
 
+  // Cek apakah parameter apiKey ada
+  if (!apiKey) {
+    return res.status(400).json({ error: 'Parameter "apiKey" tidak ditemukan.' });
+  }
+
+  // Temukan API key dalam validApiKeys
+  const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apiKey);
+
+  if (!apiKeyDetails) {
+    return res.status(404).json({
+      status: "404",
+      key: apiKey,
+      info: 'API key tidak valid.',
+      valid: false,
+    });
+  }
+
+  // Cek apakah API key sudah kedaluwarsa
+  const isExpired = apiKeyDetails.expired && apiKeyDetails.expired < Date.now();
+
+  res.status(200).json({
+    status: isExpired ? "403" : "200",
+    key: apiKey,
+    info: isExpired ? 'API key telah kedaluwarsa.' : 'API key valid.',
+    valid: !isExpired,
+    limit: apiKeyDetails.limit,
+    premium: apiKeyDetails.premium,
+    expired: apiKeyDetails.expired ? new Date(apiKeyDetails.expired).toISOString() : null, // Tampilkan tanggal expired jika ada
+    usage: apiKeyDetails.usage // Tambahkan informasi penggunaan API
+  });
+});
+
+// create apikey
+app.get('/admin/create', async (req, res) => {
+  try {
+    const { create, password, limit, premium, expired } = req.query;
+
+    // Cek apakah parameter password ada dan benar
+    if (!password || password !== adminPassword) {
+      return res.status(403).json({ error: 'Akses ditolak. Password salah atau tidak ditemukan.' });
+    }
+
+    // Cek apakah parameter create ada
+    if (!create) {
+      return res.status(400).json({ error: 'Parameter "create" tidak ditemukan.' });
+    }
+
+    // Cek apakah API key sudah ada di validApiKeys
+    if (validApiKeys.some(key => key.key === create)) {
+      return res.status(400).json({ error: 'API key sudah ada.' });
+    }
+
+    // Validasi dan set default untuk limit, premium, dan expired
+    const apiKeyDetails = {
+  key: create,
+  limit: limit ? parseInt(limit) : 3500,
+  premium: premium === 'true',
+  expired: expired ? convertToTimestamp(expired) : null,
+  usage: 0 // Menyimpan jumlah penggunaan
+};
+
+    // Tambahkan API key dan detail ke array validApiKeys
+    validApiKeys.push(apiKeyDetails);
+
+    res.status(200).json({
+      status: 'API key berhasil dibuat!',
+      information: `https://go.alvianuxio.my.id/contact`,
+      creator: "ALVIAN UXIO Inc",
+      data: {
+        newApiKey: apiKeyDetails,
+        totalApiKeys: validApiKeys.length,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi untuk mengonversi format YY-MM-DD menjadi timestamp
+function convertToTimestamp(dateString) {
+  const [year, month, day] = dateString.split('-').map(Number);
+  const fullYear = year < 100 ? 2000 + year : year; // Tambah 2000 untuk tahun 2 digit
+  return new Date(fullYear, month - 1, day).getTime();
+}
 
 //gemini
 app.get('/api/gemini', async (req, res) => {
