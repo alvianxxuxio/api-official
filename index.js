@@ -16,8 +16,13 @@ const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const app = express();
-const validApiKeys = ['aluxi', 'alvianuxio', 'admin', 'global', 'world', 'sepuh', 'indonesia'];
-const adminPassword = "alds31"; // Password untuk otorisasi
+const { Octokit } = require('@octokit/rest');
+const GITHUB_OWNER = 'alvianxxuxio'; // Ganti dengan nama pengguna GitHub Anda
+const GITHUB_REPO = 'cloud'; // Ganti dengan nama repositori
+const FILE_PATH = 'api-keys.json'; // Path ke file JSON
+const GITHUB_TOKEN = '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'; // Token akses GitHub
+const adminPassword = 'alds31#'; // Ganti dengan password admin
+const octokit = new Octokit({ auth: GITHUB_TOKEN });
 const PORT = process.env.PORT || 3000;
 app.enable("trust proxy");
 app.set("json spaces", 2);
@@ -1672,39 +1677,54 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 });
 
 // check apikey
-app.get('/apikey/check', (req, res) => {
+app.get('/apikey/check', async (req, res) => {
   const { apiKey } = req.query;
 
-  // Cek apakah parameter apiKey ada
+  // Validasi keberadaan parameter `apiKey`
   if (!apiKey) {
     return res.status(400).json({ error: 'Parameter "apiKey" tidak ditemukan.' });
   }
 
-  // Temukan API key dalam validApiKeys
-  const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apiKey);
-
-  if (!apiKeyDetails) {
-    return res.status(404).json({
-      status: "404",
-      key: apiKey,
-      info: 'API key tidak valid.',
-      valid: false,
+  try {
+    // Ambil konten JSON dari GitHub
+    const { data: fileData } = await octokit.repos.getContent({
+      owner: GITHUB_OWNER,
+      repo: GITHUB_REPO,
+      path: FILE_PATH,
     });
+
+    // Decode konten file JSON
+    const content = Buffer.from(fileData.content, 'base64').toString();
+    const jsonData = JSON.parse(content);
+
+    // Temukan API key dalam JSON
+    const apiKeyDetails = jsonData.validApiKeys.find(keyDetails => keyDetails.key === apiKey);
+
+    if (!apiKeyDetails) {
+      return res.status(404).json({
+        status: "404",
+        key: apiKey,
+        info: 'API key tidak valid.',
+        valid: false,
+      });
+    }
+
+    // Cek apakah API key sudah kedaluwarsa
+    const isExpired = apiKeyDetails.expired && apiKeyDetails.expired < Date.now();
+
+    res.status(200).json({
+      status: isExpired ? "403" : "200",
+      key: apiKey,
+      info: isExpired ? 'API key telah kedaluwarsa.' : 'API key valid.',
+      valid: !isExpired,
+      limit: apiKeyDetails.limit,
+      premium: apiKeyDetails.premium,
+      expired: apiKeyDetails.expired ? new Date(apiKeyDetails.expired).toISOString() : null, // Tampilkan tanggal expired jika ada
+      usage: apiKeyDetails.usage, // Tambahkan informasi penggunaan API
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Terjadi kesalahan saat memeriksa API key.' });
   }
-
-  // Cek apakah API key sudah kedaluwarsa
-  const isExpired = apiKeyDetails.expired && apiKeyDetails.expired < Date.now();
-
-  res.status(200).json({
-    status: isExpired ? "403" : "200",
-    key: apiKey,
-    info: isExpired ? 'API key telah kedaluwarsa.' : 'API key valid.',
-    valid: !isExpired,
-    limit: apiKeyDetails.limit,
-    premium: apiKeyDetails.premium,
-    expired: apiKeyDetails.expired ? new Date(apiKeyDetails.expired).toISOString() : null, // Tampilkan tanggal expired jika ada
-    usage: apiKeyDetails.usage // Tambahkan informasi penggunaan API
-  });
 });
 
 // create apikey
@@ -1712,32 +1732,56 @@ app.get('/admin/create', async (req, res) => {
   try {
     const { create, password, limit, premium, expired } = req.query;
 
-    // Cek apakah parameter password ada dan benar
+    // Validasi password admin
     if (!password || password !== adminPassword) {
       return res.status(403).json({ error: 'Akses ditolak. Password salah atau tidak ditemukan.' });
     }
 
-    // Cek apakah parameter create ada
+    // Validasi parameter "create"
     if (!create) {
       return res.status(400).json({ error: 'Parameter "create" tidak ditemukan.' });
     }
 
-    // Cek apakah API key sudah ada di validApiKeys
-    if (validApiKeys.some(key => key.key === create)) {
+    // Ambil konten JSON dari GitHub
+    const { data: fileData } = await octokit.repos.getContent({
+      owner: GITHUB_OWNER,
+      repo: GITHUB_REPO,
+      path: FILE_PATH,
+    });
+
+    // Decode konten file JSON
+    const content = Buffer.from(fileData.content, 'base64').toString();
+    const jsonData = JSON.parse(content);
+
+    // Cek apakah API key sudah ada
+    if (jsonData.validApiKeys.some(key => key.key === create)) {
       return res.status(400).json({ error: 'API key sudah ada.' });
     }
 
-    // Validasi dan set default untuk limit, premium, dan expired
+    // Buat detail API key baru
     const apiKeyDetails = {
-  key: create,
-  limit: limit ? parseInt(limit) : 3500,
-  premium: premium === 'true',
-  expired: expired ? convertToTimestamp(expired) : null,
-  usage: 0 // Menyimpan jumlah penggunaan
-};
+      key: create,
+      limit: limit ? parseInt(limit) : 200,
+      premium: premium === 'true',
+      expired: expired ? convertToTimestamp(expired) : null,
+      usage: 0,
+    };
 
-    // Tambahkan API key dan detail ke array validApiKeys
-    validApiKeys.push(apiKeyDetails);
+    // Tambahkan API key ke array
+    jsonData.validApiKeys.push(apiKeyDetails);
+
+    // Encode konten file JSON yang diperbarui
+    const updatedContent = Buffer.from(JSON.stringify(jsonData, null, 2)).toString('base64');
+
+    // Perbarui file JSON di GitHub
+    await octokit.repos.createOrUpdateFileContents({
+      owner: GITHUB_OWNER,
+      repo: GITHUB_REPO,
+      path: FILE_PATH,
+      message: `Add new API key: ${create}`,
+      content: updatedContent,
+      sha: fileData.sha, // SHA dari file sebelumnya
+    });
 
     res.status(200).json({
       status: 'API key berhasil dibuat!',
@@ -1745,7 +1789,7 @@ app.get('/admin/create', async (req, res) => {
       creator: "ALVIAN UXIO Inc",
       data: {
         newApiKey: apiKeyDetails,
-        totalApiKeys: validApiKeys.length,
+        totalApiKeys: jsonData.validApiKeys.length,
       },
     });
   } catch (error) {
