@@ -13,6 +13,7 @@
     "@google/generative-ai": "^0.14.0",
     "axios": "^1.6.8",
     "cors": "^2.8.5",
+    "firebase": "^11.1.0",
     "canvas": "^2.11.2",
     "cheerio": "^1.0.0-rc.12",
     "crypto": "^1.0.1",

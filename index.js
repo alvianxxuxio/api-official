@@ -15,6 +15,23 @@ const qs = require('qs');
 const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
+const firebase = require('firebase/app');
+require('firebase/database'); // Menggunakan fitur Realtime Database
+
+// Konfigurasi Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCrvPC6iJZNG5x2BliKjAXfrpt91PFCz8w",
+  authDomain: "apis-30c71.firebaseapp.com",
+  projectId: "apis-30c71",
+  storageBucket: "apis-30c71.firebasestorage.app",
+  messagingSenderId: "948592713618",
+  appId: "1:948592713618:web:0bda8f328ca42e318eeb4b",
+  measurementId: "G-XSZGLP3DMH",
+  databaseURL: "https://apis-30c71-default-rtdb.firebaseio.com", // Tambahkan databaseURL
+};
+// Inisialisasi Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const database = firebase.database(app);
 const app = express();
 // Initial valid API keys
 const validApiKeys = ['aluxi', 'alvianuxio', 'admin', 'global', 'world', 'sepuh', 'indonesia'];
@@ -1676,32 +1693,34 @@ app.get('/admin/create', async (req, res) => {
   try {
     const { create, password, limit, premium, expired } = req.query;
 
-    // Check if password parameter is present and correct
+    // Validasi password admin
     if (!password || password !== adminPassword) {
       return res.status(403).json({ error: 'Akses ditolak. Password salah atau tidak ditemukan.' });
     }
 
-    // Check if create parameter is present
+    // Validasi parameter "create"
     if (!create) {
       return res.status(400).json({ error: 'Parameter "create" tidak ditemukan.' });
     }
 
-    // Check if the API key already exists in validApiKeys
-    if (validApiKeys.some(key => key.key === create)) {
+    // Cek apakah API key sudah ada di database Firebase
+    const apiKeyRef = database.ref(`apiKeys/${create}`);
+    const snapshot = await apiKeyRef.once('value');
+    if (snapshot.exists()) {
       return res.status(400).json({ error: 'API key sudah ada.' });
     }
 
-    // Validate and set defaults for limit, premium, and expired
+    // Validasi dan set default nilai untuk limit, premium, dan expired
     const apiKeyDetails = {
       key: create,
       limit: limit ? parseInt(limit) : 3500,
       premium: premium === 'true',
-      expired: expired ? convertToTimestamp(expired) : Date.now() + (30 * 24 * 60 * 60 * 1000), // Default to 30 days
-      usage: 0 // Store the number of uses
+      expired: expired ? convertToTimestamp(expired) : Date.now() + (30 * 24 * 60 * 60 * 1000), // Default 30 hari
+      usage: 0 // Penggunaan awal
     };
 
-    // Add API key and details to the validApiKeys array
-    validApiKeys.push(apiKeyDetails);
+    // Simpan API key ke Firebase Realtime Database
+    await apiKeyRef.set(apiKeyDetails);
 
     res.status(200).json({
       status: 'API key berhasil dibuat!',
@@ -1709,57 +1728,68 @@ app.get('/admin/create', async (req, res) => {
       creator: "ALVIAN UXIO Inc",
       data: {
         newApiKey: apiKeyDetails,
-        totalApiKeys: validApiKeys.length,
       },
     });
   } catch (error) {
+    console.error('Error:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Function to convert YY-MM-DD format to timestamp
+// Fungsi untuk konversi tanggal ke timestamp
 function convertToTimestamp(dateString) {
   const [year, month, day] = dateString.split('-').map(Number);
-  const fullYear = year < 100 ? 2000 + year : year; // Add 2000 for 2 digit year
+  const fullYear = year < 100 ? 2000 + year : year; // Tambahkan 2000 jika tahun 2 digit
   return new Date(fullYear, month - 1, day).getTime();
 }
 
 // check apikey
-app.get('/apikey/check', (req, res) => {
+app.get('/apikey/check', async (req, res) => {
   const { apiKey } = req.query;
 
-  // Check if apiKey parameter is present
-  if (!apiKey) {
-    return res.status(400).json({ error: 'Parameter "apiKey" tidak ditemukan.' });
-  }
+  try {
+    // Check if apiKey parameter is present
+    if (!apiKey) {
+      return res.status(400).json({ error: 'Parameter "apiKey" tidak ditemukan.' });
+    }
 
-  // Find the API key in validApiKeys
-  const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apiKey);
+    // Reference to the specific API key in Firebase
+    const apiKeyRef = database.ref(`apiKeys/${apiKey}`);
 
-  // If the API key is not found
-  if (!apiKeyDetails) {
-    return res.status(404).json({
-      status: "404",
+    // Retrieve the API key details
+    const snapshot = await apiKeyRef.once('value');
+
+    // If the API key is not found
+    if (!snapshot.exists()) {
+      return res.status(404).json({
+        status: "404",
+        key: apiKey,
+        info: 'API key tidak valid.',
+        valid: false,
+      });
+    }
+
+    // Extract the API key details
+    const apiKeyDetails = snapshot.val();
+
+    // Check if the API key is expired
+    const isExpired = apiKeyDetails.expired && apiKeyDetails.expired < Date.now();
+
+    // Prepare the response data
+    res.status(isExpired ? 403 : 200).json({
+      status: isExpired ? "403" : "200",
       key: apiKey,
-      info: 'API key tidak valid.',
-      valid: false,
+      info: isExpired ? 'API key telah kedaluwarsa.' : 'API key valid.',
+      valid: !isExpired,
+      limit: apiKeyDetails.limit,
+      premium: apiKeyDetails.premium,
+      expired: apiKeyDetails.expired ? new Date(apiKeyDetails.expired).toISOString() : null, // Show expiration date if it exists
+      usage: apiKeyDetails.usage || 0, // Add API usage information
     });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: error.message });
   }
-
-  // Check if the API key is expired
-  const isExpired = apiKeyDetails.expired && apiKeyDetails.expired < Date.now();
-
-  // Prepare the response data
-  res.status(isExpired ? 403 : 200).json({
-    status: isExpired ? "403" : "200",
-    key: apiKey,
-    info: isExpired ? 'API key telah kedaluwarsa.' : 'API key valid.',
-    valid: !isExpired,
-    limit: apiKeyDetails.limit,
-    premium: apiKeyDetails.premium,
-    expired: apiKeyDetails.expired ? new Date(apiKeyDetails.expired).toISOString() : null, // Show expiration date if it exists
-    usage: apiKeyDetails.usage // Add API usage information
-  });
 });
 
 //gemini
