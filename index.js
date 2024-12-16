@@ -3515,72 +3515,167 @@ app.use((req, res, next) => {
 
   // Kirim respons 404 dengan path
   res.status(404).send(`
-    <!doctype html>
+<!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Website Error</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
+        :root {
+            --primary-color: #333;
+            --secondary-color: #555;
+            --background-color: #f9f9f9;
+            --surface-color: #ffffff;
+            --accent-color: #3a3a3a;
+            --border-color: #e0e0e0;
+            --border-radius: 12px;
+            --shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+            --button-background: rgb(22, 17, 17);
+            --button-color: #ffffff;
+            --button-hover-background: #555;
+        }
 
-      .container {
-        text-align: center;
-        padding: 20px;
-        background-color: #ffffff;
-        border: 1px solid #e0e0e0;
-        max-width: 600px;
-        width: 100%;
-      }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-      .error-code {
-        font-size: 48px;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 10px;
-      }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-      .error-message {
-        padding: 5px
-        font-size: 18px;
-        color: #666;
-        border-radius: 15px;
-        background: lightgray;
-        margin-bottom: 20px;
-      }
+        .container {
+            text-align: center;
+            padding: 25px;
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 80%;
+            max-width: 500px;
+            border: 1px solid var(--border-color);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideIn 0.5s forwards ease-in-out;
+            animation-delay: 0.2s;
+        }
 
-      .separator {
-        height: 1px;
-        background-color: #e0e0e0;
-        margin: 20px 0;
-        width: 100%;
-      }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
 
-      .footer {
-        font-size: 14px;
-        color: #999;
-      }
+        .error-code {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .error-message {
+            font-size: 16px;
+            color: var(--secondary-color);
+            background-color: var(--background-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            animation: floating 2s ease-in-out infinite;
+        }
+
+        .separator {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 20px 0;
+            border-radius: var(--border-radius);
+            width: 100%;
+            transform: translateY(10px);
+            opacity: 0;
+            animation: slideIn 0.5s forwards ease-in-out;
+            animation-delay: 0.8s;
+        }
+
+        .footer {
+            font-size: 14px;
+            color: var(--secondary-color);
+            transform: translateY(10px);
+            opacity: 0;
+            animation: slideIn 0.5s forwards ease-in-out;
+            animation-delay: 1s;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .button {
+            background-color: var(--button-background);
+            color: var(--button-color);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 15px 0;
+            font-size: 16px;
+            margin: 4px 0;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0;
+            animation: slideIn 1s forwards ease-in-out, pop 3s infinite;
+        }
+
+        .button:hover {
+            background-color: var(--button-hover-background);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .button:active {
+            transform: translateY(0);
+            transition: transform 0.1s ease;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <div class="error-code">404</div>
-      <div class="error-message">Cannot GET ${path}</div>
-      <div class="separator"></div>
-      <div class="footer">
-        &copy; 2024 ALVIAN UXIO APIs.
-      </div>
+        <div class="error-code">404</div>
+        <div class="error-message">Cannot GET ${path}</div>
+        <div class="separator"></div>
+        <button class="button" onclick="window.location.href='https://api.alvianuxio.my.id'">Back to Dashboard</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Contact Us</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Buy API Key</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Free API Key</button>
+        <div class="separator"></div>
+        <div class="footer">
+            &copy; 2024 <a href="https://alvianuxio.my.id" target="_blank">ALVIAN UXIO - APIs</a>.
+        </div>
     </div>
-  </body>
+</body>
 </html>
   `);
 });
