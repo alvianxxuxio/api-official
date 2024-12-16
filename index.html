@@ -601,18 +601,18 @@
 <div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
           </form>
       </div>
-<div class="btn" onclick="toggleDropdown('dropdown34')">
-    <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/groq-ai</div>
-    <span><b class="active">active</b></span>
+<div class="btn" onclick="toggleDropdown('dropdown14')">
+    <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gptlogic</div>
+    <span><b class="error">Error</b></span>
 </div>
-<div id="dropdown34" class="dropdown-content">
-    <form class="form-group" onsubmit="groq(event)">
-        <label for="message34">Enter Message:</label>
-        <input type="text" id="message34" name="message" required>
-        <label for="prompt34">Enter Prompt:</label>
-        <input type="text" id="prompt34" name="prompt" required>
-        <label for="apikey34">Enter API Key:</label>
-        <input type="text" id="apikey34" name="apikey" placeholder="Enter Your ApiKeys" required>
+<div id="dropdown14" class="dropdown-content">
+    <form class="form-group" onsubmit="logicgpt(event)">
+        <label for="message14">Enter Message:</label>
+        <input type="text" id="message14" name="message" required>
+        <label for="prompt14">Enter Prompt:</label>
+        <input type="text" id="prompt14" name="prompt" required>
+        <label for="apikey14">Enter API Key:</label>
+        <input type="text" id="apikey14" name="apikey" placeholder="Enter Your ApiKeys" required>
         <button type="submit">Try Now</button>
     </form>
 </div>
@@ -657,6 +657,26 @@
     </form>
     <div id="result16" class="result" style="display:none;"></div>
 </div>
+    <div class="btn" onclick="toggleDropdown('dropdown34')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/groq-ai</div>
+<div class="errors">error</div>
+        </div>
+        <div id="dropdown34" class="dropdown-content">
+          <form class="form-group" action="/api/groq-ai" onsubmit="executeApi(event, '/api/groq-ai')">
+            <label for="message34">Enter Message:</label>
+            <input type="text" id="message34" name="message" required>
+
+        <label for="apikey34">Enter API Key:</label>
+        <input type="text" id="apikey34" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
                 <div class="btn" onclick="toggleDropdown('dropdown17')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/aluxi</div>
 <div class="active">active</div>
@@ -666,7 +686,7 @@
 <div class="containera">
     <div class="headera">
 <span><b>Tools</b></span>
-      <span>8 Endpoints</span>
+      <span>10 Endpoints</span>
     </div>
     <div class="content-container">
     <div class="btn" onclick="toggleDropdown('dropdown37')">
@@ -680,6 +700,46 @@
 
         <label for="apikey37">Enter API Key:</label>
         <input type="text" id="apikey37" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+            <div class="btn" onclick="toggleDropdown('dropdown38')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/hdr</div>
+<div class="active">active</div>
+        </div>
+        <div id="dropdown38" class="dropdown-content">
+          <form class="form-group" action="/api/hdr" onsubmit="url(event, '/api/hdr')">
+            <label for="message38">Enter Phone name:</label>
+            <input type="text" id="message38" name="search" required>
+
+        <label for="apikey38">Enter API Key:</label>
+        <input type="text" id="apikey38" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+                    <div class="btn" onclick="toggleDropdown('dropdown39')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/removebg</div>
+<div class="active">active</div>
+        </div>
+        <div id="dropdown39" class="dropdown-content">
+          <form class="form-group" action="/api/removebg" onsubmit="url(event, '/api/removebg')">
+            <label for="message39">Enter Phone name:</label>
+            <input type="text" id="message39" name="search" required>
+
+        <label for="apikey39">Enter API Key:</label>
+        <input type="text" id="apikey39" name="apikey" placeholder="Enter Your ApiKeys" required>
             <button type="submit">Try Now</button>
             <div class="info-row">
             <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
@@ -1231,15 +1291,21 @@ window.text = function(event, endpoint) {
         });
 }
 
-  window.groq = function(event) {
+  window.logicgpt = function(event) {
     event.preventDefault();
     const form = event.target;
     const message = form.querySelector('input[name="message"]').value;
     const prompt = form.querySelector('input[name="prompt"]').value;
-    const apikey = form.querySelector('input[name="apikey"]').value;
+    const url = form.querySelector('input[name="url"]').value;
+    const search = form.querySelector('input[name="search"]').value;
+    const text = form.querySelector('input[name="text"]').value;
+
     const baseUrl = 'https://api.alvianuxio.my.id';
-    const endpoint = '/api/groq-ai';
-    const query = `?message=${encodeURIComponent(message)}&prompt=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
+    const endpoint = '/api/gptlogic';
+    let query = `?message=${encodeURIComponent(message)}&prompt=${encodeURIComponent(prompt)}`;
+    if (url) query += `&url=${encodeURIComponent(url)}`;
+    if (search) query += `&search=${encodeURIComponent(search)}`;
+    if (text) query += `&text=${encodeURIComponent(text)}`;
 
     const requestUrl = baseUrl + endpoint + query;
 

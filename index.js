@@ -28,7 +28,30 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
-
+//removebg
+async function removebg(imageUrl) {
+const response = await fetch('https://pxpic.com/callRemoveBackground', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ imageUrl })
+})
+const result = await response.json();
+return result.resultImageUrl 
+}
+//hdr
+async function hdimg(imageUrl) {
+const response = await fetch('https://pxpic.com/callPhotoEnhancer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ imageUrl })
+})
+const result = await response.json();
+return result.resultImageUrl 
+}
 //remini
 async function remini(imageBuffer) {
   try {
@@ -2312,6 +2335,102 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await remini(message);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//hdimg
+app.get('/api/hdr', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await hdimg(url);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/removebg', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await removebg(url);
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
