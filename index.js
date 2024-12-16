@@ -3510,6 +3510,10 @@ if (!apikey) {
 
 // Handle 404 error
 app.use((req, res, next) => {
+  // Ambil parameter path setelah '/'
+  const path = req.originalUrl;
+
+  // Kirim respons 404 dengan path
   res.status(404).send(`
     <!doctype html>
 <html lang="en">
@@ -3546,8 +3550,11 @@ app.use((req, res, next) => {
       }
 
       .error-message {
+        padding: 5px
         font-size: 18px;
         color: #666;
+        border-radius: 15px;
+        background: lightgray;
         margin-bottom: 20px;
       }
 
@@ -3567,7 +3574,7 @@ app.use((req, res, next) => {
   <body>
     <div class="container">
       <div class="error-code">404</div>
-      <div class="error-message">Not Found</div>
+      <div class="error-message">Cannot GET ${path}</div>
       <div class="separator"></div>
       <div class="footer">
         &copy; 2024 ALVIAN UXIO APIs.
