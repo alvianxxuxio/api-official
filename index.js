@@ -28,6 +28,34 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+//bingsearch
+async function bingsearch(query) {
+  try {
+    const response = await axios.get(`https://www.bing.com/search?q=${query}`);
+    const html = response.data;
+    const $ = cheerio.load(html);
+    const results = [];
+
+    $('.b_algo').each((index, element) => {
+      const title = $(element).find('h2').text();
+      const link = $(element).find('a').attr('href');
+      const snippet = $(element).find('.b_caption p').text();
+      const image = $(element).find('.cico .rms_iac').attr('data-src');
+
+      results.push({
+        title,
+        link,
+        snippet,
+        image: image ? `https:${image}` : undefined,
+      });
+    });
+
+    return results;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
 //removebg
 async function removebg(imageUrl) {
 const response = await fetch('https://pxpic.com/callRemoveBackground', {
@@ -2005,6 +2033,54 @@ if (!apikey) {
   }
 });
 
+//bingsearch
+app.get('/api/bing-search', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await bingsearch(search);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //gptpic
 app.get('/api/gptpic', async (req, res) => {
   try {

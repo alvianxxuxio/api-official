@@ -18,6 +18,20 @@
 </style>
 <style>
 .sdjhu { width: 85%; padding: 2px: }
+    .sticky-footer {
+      position: fixed;
+      bottom: 0;
+      left: 5%;
+      width: 90%;
+      border-radius: 15px;
+      margin-bottom:15px;
+      background-color: #1646b3dc;
+      color: #fff;
+      display: center;
+      text-align: center;
+      padding: 10px 0;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    }
 </style>
 </head>
 <body>
@@ -686,9 +700,29 @@
 <div class="containera">
     <div class="headera">
 <span><b>Tools</b></span>
-      <span>10 Endpoints</span>
+      <span>11 Endpoints</span>
     </div>
     <div class="content-container">
+        <div class="btn" onclick="toggleDropdown('dropdown40')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/bing-search</div>
+<div class="active">active</div>
+        </div>
+        <div id="dropdown40" class="dropdown-content">
+          <form class="form-group" action="/api/bing-search" onsubmit="search(event, '/api/bing-search')">
+            <label for="message40">Enter query:</label>
+            <input type="text" id="message40" name="search" required>
+
+        <label for="apikey40">Enter API Key:</label>
+        <input type="text" id="apikey40" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
     <div class="btn" onclick="toggleDropdown('dropdown37')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gsmarena</div>
 <div class="active">active</div>
@@ -976,6 +1010,9 @@
   </div>
 </div>
 </div>
+ <center><footer class="sticky-footer">
+    <p>&copy; 2024 ALVIAN UXIO | All Rights Reserved</p>
+  </footer></center>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
