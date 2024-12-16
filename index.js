@@ -506,7 +506,7 @@ async function anime(query) {
 //groq ai
 async function callGroqAPI(text, prompt) {
   try {
-    const aikey = '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'
+    const aikey = `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`
     const response = await axios({
     method: 'post',
   url: 'https://api.groq.com/openai/v1/chat/completions',
