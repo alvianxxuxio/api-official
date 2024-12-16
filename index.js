@@ -518,7 +518,7 @@ async function callGroqAPI(text, prompt) {
     messages: [
       {
         role: 'system',
-        content: Prompt
+        content: prompt
       }, 
 {
         role: 'user',
