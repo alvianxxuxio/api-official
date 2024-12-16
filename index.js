@@ -1727,8 +1727,7 @@ app.get('/admin/create', async (req, res) => {
       key: create,
       limit: limit ? parseInt(limit) : 3500,
       premium: premium === "true",
-      expired: new Date(expiredTimestamp).toISOString(), // Use ISO format for better readability
-      usage: 0,
+      expired: new Date(expiredTimestamp).toISOString(), // Use ISO format for better readability      
     };
 
     // Reference to the API key in Firebase
@@ -1799,7 +1798,6 @@ app.get('/apikey/check', async (req, res) => {
         limit: apiKeyDetails.limit,
         premium: apiKeyDetails.premium,
         expired: apiKeyDetails.expired,
-        usage: apiKeyDetails.usage,
       },
     });
   } catch (error) {
