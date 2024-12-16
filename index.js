@@ -521,7 +521,7 @@ async function callGroqAPI(text, prompt) {
         ],
         model: 'llama-3.2-90b-vision-preview',
         temperature: 1,
-        max_tokens: 8000,
+        max_tokens: 1000, // Reduced token limit
         top_p: 1,
         stream: false,
         response_format: 'text'
