@@ -506,34 +506,27 @@ async function anime(query) {
 //groq ai
 async function callGroqAPI(text, prompt) {
   try {
-    const aikey = `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`
+    const aikey = `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`;
     const response = await axios({
-    method: 'post',
-  url: 'https://api.groq.com/openai/v1/chat/completions',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': aikey
-  },
-  data: {
-    messages: [
-      {
-        role: 'system',
-        content: prompt
-      }, 
-{
-        role: 'user',
-        content: text
+      method: 'post',
+      url: 'https://api.groq.com/openai/v1/chat/completions',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${aikey}`
+      },
+      data: {
+        messages: [
+          { role: 'system', content: prompt },
+          { role: 'user', content: text }
+        ],
+        model: 'llama-3.2-90b-vision-preview',
+        temperature: 1,
+        max_tokens: 8000,
+        top_p: 1,
+        stream: false,
+        response_format: 'text'
       }
-    ],
-    model: 'llama-3.2-90b-vision-preview',
-    temperature: 1,
-    max_tokens: 8000,
-    top_p: 1,
-    stream: false,
-    response_format: {
-      type: 'text'
-    }
-  }});
+    });
     return JSON.stringify(response.data.choices[0].message.content, null, 2);
   } catch (error) {
     console.error('Error:', error.response?.data || error.message);
