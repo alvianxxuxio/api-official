@@ -504,6 +504,41 @@ async function anime(query) {
 }
 
 //groq ai
+async function callGroqAPI(text, prompt) {
+  try {
+    const response = await axios({
+    method: 'post',
+  url: 'https://api.groq.com/openai/v1/chat/completions',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': aikey
+  },
+  data: {
+    messages: [
+      {
+        role: 'system',
+        content: Prompt
+      }, 
+{
+        role: 'user',
+        content: text
+      }
+    ],
+    model: 'llama-3.2-90b-vision-preview',
+    temperature: 1,
+    max_tokens: 8000,
+    top_p: 1,
+    stream: false,
+    response_format: {
+      type: 'text'
+    }
+  }});
+    return JSON.stringify(response.data.choices[0].message.content, null, 2);
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    throw error;
+  }
+}
 
 //openai
 const BASE_URL = 'https://widipe.com/openai?text=';
@@ -1631,15 +1666,15 @@ app.post('/keys/create', (req, res) => {
 });
 
 //GPT logic
-app.get('/api/gptlogic', async (req, res) => {
+app.get('/api/groq-ai', async (req, res) => {
   try {
-    const { apikey, prompt, message } = req.query;
+    const { apikey, prompt, text } = req.query;
 
-    if (!message || !prompt || !apikey) {
-      return res.status(400).json({ error: 'Parameters "message" or "prompt" or "apikey" not found' });
+    if (!text || !prompt || !apikey) {
+      return res.status(400).json({ error: 'Parameters "text" or "prompt" or "apikey" not found' });
     }
 
-    const response = await gptlogic(message, prompt);
+    const response = await callGroqAPI(text, prompt);
     res.status(200).json({ response });
   } catch (error) {
     res.status(500).json({ error: error.message });
