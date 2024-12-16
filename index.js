@@ -1682,15 +1682,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Rusdi(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1852,15 +1844,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gemini(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1909,15 +1893,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Brat(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1966,15 +1942,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await halodoc(search);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2023,15 +1991,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gptpic(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2080,15 +2040,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await prodia(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2137,15 +2089,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await text2imgAfter(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2194,15 +2138,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await pinterest(search);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2251,15 +2187,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await gsm(search);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2308,15 +2236,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await igdl(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2365,15 +2285,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await remini(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2421,15 +2333,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await spotifydl(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2479,15 +2383,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await idn(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2536,15 +2432,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await capcut(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2593,15 +2481,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await mf(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2650,15 +2530,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await fb(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2707,15 +2579,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await terabox(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2764,15 +2628,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await tiktok(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2822,15 +2678,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await twiterdl(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2878,15 +2726,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gpt4o(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2936,15 +2776,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await openai(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2994,15 +2826,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await anime(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3052,15 +2876,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await videy(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3109,15 +2925,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await GDriveDl(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3166,15 +2974,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await igstalk(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3223,15 +3023,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await aio(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3280,15 +3072,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await yt(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3338,15 +3122,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await letmegpt(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3396,15 +3172,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await simi(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3454,15 +3222,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await ragBot(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3511,15 +3271,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await degreeGuru(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3568,15 +3320,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await Renvy(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3625,15 +3369,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await simi(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3682,15 +3418,7 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await smartContract(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3739,24 +3467,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await blackboxAIChat(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1; // Pastikan nilai usage adalah angka
-
-    // Perbarui nilai `usage` di Firebase
-    try {
-      await update(ref(database, `apiKeys/${apikey}`), { usage: updatedUsage });
-    } catch (updateError) {
-      console.error('Error updating usage:', updateError.message);
-      return res.status(500).json({ error: 'Gagal memperbarui penggunaan API key: ' + updateError.message });
-    }
+    apiKeyDetails.usage += 1;
+    apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
