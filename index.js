@@ -1650,12 +1650,33 @@ app.get('/api/gptlogic', async (req, res) => {
 app.get('/api/Rusdi', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1791,12 +1812,33 @@ app.get('/apikey/check', async (req, res) => {
 app.get('/api/gemini', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
@@ -1819,12 +1861,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/Brat', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1847,12 +1910,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/halodoc', async (req, res) => {
   try {
     const { apikey, search } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!search) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
@@ -1875,12 +1959,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/gptpic', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1903,12 +2008,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/prodia', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1931,12 +2057,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/txt2img', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -1959,12 +2106,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/pinterest', async (req, res) => {
   try {
     const { apikey, search } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!search) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
@@ -1987,12 +2155,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/gsmarena', async (req, res) => {
   try {
     const { apikey, search } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!search) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
@@ -2015,12 +2204,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/instagram', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2043,12 +2253,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/remini', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2070,12 +2301,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/spotify', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2099,12 +2351,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/idntimes', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2127,12 +2400,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/capcut', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2155,12 +2449,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/mediafire', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2183,12 +2498,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/facebook', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2211,12 +2547,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/terabox', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2239,12 +2596,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/tiktok', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2268,12 +2646,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/twitter', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2295,12 +2694,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/gpt4o', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
@@ -2324,12 +2744,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/openai', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
@@ -2353,12 +2794,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/anime', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2382,12 +2844,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/videy', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2410,12 +2893,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/gdrive', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2438,12 +2942,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/igstalk', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2466,12 +2991,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/aio', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2494,12 +3040,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/ytdl', async (req, res) => {
   try {
     const { apikey, url } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
@@ -2523,12 +3090,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/letmegpt', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
@@ -2552,12 +3140,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/simi', async (req, res) => {
   try {
     const { apikey, text }= req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
@@ -2581,12 +3190,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/ragbot', async (req, res) => {
   try {
     const { apikey, message } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2609,12 +3239,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/degreeguru', async (req, res) => {
   try {
     const { apikey, text }= req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
@@ -2637,12 +3288,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/Renvy', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
@@ -2665,12 +3337,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/aluxi', async (req, res) => {
   try {
     const { apikey, message }= req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
@@ -2693,12 +3386,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/smartcontract', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
@@ -2721,12 +3435,33 @@ const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey)
 app.get('/api/blackboxAIChat', async (req, res) => {
   try {
     const { apikey, text } = req.query;
-const apiKeyDetails = validApiKeys.find(keyDetails => keyDetails.key === apikey);
-    if (!apiKeyDetails) {
-      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
     }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai' });
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
     }
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
