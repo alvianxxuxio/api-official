@@ -1682,13 +1682,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Rusdi(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1850,13 +1855,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gemini(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1905,13 +1915,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Brat(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -1960,13 +1975,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await halodoc(search);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2015,13 +2035,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gptpic(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2070,13 +2095,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await prodia(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2125,13 +2155,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await text2imgAfter(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2180,13 +2215,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await pinterest(search);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2235,13 +2275,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await gsm(search);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2290,13 +2335,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await igdl(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2345,13 +2395,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await remini(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2399,13 +2454,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await spotifydl(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2455,13 +2515,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await idn(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2510,13 +2575,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await capcut(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2565,13 +2635,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await mf(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2620,13 +2695,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await fb(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2675,13 +2755,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await terabox(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2730,13 +2815,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await tiktok(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2786,13 +2876,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await twiterdl(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2840,13 +2935,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gpt4o(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2896,13 +2996,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await openai(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2952,13 +3057,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await anime(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3008,13 +3118,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await videy(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3063,13 +3178,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await GDriveDl(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3118,13 +3238,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await igstalk(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3173,13 +3298,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await aio(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3228,13 +3358,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await yt(url);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3284,13 +3419,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await letmegpt(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3340,13 +3480,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await simi(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3396,13 +3541,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await ragBot(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3451,13 +3601,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await degreeGuru(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3506,13 +3661,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await Renvy(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3561,13 +3721,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await simi(message);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3616,13 +3781,18 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await smartContract(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3671,20 +3841,30 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await blackboxAIChat(text);
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
-    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
+    await set(apiKeyRef, apiKeyDetails);
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi limit penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'Limit penggunaan API telah tercapai.' });
+    }
+
+    // Tingkatkan penggunaan API key
+    apiKeyDetails.usage = (apiKeyDetails.usage || 0) + 1;
 
     // Perbarui data di Firebase menggunakan `set`
-    await set(apiKeyRef, {
-      ...apiKeyDetails, // Salin data lama
-      usage: updatedUsage, // Perbarui penggunaan
-    });
+    await set(apiKeyRef, apiKeyDetails);
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
