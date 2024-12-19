@@ -4,7 +4,6 @@ const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
 const yts = require("yt-search");
-const { run } = require('shannz-playwright');
 const moment = require("moment-timezone");
 const FormData = require('form-data');
 const {
@@ -133,50 +132,109 @@ async function text2imgAfter(prompt) {
     }
 }
 
-//ttstalk
-
 // igstalk
 async function igstalk(username) {
-  try {
-    const data = qs.stringify({
-        'instagram_url': username,
-        'type': 'instaviewer',
-        'resource': 'save'
-    });
- 
-    const config = {
-        method: 'POST',
-        url: 'https://www.save-free.com/process',
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 8.1.0; CPH1803; Build/OPM1.171019.026) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.4280.141 Mobile Safari/537.36 KiToBrowser/124.0',
-            'Accept': 'text/html, */*; q=0.01',
-            'accept-language': 'id-ID',
-            'referer': 'https://www.save-free.com/instagram-viewer/',
-            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'x-valy-cache': 'true',
-            'x-requested-with': 'XMLHttpRequest',
-            'origin': 'https://www.save-free.com',
-            'alt-used': 'www.save-free.com',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-origin',
-            'priority': 'u=0',
-            'te': 'trailers',
-            'Cookie': '_ga_9M9G1NYVWE=GS1.1.1734434923.1.1.1734435005.59.0.0; _ga=GA1.1.926126394.1734434923; HstCfa4752989=1734434923234; HstCla4752989=1734435005944; HstCmu4752989=1734434923234; HstPn4752989=2; HstPt4752989=2; HstCnv4752989=1; HstCns4752989=1; c_ref_4752989=https%3A%2F%2Fwww.google.com%2F; _ga_TCKL78VSRE=GS1.1.1734434923.1.1.1734435006.59.0.0; _gcl_au=1.1.154039605.1734434924; cf_clearance=y50rE5aG3y4mNPv97jjPiTVmsTGIjG4NUAU8cfpAZpE-1734435006-1.2.1.1-msruD64x2XJcJ0ayBzlv3tPD.GOk8Hq78wuzqvgva3XK5EA5fhRZSbleDlLd12lA95OMBHoaKS.zVPL4ny7WJhea5by6f83KryCc7mmAlVWi_rCuAogbWeQRclA7iZhIDjMemyXaWskAgcCKK79etIxwenAX_z0L0j7BZ5156EHoHLdgEJFAtayJwFeMtDzV7dEjrhoCz0H3sV3tgq7Cgg.yf3pn1y8eqdIdJM.ogHqlDUPQ189UHyQ74mbzBawhxMHea62eecP7WgmKSiUHdwfOsXGuP1mjEffzgzrQocs.Ubc4QrEnV_KM_5ParR1vt9KyRY0TlZ1g7rGh4TBsU9y_MqBnSpZOd8.KaTihKE_qZMJCa8Pi_IPGHOIC0c3rZMd7.J4WRwH5J8oWjFaE5gvN3kphRxRVDaKgTAOltve_XvOKv75YCMoAmuQVAvUZBhFST2qGoQFyt1vjFiWmKw'
-        },
-        data: data
-    };
- 
-    const req = await axios.request(config);
-    return JSON.stringify(req.data, null, 2);
-  } catch (error) {
-    return error;
-  }
+  let html = await (await fetch("https://dumpoir.io/v/" + username)).text();
+  const $ = cheerio.load(html);
+  const Profile = {
+    image: $("#user-page > div.user > div.row > div > div.user__img")
+      .attr("style")
+      .replace(/(background-image: url\(\'|\'\);)/gi, ""),
+    username: $(".user__title h4").text().trim(),
+    fullName: $(".user__title h1").text().trim(),
+    bio: $(".user__info-desc").text().trim(),
+    posts: $(".list__item").eq(0).text().trim(),
+    followers: $(".list__item").eq(1).text().trim(),
+    following: $(".list__item").eq(2).text().trim(),
+  };
+  const Post = [];
+  $(".content__item").each((index, element) => {
+    const post = {};
+    const img = $(element).find(".content__img").attr("src");
+    const desc = $(element).find(".content__text p").text();
+    const likes = parseInt($(element).find(".bx-like + span").text());
+    const comments = parseInt(
+      $(element).find(".bx-comment-dots + span").text(),
+    );
+    const time = $(element).find(".bx-time + span").text();
+
+    if (!isNaN(likes) && !isNaN(comments) && img && desc && time) {
+      post.image = img;
+      post.description = desc;
+      post.likes = likes;
+      post.comments = comments;
+      post.time = time;
+      Post.push(post);
+    }
+  });
+
+  const result = {
+    Profile: Profile,
+    Post: Post,
+  };
+  return result;
 }
 
 
 // youtube
+async function yt(query) {
+ const form = new FormData();
+ form.append('query', query);
 
+ try {
+ const response = await axios.post('https://yttomp4.pro/', form, {
+ headers: {
+ ...form.getHeaders()
+ }
+ });
+
+ const $ = cheerio.load(response.data);
+
+ const results = {
+ success: true,
+ title: $('.vtitle').text().trim(),
+ duration: $('.res_left p').text().replace('Duration: ', '').trim(),
+ image: $('.ac img').attr('src'),
+ video: [],
+ audio: [],
+ other: []
+ };
+ 
+ $('.tab-item-data').each((index, tab) => {
+ const tabTitle = $(tab).attr('id');
+ $(tab).find('tbody tr').each((i, element) => {
+ const fileType = $(element).find('td').eq(0).text().trim();
+ const fileSize = $(element).find('td').eq(1).text().trim();
+ const downloadLink = $(element).find('a.dbtn').attr('href');
+
+ if (tabTitle === 'tab-item-1') {
+ results.video.push({
+ fileType,
+ fileSize,
+ downloadLink
+ });
+ } else if (tabTitle === 'tab-item-2') {
+ results.audio.push({
+ fileType,
+ fileSize,
+ downloadLink
+ });
+ } else if (tabTitle === 'tab-item-3') {
+ results.other.push({
+ fileType,
+ fileSize,
+ downloadLink
+ });
+ }
+ });
+ });
+ 
+ return results;
+ } catch (error) {
+ return { success: false, message: error.message };
+ console.log('Error:' + error);
+ }
+}
 // mediafire 
 async function mf(url) {
     return new Promise(async (resolve, reject) => {
@@ -547,30 +605,19 @@ async function callGroqAPI(text, prompt) {
 }
 
 //openai
-async function openai(text) {    
-    let json = {
-        model: "openchat/openchat-3.6-8b",
-        messages: [
-            {
-                role: "system",
-                content: `Kamu adalah asisten virtual yang ramah, cerdas, dan fleksibel. Jawabanmu harus mudah dipahami, informatif, dan jelas. Kamu juga punya selera humor yang ringan dan menyenangkan, sehingga pengguna merasa nyaman saat berbicara denganmu. Namun, tetap fokus untuk memberikan jawaban yang relevan dengan pertanyaan atau situasi pengguna. Jika ada nama pengguna (contoh: kamu), sapa mereka dengan hangat di awal respons. Pastikan responsmu selalu santai, bersahabat, dan mudah dicerna, seperti berbicara dengan teman yang baik. Tambahan: Kamu adalah asisten yang dirancang dan dibuat oleh ALVIAN UXIO - APIs.`,
-            },
-            {
-                role: "user",
-                content: `${text}`, // Fokus pada input pengguna
-            },
-        ],
-        presence_penalty: 0.5,
-        frequency_penalty: 0.2,
-        top_k: 50,
-    };
-    
-    let { data } = await axios.post(
-        "https://imphnen-ai.vercel.app/api/llm/openchat",
-        json,
-    );
-    
-    return data.data.choices[0].message.content;
+const BASE_URL = 'https://widipe.com/openai?text=';
+async function openai(query) {
+    try {
+        const response = await axios.get(`${BASE_URL}${encodeURIComponent(query)}`);
+        if (response.status === 200 && response.data && response.data.result) {
+            return response.data.result;
+        } else {
+            throw new Error('Tidak ada respons atau hasil dari AI');
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Terjadi kesalahan saat menghubungi AI');
+    }
 }
 //LetmeGPT
 async function letmegpt(query) {
@@ -2969,13 +3016,13 @@ if (!apikey) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await openai(text);
+    const response = await openai(message);
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
-    response: response,    
+    response: response
   }
 });
   } catch (error) {
@@ -3135,7 +3182,7 @@ if (!apikey) {
 // igstalk
 app.get('/api/igstalk', async (req, res) => {
   try {
-    const { apikey, search } = req.query;
+    const { apikey, message } = req.query;
 if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
@@ -3164,10 +3211,10 @@ if (!apikey) {
         info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
       });
     }
-    if (!search) {
-      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
-    const response = await igstalk(search);
+    const response = await igstalk(message);
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
