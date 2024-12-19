@@ -586,19 +586,30 @@ async function callGroqAPI(text, prompt) {
 }
 
 //openai
-const BASE_URL = 'https://widipe.com/openai?text=';
-async function openai(query) {
-    try {
-        const response = await axios.get(`${BASE_URL}${encodeURIComponent(query)}`);
-        if (response.status === 200 && response.data && response.data.result) {
-            return response.data.result;
-        } else {
-            throw new Error('Tidak ada respons atau hasil dari AI');
-        }
-    } catch (error) {
-        console.error(error);
-        throw new Error('Terjadi kesalahan saat menghubungi AI');
-    }
+async function openai(text) {    
+    let json = {
+        model: "openchat/openchat-3.6-8b",
+        messages: [
+            {
+                role: "system",
+                content: `Kamu adalah asisten virtual yang ramah, cerdas, dan fleksibel. Jawabanmu harus mudah dipahami, informatif, dan jelas. Kamu juga punya selera humor yang ringan dan menyenangkan, sehingga pengguna merasa nyaman saat berbicara denganmu. Namun, tetap fokus untuk memberikan jawaban yang relevan dengan pertanyaan atau situasi pengguna. Jika ada nama pengguna (contoh: kamu), sapa mereka dengan hangat di awal respons. Pastikan responsmu selalu santai, bersahabat, dan mudah dicerna, seperti berbicara dengan teman yang baik. Tambahan: Kamu adalah asisten yang dirancang dan dibuat oleh ALVIAN UXIO - APIs.`,
+            },
+            {
+                role: "user",
+                content: `${text}`, // Fokus pada input pengguna
+            },
+        ],
+        presence_penalty: 0.5,
+        frequency_penalty: 0.2,
+        top_k: 50,
+    };
+    
+    let { data } = await axios.post(
+        "https://imphnen-ai.vercel.app/api/llm/openchat",
+        json,
+    );
+    
+    return data.data.choices[0].message.content;
 }
 //LetmeGPT
 async function letmegpt(query) {
