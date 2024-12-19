@@ -615,6 +615,32 @@ async function openai(query) {
         throw new Error('Terjadi kesalahan saat menghubungi AI');
     }
 }
+//gpt turbo
+async function gptturbo(query) {
+    const apiUrl = `https://restapii.rioooxdzz.web.id/api/gptturbo?message=${encodeURIComponent(query)}`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const responseJson = await response.json();
+         if (responseJson && responseJson.data.response) {
+            return responseJson.data.response;
+        } else {
+            return "Tidak ada pesan dalam response.";
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan:", error.message);
+        return "Gagal mendapatkan respons dari server.";
+    }
+}
 //LetmeGPT
 async function letmegpt(query) {
   const encodedQuery = encodeURIComponent(query);
@@ -1740,7 +1766,30 @@ app.get('/api/groq-ai', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
+//gemini
+async function gemini(query) {
+    const apiUrl = `https://restapii.rioooxdzz.web.id/api/bard?message=${encodeURIComponent(query)}`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+        const responseJson = await response.json();
+        if (responseJson && responseJson.result) {
+            return responseJson.result;
+        } else {
+            return "Tidak ada pesan dalam response.";
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan:", error.message);
+        return "Gagal mendapatkan respons dari server.";
+    }
+}
 //Rusdi
 app.get('/api/Rusdi', async (req, res) => {
   try {
@@ -3371,7 +3420,53 @@ if (!apikey) {
     res.status(500).json({ error: error.message });
   }
 });
+app.get('/api/gpt-turbo', async (req, res) => {
+  try {
+    const { apikey, text } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
 
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
+    }
+    const response = await gptturbo(text);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //simi
 app.get('/api/simi', async (req, res) => {
