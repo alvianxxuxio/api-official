@@ -3008,13 +3008,14 @@ if (!apikey) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await openai(message);
+    const response = await openai(text);
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
-    response: response
+    response: response,
+    image-response: "COMMING SOON"
   }
 });
   } catch (error) {
