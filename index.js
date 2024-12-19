@@ -3014,8 +3014,7 @@ if (!apikey) {
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
-    response: response,
-    image-response: "COMMING SOON"
+    response: response,    
   }
 });
   } catch (error) {
