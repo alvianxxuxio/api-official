@@ -1532,60 +1532,30 @@ async function igdl(url) {
 
 //gptlogic
 
-async function gptlogic(inputText, customPrompt) {
-  try {
-    const safetySettings = [
-      { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
-      { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-      { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
-      { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-    ];
-
-    const apiKey = 'AIzaSyD7ciBCgOP2DLXfpUDn-XrvoZnoUe0vZKc';
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash", safetySettings });
-
-    const generationConfig = {
-      temperature: 1,
-      topP: 0.95,
-      topK: 64,
-      maxOutputTokens: 8192,
-      responseMimeType: "text/plain",
+async function gptlogic(inputText, customPrompt) {    
+    let json = {
+        model: "openchat/openchat-3.6-8b",
+        messages: [
+            {
+                role: "system",
+                content: customPrompt,
+            },
+            {
+                role: "user",
+                content: `${text}`, // Fokus pada input pengguna
+            },
+        ],
+        presence_penalty: 0.1,
+        frequency_penalty: 0.1,
+        top_k: 100,
     };
-
-    const currentTime = moment().tz('Asia/Jakarta').format('HH:mm:ss');
-    const todayDate = moment().tz('Asia/Jakarta').format('YYYY-MM-DD');
-
-    const fullPrompt = `${customPrompt}, Kamu dapat mengetahui jam dan sekarang adalah hari ${currentTime} dan ${todayDate}.`;
-
-    const history = [
-      {
-        role: 'user',
-        parts: [
-          {
-            text: fullPrompt,
-          },
-        ],
-      },
-      {
-        role: 'model',
-        parts: [
-          { text: 'Oke' },
-        ],
-      },
-    ];
-
-    const chatSession = await model.startChat({
-      generationConfig,
-      history,
-    });
-
-    const result = await chatSession.sendMessage(inputText);
-    return result.response.text();
-  } catch (error) {
-    console.error("Error in gptlogic function:", error);
-    throw error;
-  }
+    
+    let { data } = await axios.post(
+        "https://imphnen-ai.vercel.app/api/llm/openchat",
+        json,
+    );
+    
+    return data.data.choices[0].message.content;
 }
 
 //openai
@@ -1727,7 +1697,7 @@ app.post('/keys/create', (req, res) => {
 });
 
 //GPT logic
-app.get('/api/groq-ai', async (req, res) => {
+app.get('/api/gptlogic', async (req, res) => {
   try {
     const { apikey, prompt, text } = req.query;
 
@@ -1735,7 +1705,7 @@ app.get('/api/groq-ai', async (req, res) => {
       return res.status(400).json({ error: 'Parameters "text" or "prompt" or "apikey" not found' });
     }
 
-    const response = await callGroqAPI(text, prompt);
+    const response = await gptlogic(text, prompt);
     res.status(200).json({ response });
   } catch (error) {
     res.status(500).json({ error: error.message });

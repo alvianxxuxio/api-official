@@ -1339,43 +1339,40 @@ window.text = function(event, endpoint) {
     const form = event.target;
     const message = form.querySelector('input[name="message"]').value;
     const prompt = form.querySelector('input[name="prompt"]').value;
-    const url = form.querySelector('input[name="url"]').value;
-    const search = form.querySelector('input[name="search"]').value;
-    const text = form.querySelector('input[name="text"]').value;
+    const apikey = form.querySelector('input[name="apikey"]').value;
 
+    if (!apikey) {
+        console.error('API key is missing.');
+        return; 
+    }
     const baseUrl = 'https://api.alvianuxio.my.id';
     const endpoint = '/api/gptlogic';
-    let query = `?message=${encodeURIComponent(message)}&prompt=${encodeURIComponent(prompt)}`;
-    if (url) query += `&url=${encodeURIComponent(url)}`;
-    if (search) query += `&search=${encodeURIComponent(search)}`;
-    if (text) query += `&text=${encodeURIComponent(text)}`;
+    const query = `?message=${encodeURIComponent(message)}&prompt=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
+    const url = baseUrl + endpoint + query;
 
-    const requestUrl = baseUrl + endpoint + query;
-
-    fetch(requestUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            const resultElement = document.getElementById('result');
-            resultElement.textContent = JSON.stringify(data, null, 2);
-            resultElement.style.display = 'block';
-            totalRequests++;
-            updateTotalRequests();
-
-            const requestUrlElement = document.createElement('p');
-            requestUrlElement.textContent = `Request URL: ${requestUrl}`;
-            resultElement.appendChild(requestUrlElement);
-        })
-        .catch(error => {
-            const resultElement = document.getElementById('result');
-            resultElement.textContent = 'Error: ' + error;
-            resultElement.style.display = 'block';
-        });
-}
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const resultElement = document.getElementById('result');
+        resultElement.textContent = JSON.stringify(data, null, 2);
+        resultElement.style.display = 'block';
+        totalRequests++;
+        updateTotalRequests();
+        const requestUrlElement = document.createElement('p');
+        requestUrlElement.textContent = `Request URL: ${url}`;
+        resultElement.appendChild(requestUrlElement);
+      })
+      .catch(error => {
+        const resultElement = document.getElementById('result');
+        resultElement.textContent = 'Error: ' + error;
+        resultElement.style.display = 'block';
+      });
+  }
 
   window.viewDocs = function () {
         const aboutMe = document.querySelector('.about-me');
