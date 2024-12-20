@@ -1537,7 +1537,7 @@ async function gptlogic(text, prompt) {
         messages: [
             {
                 role: "system",
-                content: customPrompt,
+                content: prompt,
             },
             {
                 role: "user",
