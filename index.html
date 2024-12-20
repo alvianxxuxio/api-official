@@ -406,7 +406,7 @@
 <span><b>Ai</b></span>
       <span>15 Endpoints</span>
     </div>
-    <div class="content-container">
+    <div class="content-container">    
     <div class="btn" onclick="toggleDropdown('dropdown41')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gpt-turbo</div>
 <div class="active">active</div>
@@ -719,6 +719,21 @@
       <span>11 Endpoints</span>
     </div>
     <div class="content-container">
+    <div class="btn" onclick="toggleDropdown('dropdown46')">
+    <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/translate</div>
+ <div class="active">active</div>
+</div>
+<div id="dropdown46" class="dropdown-content">
+    <form class="form-group" action="/api/translate" onsubmit="lang(event, '/api/translate')">
+        <label for="message46">Enter Message:</label>
+        <input type="text" id="message46" name="text" required>
+        <label for="prompt46">Translate to:</label>
+        <input type="text" id="prompt46" name="lang" placeholder="example: en, zh, id, my, sl" required>
+        <label for="apikey46">Enter API Key:</label>
+        <input type="text" id="apikey46" name="apikey" placeholder="Enter Your ApiKeys" required>
+        <button type="submit">Try Now</button>
+    </form>
+</div>
         <div class="btn" onclick="toggleDropdown('dropdown40')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/bing-search</div>
 <div class="active">active</div>
@@ -896,7 +911,25 @@
             <button type="submit" href="#sdha">Try Now</button>
           </form>
       </div>
-      
+      <div class="btn" onclick="toggleDropdown('dropdown47')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/steam-search</div>
+<div class="active">active</div>
+        </div>
+        <div id="dropdown47" class="dropdown-content">
+          <form class="form-group" action="/api/steam-search" onsubmit="search(event, '/api/steam-search')">
+            <label for="message47">Enter query:</label>
+            <input type="text" id="message47" name="search" placeholder="enter query here" required>
+            <label for="apikey47">Enter API Key:</label>
+        <input type="text" id="apikey47" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+      </div>
       <div class="btn" onclick="toggleDropdown('dropdown10')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/pinterest</div>
 <div class="active">active</div>
@@ -1347,6 +1380,56 @@ window.text = function(event, endpoint) {
     }
 
     const query = `?text=${encodeURIComponent(message)}&prompt=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
+    
+
+    const baseUrl = 'https://api.alvianuxio.my.id';
+    const requestUrl = baseUrl + endpoint + query;
+
+    
+    fetch(endpoint + query)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            
+            const message = JSON.stringify(data, null, 2);
+            const textres = `
+            ${message}
+            
+            Request :
+            ${requestUrl}
+            `
+            showToast(textres, true);
+
+            
+            totalRequests++;
+            updateTotalRequests();
+
+
+            
+        })
+        .catch(error => {
+            
+            showToast('Error: ' + error, true);
+        });
+}
+
+window.lang = function(event, endpoint) {
+    event.preventDefault();
+    const form = event.target;
+    const message = form.querySelector('input[name="text"]').value;
+    const prompt = form.querySelector('input[name="lang"]').value;
+    const apikey = form.querySelector('input[name="apikey"]').value;
+
+    if (!apikey) {
+        console.error('API key is missing.');
+        return; 
+    }
+
+    const query = `?text=${encodeURIComponent(message)}&lang=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
     
 
     const baseUrl = 'https://api.alvianuxio.my.id';
