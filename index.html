@@ -726,6 +726,25 @@
       <span>15 Endpoints</span>
     </div>
     <div class="content-container">
+          <div class="btn" onclick="toggleDropdown('dropdown49')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/ssweb</div>
+<div class="active">active</div>
+        </div>
+        <div id="dropdown49" class="dropdown-content">
+          <form class="form-group" action="/api/ssweb" onsubmit="url(event, '/api/ssweb')">
+            <label for="message49">Enter Url:</label>
+            <input type="text" id="message49" name="url" placeholder="https or http" required>
+            <label for="apikey49">Enter API Key:</label>
+        <input type="text" id="apikey49" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
     <div class="btn" onclick="toggleDropdown('dropdown46')">
     <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/translate</div>
  <div class="active">active</div>

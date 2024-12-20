@@ -31,6 +31,34 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+
+// ssweb
+// Fungsi untuk memilih kunci API secara acak
+function pickRandom(keys) {
+    return keys[Math.floor(Math.random() * keys.length)];
+}
+async function ssweb(url) {
+    const keys = ["f4fd50", "f57572", "f45b80", "a8a45d", "0060ec", "b085e3"];
+    const key = pickRandom(keys);
+
+    const apiUrl = `https://api.screenshotmachine.com/?key=${key}&url=${encodeURIComponent(url)}&device=desktop&dimension=1280x720&format=png&cacheLimit=0&delay=200`;
+
+    try {
+        // Ambil screenshot sebagai stream
+        const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
+
+        if (response.status === 200) {
+            // Kirim hasil screenshot ke uploader
+            const uploadedUrl = await UploadImage.catbox(response.data);
+            return uploadedUrl; // URL hasil unggahan
+        } else {
+            throw new Error(`Screenshot API Error: ${response.status} ${response.statusText}`);
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+        throw error;
+    }
+}
 // sandbox chat
 const chatbot = async (question, model) => {
     const validModels = ["openai", "llama", "mistral", "mistral-large"];
@@ -3173,6 +3201,54 @@ if (!apikey) {
   }
 });
 
+// ssweb
+app.get('/api/ssweb', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await ssweb(url);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //tiktok
 app.get('/api/tiktok', async (req, res) => {
   try {
