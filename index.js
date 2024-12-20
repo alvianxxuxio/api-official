@@ -29,8 +29,82 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+//gemini
+async function gemini(query) {
+    const apiUrl = `https://restapii.rioooxdzz.web.id/api/bard?message=${encodeURIComponent(query)}`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+        const responseJson = await response.json();
+        if (responseJson && responseJson.result) {
+            return responseJson.result;
+        } else {
+            return "Tidak ada pesan dalam response.";
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan:", error.message);
+        return "Gagal mendapatkan respons dari server.";
+    }
+}
+//bingsearch
+async function bingsearch(query) {
+  try {
+    const response = await axios.get(`https://www.bing.com/search?q=${query}`);
+    const html = response.data;
+    const $ = cheerio.load(html);
+    const results = [];
 
+    $('.b_algo').each((index, element) => {
+      const title = $(element).find('h2').text();
+      const link = $(element).find('a').attr('href');
+      const snippet = $(element).find('.b_caption p').text();
+      const image = $(element).find('.cico .rms_iac').attr('data-src');
 
+      results.push({
+        title,
+        link,
+        snippet,
+        image: image ? `https:${image}` : undefined,
+      });
+    });
+
+    return results;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+//openai
+async function openai(query) {
+    const apiUrl = `https://restapii.rioooxdzz.web.id/api/openai?message=${encodeURIComponent(query)}`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+        const responseJson = await response.json();
+        if (responseJson && responseJson.result) {
+            return responseJson.result;
+        } else {
+            return "Tidak ada pesan dalam response.";
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan:", error.message);
+        return "Gagal mendapatkan respons dari server.";
+    }
+}
 //bingsearch
 async function bingsearch(query) {
   try {
@@ -578,20 +652,7 @@ async function callGroqAPI(text, prompt) {
 }
 
 //openai
-const BASE_URL = 'https://widipe.com/openai?text=';
-async function openai(query) {
-    try {
-        const response = await axios.get(`${BASE_URL}${encodeURIComponent(query)}`);
-        if (response.status === 200 && response.data && response.data.result) {
-            return response.data.result;
-        } else {
-            throw new Error('Tidak ada respons atau hasil dari AI');
-        }
-    } catch (error) {
-        console.error(error);
-        throw new Error('Terjadi kesalahan saat menghubungi AI');
-    }
-}
+
 //gpt turbo
 async function gptturbo(query) {
     const apiUrl = `https://restapii.rioooxdzz.web.id/api/gptturbo?message=${encodeURIComponent(query)}`;
@@ -1584,22 +1645,6 @@ async function gptlogic(text, prompt) {
     return data.data.choices[0].message.content;
 }
 
-//openai
-const gemurl = 'https://widipe.com/openai?text=';
-async function gemini(query) {
-    try {
-        const response = await axios.get(`${gemurl}${encodeURIComponent(query)}`);
-        if (response.status === 200 && response.data && response.data.result) {
-            return response.data.result;
-        } else {
-            throw new Error('Tidak ada respons atau hasil dari AI');
-        }
-    } catch (error) {
-        console.error(error);
-        throw new Error('Terjadi kesalahan saat menghubungi AI');
-    }
-}
-
 // gsmarena
 async function gsm(query) {
     try {
@@ -1758,34 +1803,6 @@ app.get('/api/gptlogic', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-
-//gemini
-async function gemini(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/bard?message=${encodeURIComponent(query)}`;
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        const responseJson = await response.json();
-        if (responseJson && responseJson.result) {
-            return responseJson.result;
-        } else {
-            return "Tidak ada pesan dalam response.";
-        }
-    } catch (error) {
-        console.error("Terjadi kesalahan:", error.message);
-        return "Gagal mendapatkan respons dari server.";
-    }
-}
-
-
 //Rusdi
 app.get('/api/Rusdi', async (req, res) => {
   try {
@@ -3221,8 +3238,7 @@ if (!apikey) {
   }
 });
 
-// videy 
-//openai
+// videy
 app.get('/api/videy', async (req, res) => {
   try {
     const { apikey, url } = req.query;
