@@ -443,6 +443,34 @@ async function gpt4o(query) {
     }
 }
 
+//translate js
+async function translate(query = "", lang) {
+  if (!query.trim()) return "";
+  const url = new URL("https://translate.googleapis.com/translate_a/single");
+  url.searchParams.append("client", "gtx");
+  url.searchParams.append("sl", "auto");
+  url.searchParams.append("zh", "auto");
+  url.searchParams.append("es", "auto");
+  url.searchParams.append("de", "auto");
+ url.searchParams.append("id", "auto");
+ url.searchParams.append("ja", "auto");
+  url.searchParams.append("bn", "auto");
+  url.searchParams.append("dt", "t");
+  url.searchParams.append("tl", lang);
+  url.searchParams.append("q", query);
+
+  try {
+    const response = await fetch(url.href);
+    const data = await response.json();
+    if (data) {
+      return [data[0]].map(([[a]]) => a).join(" ");
+    } else {
+      return "";
+    }
+  } catch (err) {
+    throw err;
+  }
+}
 // simi
 async function simi(text) {
   const url = 'https://simsimi.vn/web/simtalk';
@@ -1799,6 +1827,43 @@ app.get('/api/gptlogic', async (req, res) => {
     }
 
     const response = await gptlogic(text, prompt);
+    res.status(200).json({ response });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// translate js
+app.get('/api/translate', async (req, res) => {
+  try {
+    const { apikey, lang, text } = req.query;
+
+    if (!text || !lang || !apikey) {
+      return res.status(400).json({ error: 'Parameters "text" or "lang" or "apikey" not found' });
+    }
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+
+    const response = await translate(text, lang);
     res.status(200).json({ response });
   } catch (error) {
     res.status(500).json({ error: error.message });
