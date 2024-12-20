@@ -1541,7 +1541,7 @@ async function gptlogic(text, prompt) {
             },
             {
                 role: "user",
-                content: `${text}`, // Fokus pada input pengguna
+                content: text, // Fokus pada input pengguna
             },
         ],
         presence_penalty: 0.1,
