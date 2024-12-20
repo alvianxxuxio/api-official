@@ -200,37 +200,47 @@ async function remini(imageUrl) {
   }
 }
 //txt2img
-async function txt2img(prompt) {
-    const Api = "https://ai-api.magicstudio.com/api/ai-art-generator";
-    const body = `prompt=${encodeURIComponent(prompt)}`;
+const txt2img = async (prompt) => {
+    const data = JSON.stringify({
+        "messages": [prompt],
+        "character": "ai-image-generator"
+    });
+
+    const config = {
+        method: 'POST',
+        url: 'https://chatsandbox.com/api/chat',
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+            'Content-Type': 'application/json',
+            'accept-language': 'id-ID',
+            'referer': 'https://chatsandbox.com/ai-image-generator',
+            'origin': 'https://chatsandbox.com',
+            'alt-used': 'chatsandbox.com',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'priority': 'u=0',
+            'te': 'trailers',
+            'Cookie': '_ga_V22YK5WBFD=GS1.1.1734654982.3.0.1734654982.0.0.0; _ga=GA1.1.803874982.1734528677'
+        },
+        data: data
+    };
+
     try {
-        const respons = await fetch(Api, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: body
-        });
-        if (respons.ok) {
-            const imageBuffer = await respons.buffer();
-            return imageBuffer
+        const response = await axios.request(config);
+        const htmlString = response.data;
+
+        // Mengambil URL dari HTML string
+        const urlMatch = htmlString.match(/src="([^"]+)"/);
+        if (urlMatch) {
+            return urlMatch[1]; // Mengembalikan URL gambar
         } else {
-            const responsError = await respons.text();
-            throw new Error(`Error get this image. Status code: ${respons.status}, Error: ${responsError}`);
+            return { error: "Could not extract image URL from response." };
         }
     } catch (error) {
-        throw error
+        return { error: error.message };
     }
-}
-async function text2imgAfter(prompt) {
-    try {
-        const imageBuffer = await txt2img(prompt);
-        const Url = await uploadFile(imageBuffer, 'generated_image.png');
-        return Url
-    } catch (error) {
-        throw error
-    }
-}
+};
 
 // igstalk
 async function igstalk(username) {
