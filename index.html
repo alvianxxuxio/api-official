@@ -640,7 +640,7 @@
  <div class="active">active</div>
 </div>
 <div id="dropdown44" class="dropdown-content">
-    <form class="form-group" onsubmit="logicgpt(event)">
+    <form class="form-group" action="/api/gptlogic" onsubmit="prompt(event, '/api/gptlogic')">
         <label for="message44">Enter Message:</label>
         <input type="text" id="message44" name="text" required>
         <label for="prompt14">Enter Prompt:</label>
@@ -1334,10 +1334,10 @@ window.text = function(event, endpoint) {
         });
 }
 
-  window.logicgpt = function(event) {
+  window.prompt = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
-    const text = form.querySelector('input[name="text"]').value;
+    const message = form.querySelector('input[name="text"]').value;
     const prompt = form.querySelector('input[name="prompt"]').value;
     const apikey = form.querySelector('input[name="apikey"]').value;
 
@@ -1345,31 +1345,44 @@ window.text = function(event, endpoint) {
         console.error('API key is missing.');
         return; 
     }
-    const baseUrl = 'https://api.alvianuxio.my.id';
-    const endpoint = '/api/gptlogic';
-    const query = `?text=${encodeURIComponent(text)}&prompt=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
-    const url = baseUrl + endpoint + query;
 
-    fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        const resultElement = document.getElementById('result');
-        resultElement.textContent = JSON.stringify(data, null, 2);
-        resultElement.style.display = 'block';
-        totalRequests++;
-        updateTotalRequests();        
-      })
-      .catch(error => {
-        const resultElement = document.getElementById('result');
-        resultElement.textContent = 'Error: ' + error;
-        resultElement.style.display = 'block';
-      });
-  }
+    const query = `?text=${encodeURIComponent(message)}&prompt=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
+    
+
+    const baseUrl = 'https://api.alvianuxio.my.id';
+    const requestUrl = baseUrl + endpoint + query;
+
+    
+    fetch(endpoint + query)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            
+            const message = JSON.stringify(data, null, 2);
+            const textres = `
+            ${message}
+            
+            Request :
+            ${requestUrl}
+            `
+            showToast(textres, true);
+
+            
+            totalRequests++;
+            updateTotalRequests();
+
+
+            
+        })
+        .catch(error => {
+            
+            showToast('Error: ' + error, true);
+        });
+}
 
   window.viewDocs = function () {
         const aboutMe = document.querySelector('.about-me');
