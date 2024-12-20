@@ -399,6 +399,21 @@
       <span>15 Endpoints</span>
     </div>
     <div class="content-container">    
+    <div class="btn" onclick="toggleDropdown('dropdown48')">
+    <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/translate</div>
+ <div class="active">active</div>
+</div>
+<div id="dropdown48" class="dropdown-content">
+    <form class="form-group" action="/api/chatsandbox" onsubmit="chat(event, '/api/chatsandbox')">
+        <label for="message48">Enter text:</label>
+        <input type="text" id="message48" name="text" required>
+        <label for="prompt48">Model :</label>
+        <input type="text" id="prompt48" name="model" placeholder="openai, llama, mistral, mistral-large" required>
+        <label for="apikey48">Enter API Key:</label>
+        <input type="text" id="apikey48" name="apikey" placeholder="Enter Your ApiKeys" required>
+        <button type="submit">Try Now</button>
+    </form>
+</div>
     <div class="btn" onclick="toggleDropdown('dropdown41')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gpt-turbo</div>
 <div class="active">active</div>
@@ -708,7 +723,7 @@
 <div class="containera">
     <div class="headera">
 <span><b>Tools</b></span>
-      <span>11 Endpoints</span>
+      <span>15 Endpoints</span>
     </div>
     <div class="content-container">
     <div class="btn" onclick="toggleDropdown('dropdown46')">
@@ -1458,7 +1473,55 @@ window.lang = function(event, endpoint) {
             showToast('Error: ' + error, true);
         });
 }
+window.chat = function(event, endpoint) {
+    event.preventDefault();
+    const form = event.target;
+    const message = form.querySelector('input[name="text"]').value;
+    const prompt = form.querySelector('input[name="model"]').value;
+    const apikey = form.querySelector('input[name="apikey"]').value;
 
+    if (!apikey) {
+        console.error('API key is missing.');
+        return; 
+    }
+
+    const query = `?text=${encodeURIComponent(message)}&model=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
+    
+
+    const baseUrl = 'https://api.alvianuxio.my.id';
+    const requestUrl = baseUrl + endpoint + query;
+
+    
+    fetch(endpoint + query)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            
+            const message = JSON.stringify(data, null, 2);
+            const textres = `
+            ${message}
+            
+            Request :
+            ${requestUrl}
+            `
+            showToast(textres, true);
+
+            
+            totalRequests++;
+            updateTotalRequests();
+
+
+            
+        })
+        .catch(error => {
+            
+            showToast('Error: ' + error, true);
+        });
+}
   window.viewDocs = function () {
         const aboutMe = document.querySelector('.about-me');
         const content = document.querySelector('.content');
