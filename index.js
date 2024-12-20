@@ -29,82 +29,6 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
-//gemini
-async function gemini(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/bard?message=${encodeURIComponent(query)}`;
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        const responseJson = await response.json();
-        if (responseJson && responseJson.result) {
-            return responseJson.result;
-        } else {
-            return "Tidak ada pesan dalam response.";
-        }
-    } catch (error) {
-        console.error("Terjadi kesalahan:", error.message);
-        return "Gagal mendapatkan respons dari server.";
-    }
-}
-//bingsearch
-async function bingsearch(query) {
-  try {
-    const response = await axios.get(`https://www.bing.com/search?q=${query}`);
-    const html = response.data;
-    const $ = cheerio.load(html);
-    const results = [];
-
-    $('.b_algo').each((index, element) => {
-      const title = $(element).find('h2').text();
-      const link = $(element).find('a').attr('href');
-      const snippet = $(element).find('.b_caption p').text();
-      const image = $(element).find('.cico .rms_iac').attr('data-src');
-
-      results.push({
-        title,
-        link,
-        snippet,
-        image: image ? `https:${image}` : undefined,
-      });
-    });
-
-    return results;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return [];
-  }
-}
-//openai
-async function openai(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/openai?message=${encodeURIComponent(query)}`;
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-        const responseJson = await response.json();
-        if (responseJson && responseJson.result) {
-            return responseJson.result;
-        } else {
-            return "Tidak ada pesan dalam response.";
-        }
-    } catch (error) {
-        console.error("Terjadi kesalahan:", error.message);
-        return "Gagal mendapatkan respons dari server.";
-    }
-}
 //bingsearch
 async function bingsearch(query) {
   try {
@@ -389,57 +313,82 @@ async function halodoc(query) {
 }
 
 // llama3
-async function llama(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/llama?message=${encodeURIComponent(query)}`;
-
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-
-        const responseJson = await response.json();
-         if (responseJson && responseJson.data.response) {
-            return responseJson.data.response;
-        } else {
-            return "Tidak ada pesan dalam response.";
-        }
-    } catch (error) {
-        console.error("Terjadi kesalahan:", error.message);
-        return "Gagal mendapatkan respons dari server.";
+const model = '70b'
+async function llama3(query) {
+if (!["70b", "8b"].some(qq => model == qq)) model = "70b"; //correct
+try {
+    const BASE_URL = 'https://llama3-enggan-ngoding.vercel.app/api/llama'; //@Irulll
+    const payload = {
+        messages: [
+    {
+      role: "system",
+      content: `kamu adalah AI yang bernama llama AI`
+    },
+    {
+      role: "user",
+      content: query
+    }
+  ],
+  model: '70b'
+    };
+    const response = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.1 Mobile/15E148',
+        },
+        body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+    return data.output;
+        } catch (error) {
+        console.error('Error:', error);
+        throw error;
     }
 }
 
 //gpt4o
-async function gpt4o(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/gpt4o?text=${encodeURIComponent(query)}`;
+async function gpt4o(prompt) {
+    let session_hash = Math.random().toString(36).substring(2).slice(1)
+    let resPrompt = await axios.post('https://kingnish-opengpt-4o.hf.space/run/predict?__theme=light', {
+        "data":[{
+            "text":prompt,
+            "files":[]
+        }],
+        "event_data":null,
+        "fn_index":3,
+        "trigger_id":34,
+        "session_hash":session_hash})
+    let res = await axios.post('https://kingnish-opengpt-4o.hf.space/queue/join?__theme=light', {
+        "data":[
+            null,
+            null,
+            "idefics2-8b-chatty",
+            "Top P Sampling",
+            0.5,
+            4096,
+            1,
+            0.9,
+            true
+        ],
+        "event_data":null,
+        "fn_index":5,
+        "trigger_id":34,
+        "session_hash": session_hash
+    })
+    let event_ID = res.data.event_id
+    let anu = await axios.get('https://kingnish-opengpt-4o.hf.space/queue/data?session_hash=' + session_hash)
+    const lines = anu.data.split('\n');
+const processStartsLine = lines.find(line => line.includes('process_completed'));
 
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-
-        const responseJson = await response.json();
-         if (responseJson && responseJson.data.response) {
-            return responseJson.data.response;
-        } else {
-            return "Tidak ada pesan dalam response.";
-        }
-    } catch (error) {
-        console.error("Terjadi kesalahan:", error.message);
-        return "Gagal mendapatkan respons dari server.";
-    }
+if (processStartsLine) {
+    const processStartsData = JSON.parse(processStartsLine.replace('data: ', ''));
+    let ress = processStartsData.output.data
+    let result = ress[0][0][1]
+    return result
+} else {
+    return 'error kang!'
+}
 }
 
 // simi
@@ -652,7 +601,20 @@ async function callGroqAPI(text, prompt) {
 }
 
 //openai
-
+const BASE_URL = 'https://widipe.com/openai?text=';
+async function openai(query) {
+    try {
+        const response = await axios.get(`${BASE_URL}${encodeURIComponent(query)}`);
+        if (response.status === 200 && response.data && response.data.result) {
+            return response.data.result;
+        } else {
+            throw new Error('Tidak ada respons atau hasil dari AI');
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Terjadi kesalahan saat menghubungi AI');
+    }
+}
 //gpt turbo
 async function gptturbo(query) {
     const apiUrl = `https://restapii.rioooxdzz.web.id/api/gptturbo?message=${encodeURIComponent(query)}`;
@@ -1180,31 +1142,6 @@ async function capcut(url) {
   };
 }
 
-// steam search
-async function Steam(query) {
-  let data = (
-    await axios.get(
-      "https://store.steampowered.com/api/storesearch?cc=id&l=id&term=" + query,
-    )
-  ).data;
-  let info = data.items;
-
-  return info.map((a) => ({
-    name: a.name,
-    id: a.id,
-    price: a.price ? "Rp: " + (a.price.final / 1e3).toLocaleString() : "Free",
-    score: a.metascore ? a.metascore + "/100" : "N/A",
-    platform: a.platforms.windows
-      ? "Windows"
-      : a.platforms.mac
-        ? "Mac"
-        : a.platforms.linux
-          ? "Linux"
-          : "Nothing",
-    image: a.tiny_image,
-  }));
-  }
-
 //Rusdi
 async function Rusdi(q) {
   try {
@@ -1619,30 +1556,77 @@ async function igdl(url) {
 }
 
 //gptlogic
-async function gptlogic(text, prompt) {    
-    let json = {
-        model: "openchat/openchat-3.6-8b",
-        messages: [
-            {
-                role: "system",
-                content: prompt,
-            },
-            {
-                role: "user",
-                content: text, // Fokus pada input pengguna
-            },
-        ],
-        presence_penalty: 0.1,
-        frequency_penalty: 0.1,
-        top_k: 100,
+
+async function gptlogic(inputText, customPrompt) {
+  try {
+    const safetySettings = [
+      { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+      { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+      { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+      { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    ];
+
+    const apiKey = 'AIzaSyD7ciBCgOP2DLXfpUDn-XrvoZnoUe0vZKc';
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash", safetySettings });
+
+    const generationConfig = {
+      temperature: 1,
+      topP: 0.95,
+      topK: 64,
+      maxOutputTokens: 8192,
+      responseMimeType: "text/plain",
     };
-    
-    let { data } = await axios.post(
-        "https://imphnen-ai.vercel.app/api/llm/openchat",
-        json,
-    );
-    
-    return data.data.choices[0].message.content;
+
+    const currentTime = moment().tz('Asia/Jakarta').format('HH:mm:ss');
+    const todayDate = moment().tz('Asia/Jakarta').format('YYYY-MM-DD');
+
+    const fullPrompt = `${customPrompt}, Kamu dapat mengetahui jam dan sekarang adalah hari ${currentTime} dan ${todayDate}.`;
+
+    const history = [
+      {
+        role: 'user',
+        parts: [
+          {
+            text: fullPrompt,
+          },
+        ],
+      },
+      {
+        role: 'model',
+        parts: [
+          { text: 'Oke' },
+        ],
+      },
+    ];
+
+    const chatSession = await model.startChat({
+      generationConfig,
+      history,
+    });
+
+    const result = await chatSession.sendMessage(inputText);
+    return result.response.text();
+  } catch (error) {
+    console.error("Error in gptlogic function:", error);
+    throw error;
+  }
+}
+
+//openai
+const gemurl = 'https://widipe.com/openai?text=';
+async function gemini(query) {
+    try {
+        const response = await axios.get(`${gemurl}${encodeURIComponent(query)}`);
+        if (response.status === 200 && response.data && response.data.result) {
+            return response.data.result;
+        } else {
+            throw new Error('Tidak ada respons atau hasil dari AI');
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Terjadi kesalahan saat menghubungi AI');
+    }
 }
 
 // gsmarena
@@ -1768,41 +1752,44 @@ app.post('/keys/create', (req, res) => {
 });
 
 //GPT logic
-app.get('/api/gptlogic', async (req, res) => {
+app.get('/api/groq-ai', async (req, res) => {
   try {
     const { apikey, prompt, text } = req.query;
 
     if (!text || !prompt || !apikey) {
       return res.status(400).json({ error: 'Parameters "text" or "prompt" or "apikey" not found' });
     }
-    // Referensi ke API key di Firebase
-    const dbRef = ref(database); // `database` adalah instance Firebase Database
-    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
 
-    // Jika API key tidak ditemukan
-    if (!snapshot.exists()) {
-      return res.status(403).json({ 
-        error: 'Apikey tidak valid atau tidak ditemukan', 
-        info: 'Pastikan API key Anda benar atau aktif' 
-      });
-    }
-
-    const apiKeyDetails = snapshot.val();
-
-    // Validasi batas penggunaan
-    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
-      });
-    }
-
-    const response = await gptlogic(text, prompt);
+    const response = await callGroqAPI(text, prompt);
     res.status(200).json({ response });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+//gemini
+async function gemini(query) {
+    const apiUrl = `https://restapii.rioooxdzz.web.id/api/bard?message=${encodeURIComponent(query)}`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+        const responseJson = await response.json();
+        if (responseJson && responseJson.result) {
+            return responseJson.result;
+        } else {
+            return "Tidak ada pesan dalam response.";
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan:", error.message);
+        return "Gagal mendapatkan respons dari server.";
+    }
+}
 //Rusdi
 app.get('/api/Rusdi', async (req, res) => {
   try {
@@ -2011,8 +1998,6 @@ if (!apikey) {
     res.status(500).json({ error: error.message });
   }
 });
-
-// status
 
 //Brat 
 app.get('/api/Brat', async (req, res) => {
@@ -2356,55 +2341,6 @@ if (!apikey) {
   }
 });
 
-
-// steam search
-app.get('/api/steam-search', async (req, res) => {
-  try {
-    const { apikey, search } = req.query;
-if (!apikey) {
-      return res.status(400).json({ 
-        error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda' 
-      });
-    }
-
-    // Referensi ke API key di Firebase
-    const dbRef = ref(database); // `database` adalah instance Firebase Database
-    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-
-    // Jika API key tidak ditemukan
-    if (!snapshot.exists()) {
-      return res.status(403).json({ 
-        error: 'Apikey tidak valid atau tidak ditemukan', 
-        info: 'Pastikan API key Anda benar atau aktif' 
-      });
-    }
-
-    const apiKeyDetails = snapshot.val();
-
-    // Validasi batas penggunaan
-    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
-      });
-    }
-    if (!search) {
-      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
-    }
-    const response = await Steam(search);
-    apiKeyDetails.usage += 1;
-    res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
-  creator: "ALVIAN UXIO Inc",
-  data: {
-    response: response
-  }
-});
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 //gsmarena
 app.get('/api/gsmarena', async (req, res) => {
   try {
@@ -3089,55 +3025,6 @@ if (!apikey) {
   }
 });
 
-//llama
-app.get('/api/llama3', async (req, res) => {
-  try {
-    const { apikey, text } = req.query;
-if (!apikey) {
-      return res.status(400).json({ 
-        error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda' 
-      });
-    }
-
-    // Referensi ke API key di Firebase
-    const dbRef = ref(database); // `database` adalah instance Firebase Database
-    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-
-    // Jika API key tidak ditemukan
-    if (!snapshot.exists()) {
-      return res.status(403).json({ 
-        error: 'Apikey tidak valid atau tidak ditemukan', 
-        info: 'Pastikan API key Anda benar atau aktif' 
-      });
-    }
-
-    const apiKeyDetails = snapshot.val();
-
-    // Validasi batas penggunaan
-    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
-      });
-    }
-    if (!text) {
-      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
-    }
-    const response = await llama(text);
-    apiKeyDetails.usage += 1;
-    res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
-  creator: "ALVIAN UXIO Inc",
-  data: {
-    response: response
-  }
-});
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
 
 //openai
 app.get('/api/openai', async (req, res) => {
@@ -3174,7 +3061,7 @@ if (!apikey) {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await openai(text);
+    const response = await openai(message);
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
@@ -3188,7 +3075,58 @@ if (!apikey) {
   }
 });
 
-// videy
+
+// anime
+app.get('/api/anime', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await anime(url);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// videy 
+//openai
 app.get('/api/videy', async (req, res) => {
   try {
     const { apikey, url } = req.query;
