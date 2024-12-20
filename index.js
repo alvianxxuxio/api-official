@@ -1769,6 +1769,43 @@ app.get('/api/gptlogic', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// translate js
+app.get('/api/translate', async (req, res) => {
+  try {
+    const { apikey, lang, text } = req.query;
+
+    if (!text || !lang || !apikey) {
+      return res.status(400).json({ error: 'Parameters "text" or "prompt" or "apikey" not found' });
+    }
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+
+    const response = await translate(text, lang);
+    res.status(200).json({ response });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //gemini
 async function gemini(query) {
     const apiUrl = `https://restapii.rioooxdzz.web.id/api/bard?message=${encodeURIComponent(query)}`;
