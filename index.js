@@ -1887,7 +1887,13 @@ app.get('/api/gptlogic', async (req, res) => {
     }
 
     const response = await gptlogic(text, prompt);
-    res.status(200).json({ response });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
