@@ -19,6 +19,7 @@ const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const { ref, set, get, child } = require('firebase/database');
 const { database } = require('./firebase.js');
+const UploadImage = require('./lib/uploader.js');
 const app = express();
 // Initial valid API keys
 const validApiKeys = ['aluxi', 'alvianuxio', 'admin', 'global', 'world', 'sepuh', 'indonesia'];
@@ -160,12 +161,24 @@ const result = await response.json();
 return result.resultImageUrl 
 }
 //remini
-async function remini(imageBuffer) {
+async function remini(imageUrl) {
   try {
-    // Step 1: Upscale the image
+    // Validate the file extension
+    if (!validateFileExtension(imageUrl)) {
+      throw new Error("Invalid file extension. Allowed extensions are .png, .jpeg, .jpg");
+    }
+
+    // Step 1: Fetch the image
+    const imageResponse = await fetch(imageUrl);
+    if (!imageResponse.ok) {
+      throw new Error("Failed to fetch the image");
+    }
+    const imageBuffer = await imageResponse.buffer();
+
+    // Step 2: Upscale the image
     const upscaleResponse = await fetch("https://lexica.qewertyy.dev/upscale", {
       body: JSON.stringify({
-        image_data: Buffer.from(imageBuffer, "base64"),
+        image_data: Buffer.from(imageBuffer).toString("base64"),
         format: "binary",
       }),
       headers: {
@@ -174,10 +187,14 @@ async function remini(imageBuffer) {
       method: "POST",
     });
 
+    if (!upscaleResponse.ok) {
+      throw new Error("Failed to upscale the image");
+    }
+
     const generatedBuffer = Buffer.from(await upscaleResponse.arrayBuffer());
 
-    // Step 2: Upload the result using uploadFile function
-    const downloadLink = await uploadFile(generatedBuffer);
+    // Step 3: Upload the result using uploadFile function
+    const downloadLink = await UploadImage.catbox(generatedBuffer);
     console.log("Download Link:", downloadLink);
     return downloadLink;
   } catch (error) {
@@ -2618,7 +2635,7 @@ if (!apikey) {
 //remini
 app.get('/api/remini', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
@@ -2647,10 +2664,10 @@ if (!apikey) {
         info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
       });
     }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await remini(message);
+    const response = await remini(url);
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
