@@ -1502,13 +1502,13 @@ window.chat = function(event, endpoint) {
         .then(data => {
             
             const message = JSON.stringify(data, null, 2);
-            const chstres = `
+            const textres = `
             ${message}
             
             Request :
             ${requestUrl}
             `
-            showToast(chstres, true);
+            showToast(textres, true);
 
             
             totalRequests++;
