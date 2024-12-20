@@ -1668,45 +1668,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/status', (req, res) => {
-  const cpus = os.cpus();
-
-  // Menghitung waktu per siklus CPU dalam milidetik
-  const cpuSpeedsInMs = cpus.map(cpu => ({
-    core: cpu.model,
-    speed: `${(1000 / cpu.speed).toFixed(2)} ms` // Kecepatan dalam ms
-  }));
-
-  // Menghitung uptime server
-  const uptime = `${Math.floor(os.uptime() / 3600)} hours ${Math.floor((os.uptime() % 3600) / 60)} minutes`;
-
-  // Mendapatkan informasi memori
-  const totalMemory = os.totalmem(); // Total memory in bytes
-  const freeMemory = os.freemem(); // Free memory in bytes
-  const usedMemory = totalMemory - freeMemory; // Used memory in bytes
-
-  // Menghitung memori dalam MB
-  const memoryInfo = {
-    total: `${(totalMemory / 1024 / 1024).toFixed(2)} MB`, // Total memory in MB
-    free: `${(freeMemory / 1024 / 1024).toFixed(2)} MB`, // Free memory in MB
-    used: `${(usedMemory / 1024 / 1024).toFixed(2)} MB`, // Used memory in MB
-  };
-
-  // Informasi sistem
-  const status = {
-    cpuModel: cpus[0].model,
-    cpuCores: cpus.length,
-    speed: cpuSpeedsInMs, // Menampilkan kecepatan dalam ms per siklus
-    uptime: uptime,
-    memory: memoryInfo, // Menambahkan informasi memori
-  };
-
-  res.json({
-    status: 'Alive',
-    data: status,
-  });
-});
-
 app.get('/apikey/create', (req, res) => {
   res.sendFile(path.join(__dirname, 'create.html')); // Mengarahkan ke create.html
 });
