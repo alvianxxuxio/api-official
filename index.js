@@ -6,7 +6,6 @@ const axios = require('axios');
 const yts = require("yt-search");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
-const os = require("os");
 const {
   GoogleGenerativeAI,
   HarmCategory,
@@ -31,42 +30,7 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
-// translate js
-async function translate(query = "", lang) {
-  if (!query.trim()) return "";
-  const url = new URL("https://translate.googleapis.com/translate_a/single");
-  url.searchParams.append("client", "gtx");
-url.searchParams.append("en", "auto"); // english
-url.searchParams.append("zh", "auto"); // Mandarin
-url.searchParams.append("es", "auto"); // Spanyol
-url.searchParams.append("de", "auto"); // Jerman
-url.searchParams.append("id", "auto"); // Indonesia
-url.searchParams.append("ja", "auto"); // Jepang
-url.searchParams.append("bn", "auto"); // Bengali
-url.searchParams.append("fr", "auto"); // Prancis
-url.searchParams.append("it", "auto"); // Italia
-url.searchParams.append("ko", "auto"); // Korea
-url.searchParams.append("pt", "auto"); // Portugis
-url.searchParams.append("ru", "auto"); // Rusia
-url.searchParams.append("tr", "auto"); // Turki
-url.searchParams.append("th", "auto"); // Thailand
-url.searchParams.append("vi", "auto"); // Vietnam
-url.searchParams.append("dt", "t");
-url.searchParams.append("tl", lang);
-url.searchParams.append("q", query);
 
-  try {
-    const response = await fetch(url.href);
-    const data = await response.json();
-    if (data) {
-      return [data[0]].map(([[a]]) => a).join(" ");
-    } else {
-      return "";
-    }
-  } catch (err) {
-    throw err;
-  }
-}
 //bingsearch
 async function bingsearch(query) {
   try {
