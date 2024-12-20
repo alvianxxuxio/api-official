@@ -31,7 +31,47 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
-//
+// sandbox chat
+const chatbot = async (question, model) => {
+    const validModels = ["openai", "llama", "mistral", "mistral-large"];
+    if (!validModels.includes(model)) {
+        return {
+            error: `Invalid model selected. Please choose one of: ${validModels.join(', ')}`
+        };
+    }
+
+    const data = JSON.stringify({
+        "messages": [question],
+        "character": model
+    });    
+
+    const config = {
+        method: 'POST',
+        url: 'https://chatsandbox.com/api/chat',
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+            'Content-Type': 'application/json',
+            'accept-language': 'id-ID',
+            'referer': `https://chatsandbox.com/chat/${model}`,
+            'origin': 'https://chatsandbox.com',
+            'alt-used': 'chatsandbox.com',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'priority': 'u=0',
+            'te': 'trailers',
+            'Cookie': '_ga_V22YK5WBFD=GS1.1.1734654982.3.0.1734654982.0.0.0; _ga=GA1.1.803874982.1734528677'
+        },
+        data: data
+    };
+
+    try {
+        const response = await axios.request(config);
+        return response.data;    
+    } catch (error) {
+        return { error: error.message };
+    }  
+};
 //gemini
 async function gemini(query) {
     const apiUrl = `https://restapii.rioooxdzz.web.id/api/bard?message=${encodeURIComponent(query)}`;
@@ -1940,7 +1980,56 @@ app.get('/api/translate', async (req, res) => {
     }
 
     const response = await translate(text, lang);
-    res.status(200).json({ response });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// chat sandbox
+app.get('/api/chatsandbox', async (req, res) => {
+  try {
+    const { apikey, model, text } = req.query;
+
+    if (!text || !model || !apikey) {
+      return res.status(400).json({ error: 'Parameters "text" or "model" or "apikey" not found' });
+    }
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+
+    const response = await chatbot(text, model);
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
