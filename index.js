@@ -162,7 +162,8 @@ return result.resultImageUrl
 //remini
 async function remini(imageBuffer) {
   try {
-    const response = await fetch("https://lexica.qewertyy.dev/upscale", {
+    // Step 1: Upscale the image
+    const upscaleResponse = await fetch("https://lexica.qewertyy.dev/upscale", {
       body: JSON.stringify({
         image_data: Buffer.from(imageBuffer, "base64"),
         format: "binary",
@@ -172,9 +173,16 @@ async function remini(imageBuffer) {
       },
       method: "POST",
     });
-    return Buffer.from(await response.arrayBuffer());
-  } catch {
-    return null;
+
+    const generatedBuffer = Buffer.from(await upscaleResponse.arrayBuffer());
+
+    // Step 2: Upload the result using uploadFile function
+    const downloadLink = await uploadFile(generatedBuffer);
+    console.log("Download Link:", downloadLink);
+    return downloadLink;
+  } catch (error) {
+    console.error("Error processing and uploading image:", error);
+    throw error;
   }
 }
 //txt2img
