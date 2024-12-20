@@ -313,82 +313,57 @@ async function halodoc(query) {
 }
 
 // llama3
-const model = '70b'
-async function llama3(query) {
-if (!["70b", "8b"].some(qq => model == qq)) model = "70b"; //correct
-try {
-    const BASE_URL = 'https://llama3-enggan-ngoding.vercel.app/api/llama'; //@Irulll
-    const payload = {
-        messages: [
-    {
-      role: "system",
-      content: `kamu adalah AI yang bernama llama AI`
-    },
-    {
-      role: "user",
-      content: query
-    }
-  ],
-  model: '70b'
-    };
-    const response = await fetch(BASE_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.1 Mobile/15E148',
-        },
-        body: JSON.stringify(payload),
-    });
-    const data = await response.json();
-    return data.output;
-        } catch (error) {
-        console.error('Error:', error);
-        throw error;
+async function llama(query) {
+    const apiUrl = `https://restapii.rioooxdzz.web.id/api/llama?message=${encodeURIComponent(query)}`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const responseJson = await response.json();
+         if (responseJson && responseJson.data.response) {
+            return responseJson.data.response;
+        } else {
+            return "Tidak ada pesan dalam response.";
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan:", error.message);
+        return "Gagal mendapatkan respons dari server.";
     }
 }
 
 //gpt4o
-async function gpt4o(prompt) {
-    let session_hash = Math.random().toString(36).substring(2).slice(1)
-    let resPrompt = await axios.post('https://kingnish-opengpt-4o.hf.space/run/predict?__theme=light', {
-        "data":[{
-            "text":prompt,
-            "files":[]
-        }],
-        "event_data":null,
-        "fn_index":3,
-        "trigger_id":34,
-        "session_hash":session_hash})
-    let res = await axios.post('https://kingnish-opengpt-4o.hf.space/queue/join?__theme=light', {
-        "data":[
-            null,
-            null,
-            "idefics2-8b-chatty",
-            "Top P Sampling",
-            0.5,
-            4096,
-            1,
-            0.9,
-            true
-        ],
-        "event_data":null,
-        "fn_index":5,
-        "trigger_id":34,
-        "session_hash": session_hash
-    })
-    let event_ID = res.data.event_id
-    let anu = await axios.get('https://kingnish-opengpt-4o.hf.space/queue/data?session_hash=' + session_hash)
-    const lines = anu.data.split('\n');
-const processStartsLine = lines.find(line => line.includes('process_completed'));
+async function gpt4o(query) {
+    const apiUrl = `https://restapii.rioooxdzz.web.id/api/gpt4o?text=${encodeURIComponent(query)}`;
 
-if (processStartsLine) {
-    const processStartsData = JSON.parse(processStartsLine.replace('data: ', ''));
-    let ress = processStartsData.output.data
-    let result = ress[0][0][1]
-    return result
-} else {
-    return 'error kang!'
-}
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const responseJson = await response.json();
+         if (responseJson && responseJson.data.response) {
+            return responseJson.data.response;
+        } else {
+            return "Tidak ada pesan dalam response.";
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan:", error.message);
+        return "Gagal mendapatkan respons dari server.";
+    }
 }
 
 // simi
@@ -3012,6 +2987,55 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gpt4o(text);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//llama
+app.get('/api/llama3', async (req, res) => {
+  try {
+    const { apikey, text } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
+    }
+    const response = await llama(text);
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
