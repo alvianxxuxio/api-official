@@ -6,6 +6,7 @@ const axios = require('axios');
 const yts = require("yt-search");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
+const os = require("os");
 const {
   GoogleGenerativeAI,
   HarmCategory,
@@ -1964,6 +1965,45 @@ if (!apikey) {
   }
 });
 
+// status
+app.get('/system', async (req, res) => {
+  try {
+    // Mendapatkan informasi sistem
+    const memoryUsage = process.memoryUsage();
+    const cpuUsage = os.loadavg();
+    const cpus = os.cpus();
+    const currentTime = new Date().toISOString();
+
+    // Mengambil informasi CPU
+    const cpuModel = cpus[0].model; // Nama CPU
+    const cpuCores = cpus.length;  // Jumlah core
+
+    // Response JSON
+    res.status(200).json({
+      status: 'success',
+      creator: 'ALVIAN UXIO Inc',
+      data: {
+        memory: {
+          total: `${(os.totalmem() / 1024 / 1024).toFixed(2)} MB`,
+          used: `${(memoryUsage.rss / 1024 / 1024).toFixed(2)} MB`,
+        },
+        cpu: {
+          model: cpuModel,
+          cores: cpuCores,
+          load1m: cpuUsage[0].toFixed(2),
+          load5m: cpuUsage[1].toFixed(2),
+          load15m: cpuUsage[2].toFixed(2),
+        },
+        time: currentTime,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+});
 //Brat 
 app.get('/api/Brat', async (req, res) => {
   try {
