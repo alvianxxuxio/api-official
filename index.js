@@ -164,9 +164,6 @@ return result.resultImageUrl
 async function remini(imageUrl) {
   try {
     // Validate the file extension
-    if (!validateFileExtension(imageUrl)) {
-      throw new Error("Invalid file extension. Allowed extensions are .png, .jpeg, .jpg");
-    }
 
     // Step 1: Fetch the image
     const imageResponse = await fetch(imageUrl);
