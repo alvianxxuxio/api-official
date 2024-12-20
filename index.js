@@ -30,6 +30,43 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+
+// translate js
+async function translate(query = "", lang) {
+  if (!query.trim()) return "";
+  const url = new URL("https://translate.googleapis.com/translate_a/single");
+  url.searchParams.append("client", "gtx");
+url.searchParams.append("en", "auto"); // english
+url.searchParams.append("zh", "auto"); // Mandarin
+url.searchParams.append("es", "auto"); // Spanyol
+url.searchParams.append("de", "auto"); // Jerman
+url.searchParams.append("id", "auto"); // Indonesia
+url.searchParams.append("ja", "auto"); // Jepang
+url.searchParams.append("bn", "auto"); // Bengali
+url.searchParams.append("fr", "auto"); // Prancis
+url.searchParams.append("it", "auto"); // Italia
+url.searchParams.append("ko", "auto"); // Korea
+url.searchParams.append("pt", "auto"); // Portugis
+url.searchParams.append("ru", "auto"); // Rusia
+url.searchParams.append("tr", "auto"); // Turki
+url.searchParams.append("th", "auto"); // Thailand
+url.searchParams.append("vi", "auto"); // Vietnam
+url.searchParams.append("dt", "t");
+url.searchParams.append("tl", lang);
+url.searchParams.append("q", query);
+
+  try {
+    const response = await fetch(url.href);
+    const data = await response.json();
+    if (data) {
+      return [data[0]].map(([[a]]) => a).join(" ");
+    } else {
+      return "";
+    }
+  } catch (err) {
+    throw err;
+  }
+}
 //bingsearch
 async function bingsearch(query) {
   try {
@@ -1756,6 +1793,104 @@ async function gemini(query) {
         return "Gagal mendapatkan respons dari server.";
     }
 }
+
+app.get('/api/translate', async (req, res) => {
+  try {
+    const { apikey, message, language } = req.query;
+
+    // Validasi parameter apikey
+    if (!apikey) {
+      return res.status(400).json({
+        error: 'Parameter "apikey" tidak ditemukan',
+        info: 'Sertakan API key dalam permintaan Anda'
+      });
+    }
+
+    // Validasi API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    if (!snapshot.exists()) {
+      return res.status(403).json({
+        error: 'Apikey tidak valid atau tidak ditemukan',
+        info: 'Pastikan API key Anda benar atau aktif'
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({
+        error: 'Limit penggunaan API telah tercapai',
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}`
+      });
+    }
+
+    // Validasi parameter message
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+
+    // Validasi parameter language
+    if (!language) {
+      return res.status(400).json({ error: 'Parameter "language" tidak ditemukan' });
+    }
+
+    // Fungsi translate menggunakan Google Translate API
+    const translateURL = 'https://translate.googleapis.com/translate_a/single';
+    const params = new URLSearchParams();
+    params.append("client", "gtx");
+    params.append("sl", "auto");
+    params.append("tl", language); // Bahasa target
+    params.append("dt", "t");
+    params.append("q", message);
+
+    // Tambahkan semua bahasa secara dinamis untuk dokumentasi
+    const supportedLanguages = [
+      "en", // English
+      "zh", // Mandarin
+      "es", // Spanyol
+      "de", // Jerman
+      "id", // Indonesia
+      "ja", // Jepang
+      "bn", // Bengali
+      "fr", // Prancis
+      "it", // Italia
+      "ko", // Korea
+      "pt", // Portugis
+      "ru", // Rusia
+      "tr", // Turki
+      "th", // Thailand
+      "vi"  // Vietnam
+    ];
+
+    supportedLanguages.forEach((lang) => {
+      params.append(lang, "auto"); // Menambahkan bahasa dengan nilai "auto"
+    });
+
+    // Permintaan ke Google Translate API
+    const response = await axios.get(`${translateURL}?${params.toString()}`);
+    const translatedText = response.data[0][0][0]; // Hasil terjemahan
+
+    // Perbarui penggunaan API key
+    apiKeyDetails.usage += 1;
+
+    // Kirimkan respons hasil terjemahan
+    res.status(200).json({
+      information: `https://go.alvianuxio.my.id/contact`,
+      creator: "ALVIAN UXIO Inc",
+      data: {
+        original: message,
+        translated: translatedText,
+        language: language        
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 //Rusdi
 app.get('/api/Rusdi', async (req, res) => {
   try {
