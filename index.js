@@ -6,6 +6,7 @@ const axios = require('axios');
 const yts = require("yt-search");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
+const os = require('os');
 const {
   GoogleGenerativeAI,
   HarmCategory,
@@ -443,6 +444,30 @@ async function gpt4o(query) {
     }
 }
 
+// steam search
+async function Steam(query) {
+  let data = (
+    await axios.get(
+      "https://store.steampowered.com/api/storesearch?cc=id&l=id&term=" + query,
+    )
+  ).data;
+  let info = data.items;
+
+  return info.map((a) => ({
+    name: a.name,
+    id: a.id,
+    price: a.price ? "Rp: " + (a.price.final / 1e3).toLocaleString() : "Free",
+    score: a.metascore ? a.metascore + "/100" : "N/A",
+    platform: a.platforms.windows
+      ? "Windows"
+      : a.platforms.mac
+        ? "Mac"
+        : a.platforms.linux
+          ? "Linux"
+          : "Nothing",
+    image: a.tiny_image,
+  }));
+  }
 //translate js
 async function translate(query = "", lang) {
   if (!query.trim()) return "";
@@ -1208,32 +1233,6 @@ async function capcut(url) {
     video: $("video").attr("src"),
   };
 }
-
-// steam search
-async function Steam(query) {
-  let data = (
-    await axios.get(
-      "https://store.steampowered.com/api/storesearch?cc=id&l=id&term=" + query,
-    )
-  ).data;
-  let info = data.items;
-
-  return info.map((a) => ({
-    name: a.name,
-    id: a.id,
-    price: a.price ? "Rp: " + (a.price.final / 1e3).toLocaleString() : "Free",
-    score: a.metascore ? a.metascore + "/100" : "N/A",
-    platform: a.platforms.windows
-      ? "Windows"
-      : a.platforms.mac
-        ? "Mac"
-        : a.platforms.linux
-          ? "Linux"
-          : "Nothing",
-    image: a.tiny_image,
-  }));
-  }
-
 //Rusdi
 async function Rusdi(q) {
   try {
@@ -1796,6 +1795,45 @@ app.post('/keys/create', (req, res) => {
   });
 });
 
+// status
+app.get('/status', (req, res) => {
+  const cpus = os.cpus();
+
+  // Menghitung waktu per siklus CPU dalam milidetik
+  const cpuSpeedsInMs = cpus.map(cpu => ({
+    core: cpu.model,
+    speed: `${(1000 / cpu.speed).toFixed(2)} ms` // Kecepatan dalam ms
+  }));
+
+  // Menghitung uptime server
+  const uptime = `${Math.floor(os.uptime() / 3600)} hours ${Math.floor((os.uptime() % 3600) / 60)} minutes`;
+
+  // Mendapatkan informasi memori
+  const totalMemory = os.totalmem(); // Total memory in bytes
+  const freeMemory = os.freemem(); // Free memory in bytes
+  const usedMemory = totalMemory - freeMemory; // Used memory in bytes
+
+  // Menghitung memori dalam MB
+  const memoryInfo = {
+    total: `${(totalMemory / 1024 / 1024).toFixed(2)} MB`, // Total memory in MB
+    free: `${(freeMemory / 1024 / 1024).toFixed(2)} MB`, // Free memory in MB
+    used: `${(usedMemory / 1024 / 1024).toFixed(2)} MB`, // Used memory in MB
+  };
+
+  // Informasi sistem
+  const status = {
+    cpuModel: cpus[0].model,
+    cpuCores: cpus.length,
+    speed: cpuSpeedsInMs, // Menampilkan kecepatan dalam ms per siklus
+    uptime: uptime,
+    memory: memoryInfo, // Menambahkan informasi memori
+  };
+
+  res.json({
+    status: 'success',
+    data: status,
+  });
+});
 //GPT logic
 app.get('/api/gptlogic', async (req, res) => {
   try {
