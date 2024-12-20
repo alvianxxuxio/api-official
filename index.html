@@ -400,7 +400,7 @@
     </div>
     <div class="content-container">    
     <div class="btn" onclick="toggleDropdown('dropdown48')">
-    <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/translate</div>
+    <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/chatsandbox</div>
  <div class="active">active</div>
 </div>
 <div id="dropdown48" class="dropdown-content">
@@ -1502,13 +1502,13 @@ window.chat = function(event, endpoint) {
         .then(data => {
             
             const message = JSON.stringify(data, null, 2);
-            const textres = `
+            const chstres = `
             ${message}
             
             Request :
             ${requestUrl}
             `
-            showToast(textres, true);
+            showToast(chstres, true);
 
             
             totalRequests++;
