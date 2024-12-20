@@ -2435,7 +2435,7 @@ if (!apikey) {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
-    const response = await text2imgAfter(message);
+    const response = await txt2img(message);
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
