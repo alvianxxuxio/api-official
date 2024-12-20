@@ -1966,7 +1966,7 @@ if (!apikey) {
 });
 
 // status
-app.get('/system', async (req, res) => {
+app.get('/api/system', async (req, res) => {
   try {
     // Mendapatkan informasi sistem
     const memoryUsage = process.memoryUsage();
