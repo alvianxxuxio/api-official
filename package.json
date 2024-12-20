@@ -36,6 +36,5 @@
     "@octokit/rest": "^21.0.1",
     "shannz-playwright": "^1.0.8",
     "playwright": "^1.49.1",
-    "os": "^0.1.2",
   }
 }
