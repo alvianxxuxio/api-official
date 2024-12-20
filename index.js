@@ -1531,8 +1531,7 @@ async function igdl(url) {
 }
 
 //gptlogic
-
-async function gptlogic(inputText, customPrompt) {    
+async function gptlogic(text, prompt) {    
     let json = {
         model: "openchat/openchat-3.6-8b",
         messages: [
