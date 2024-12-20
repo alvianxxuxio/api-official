@@ -34,7 +34,5 @@
     "js-beautify": "^1.15.1",
     "jose": "^5.9.6",
     "@octokit/rest": "^21.0.1",
-    "shannz-playwright": "^1.0.8",
-    "playwright": "^1.49.1",
   }
 }
