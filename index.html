@@ -637,12 +637,12 @@
       </div>
 <div class="btn" onclick="toggleDropdown('dropdown44')">
     <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/gptlogic</div>
- <div class="errors">error</div>
+ <div class="active">active</div>
 </div>
 <div id="dropdown44" class="dropdown-content">
     <form class="form-group" onsubmit="logicgpt(event)">
         <label for="message44">Enter Message:</label>
-        <input type="text" id="message44" name="message" required>
+        <input type="text" id="message44" name="text" required>
         <label for="prompt14">Enter Prompt:</label>
         <input type="text" id="prompt44" name="prompt" required>
         <label for="apikey44">Enter API Key:</label>
@@ -1337,7 +1337,7 @@ window.text = function(event, endpoint) {
   window.logicgpt = function(event) {
     event.preventDefault();
     const form = event.target;
-    const message = form.querySelector('input[name="message"]').value;
+    const text = form.querySelector('input[name="text"]').value;
     const prompt = form.querySelector('input[name="prompt"]').value;
     const apikey = form.querySelector('input[name="apikey"]').value;
 
@@ -1347,7 +1347,7 @@ window.text = function(event, endpoint) {
     }
     const baseUrl = 'https://api.alvianuxio.my.id';
     const endpoint = '/api/gptlogic';
-    const query = `?message=${encodeURIComponent(message)}&prompt=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
+    const query = `?text=${encodeURIComponent(text)}&prompt=${encodeURIComponent(prompt)}&apikey=${encodeURIComponent(apikey)}`;
     const url = baseUrl + endpoint + query;
 
     fetch(url)
@@ -1362,10 +1362,7 @@ window.text = function(event, endpoint) {
         resultElement.textContent = JSON.stringify(data, null, 2);
         resultElement.style.display = 'block';
         totalRequests++;
-        updateTotalRequests();
-        const requestUrlElement = document.createElement('p');
-        requestUrlElement.textContent = `Request URL: ${url}`;
-        resultElement.appendChild(requestUrlElement);
+        updateTotalRequests();        
       })
       .catch(error => {
         const resultElement = document.getElementById('result');
