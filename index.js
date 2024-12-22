@@ -2271,8 +2271,7 @@ app.get('/apikey/check', async (req, res) => {
     }
 
     // Reference to the API key in Firebase
-    const apiKeRef = ref(database, `apiKeys/${apiKey}`);
-const dbRef = ref(database);
+    const dbRef = ref(database);
     const snapshot = await get(child(dbRef, `apiKeys/${apiKey}`));
 
     // If the API key is not found
@@ -2293,15 +2292,22 @@ const dbRef = ref(database);
     // Check if the API key is expired
     const isExpired = expirationDate.getTime() < currentDate.getTime();
 
+    // Include usage and limit in the response
+    const usageDetails = {
+      usage: apiKeyDetails.usage || 0, // Default to 0 if not set
+      limit: apiKeyDetails.limit || 0, // Default to 0 if not set
+      remaining: (apiKeyDetails.limit || 0) - (apiKeyDetails.usage || 0), // Calculate remaining usage
+    };
+
     res.status(isExpired ? 403 : 200).json({
       status: isExpired ? "403" : "200",
       info: isExpired ? 'API key has expired.' : 'API key is valid.',
       data: isExpired ? null : {
         key: apiKeyDetails.key,
         limit: apiKeyDetails.limit,
+        usage: usageDetails.usage, // Prevent negative remaining
         premium: apiKeyDetails.premium,
         expired: apiKeyDetails.expired,
-        usage: apiKeyDetails.usage,
       },
     });
   } catch (error) {
