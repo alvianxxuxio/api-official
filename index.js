@@ -30,32 +30,7 @@ app.set("json spaces", 2);
 
 // Middleware untuk CORS
 app.use(cors());
-// Fungsi untuk membuat total request jika belum ada
-function createTotalRequest(firebaseRef) {
-    firebaseRef.child("requests").once("value").then(snapshot => {
-        if (!snapshot.exists()) {
-            firebaseRef.child("requests").set({ total: 0 });
-            console.log("Total request created with initial value 0.");
-        } else {
-            console.log("Total request already exists.");
-        }
-    }).catch(error => {
-        console.error("Error creating total request:", error);
-    });
-}
 
-// Fungsi untuk menambah total request
-function incrementTotalRequest(firebaseRef) {
-    const totalRef = firebaseRef.child("requests/total");
-    totalRef.transaction(currentValue => {
-        return (currentValue || 0) + 1;
-    }).then(() => {
-        console.log("Total request incremented.");
-    }).catch(error => {
-        console.error("Error incrementing total request:", error);
-    });
-}
-createTotalRequest(firebaseRef);
 
 
 // uhd wallpaper
@@ -2203,8 +2178,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Rusdi(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2245,12 +2220,13 @@ app.get('/admin/create', async (req, res) => {
     }
 
     // Prepare API key details
-    const apiKeyDetails = {
-      key: create,
-      limit: limit ? parseInt(limit) : 3500,
-      premium: premium === "true",
-      expired: new Date(expiredTimestamp).toISOString(), // Use ISO format for better readability      
-    };
+const apiKeyDetails = {
+  key: create,
+  limit: limit ? parseInt(limit) : 3500,
+  premium: premium === "true",
+  expired: new Date(expiredTimestamp).toISOString(),
+  usage: 0, // Initialize usage to 0
+};
 
     // Reference to the API key in Firebase
     const apiKeyRef = ref(database, `apiKeys/${create}`);
@@ -2312,12 +2288,21 @@ app.get('/apikey/check', async (req, res) => {
     // Check if the API key is expired
     const isExpired = expirationDate.getTime() < currentDate.getTime();
 
+    // Include usage and limit in the response
+    const usageDetails = {
+      usage: apiKeyDetails.usage || 0, // Default to 0 if not set
+      limit: apiKeyDetails.limit || 0, // Default to 0 if not set
+      remaining: (apiKeyDetails.limit || 0) - (apiKeyDetails.usage || 0), // Calculate remaining usage
+    };
+
     res.status(isExpired ? 403 : 200).json({
       status: isExpired ? "403" : "200",
       info: isExpired ? 'API key has expired.' : 'API key is valid.',
       data: isExpired ? null : {
         key: apiKeyDetails.key,
         limit: apiKeyDetails.limit,
+        usage: usageDetails.usage,
+        remaining: Math.max(0, usageDetails.remaining), // Prevent negative remaining
         premium: apiKeyDetails.premium,
         expired: apiKeyDetails.expired,
       },
@@ -2405,8 +2390,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gemini(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2457,8 +2442,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await Brat(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2507,8 +2492,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await halodoc(search);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2557,8 +2542,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await bingsearch(search);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2606,8 +2591,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await gptpic(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2656,8 +2641,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await prodia(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2706,8 +2691,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await txt2img(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2756,8 +2741,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await pinterest(search);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2806,8 +2791,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await uphd(search);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2855,8 +2840,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await bukaSearch(search);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2905,8 +2890,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await Steam(search);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2954,8 +2939,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await gsm(search);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3004,8 +2989,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await igdl(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3054,8 +3039,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await remini(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3104,8 +3089,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await hdimg(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3152,8 +3137,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await removebg(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3201,8 +3186,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await spotifydl(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3252,8 +3237,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await idn(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3302,8 +3287,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await capcut(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3352,8 +3337,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await mf(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3402,8 +3387,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await fb(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3452,8 +3437,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await terabox(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3502,8 +3487,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await ssweb(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3550,8 +3535,8 @@ if (!apikey) {
     }
 
     const response = await checkip();
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3599,8 +3584,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await tiktok(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3650,8 +3635,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await twiterdl(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3699,8 +3684,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gpt4o(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3749,8 +3734,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await llama(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3800,8 +3785,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await openai(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3850,8 +3835,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await videy(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3900,8 +3885,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await GDriveDl(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3950,8 +3935,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await igstalk(search);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4000,8 +3985,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await aio(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4050,8 +4035,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await yt(url);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4101,8 +4086,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await letmegpt(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4149,8 +4134,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gptturbo(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4199,8 +4184,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await simi(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4250,8 +4235,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await ragBot(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4300,8 +4285,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await degreeGuru(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4350,8 +4335,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await Renvy(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4400,8 +4385,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await simi(message);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4450,8 +4435,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await smartContract(text);
-    request
-incrementTotalRequest(firebaseRef);
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4500,9 +4485,8 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await blackboxAIChat(text);
-    request
-incrementTotalRequest(firebaseRef);
-    
+    const updatedUsage = apiKeyDetails.usage + 1;
+    await update(apiKeyRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
