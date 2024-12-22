@@ -19,7 +19,6 @@ const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const { ref, set, get, child } = require('firebase/database');
 const { database } = require('./firebase.js');
-const apiKeRef = ref(database, `apiKeys/${apiKey}`);
 const UploadImage = require('./lib/uploader.js');
 const app = express();
 // Initial valid API keys
