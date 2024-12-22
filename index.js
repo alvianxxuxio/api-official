@@ -2025,7 +2025,7 @@ app.get('/api/gptlogic', async (req, res) => {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2069,7 +2069,7 @@ app.get('/api/translate', async (req, res) => {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2113,7 +2113,7 @@ app.get('/api/chatsandbox', async (req, res) => {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2159,7 +2159,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2273,7 +2273,7 @@ app.get('/apikey/check', async (req, res) => {
     // Reference to the API key in Firebase
     const dbRef = ref(database);
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // If the API key is not found
     if (!snapshot.exists()) {
@@ -2331,7 +2331,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2374,7 +2374,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
     const apiKeyRef = ref(database, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
@@ -2428,7 +2428,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2479,7 +2479,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2530,7 +2530,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2580,7 +2580,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2631,7 +2631,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2682,7 +2682,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2733,7 +2733,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2784,7 +2784,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2834,7 +2834,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2885,7 +2885,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2935,7 +2935,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -2986,7 +2986,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3037,7 +3037,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3088,7 +3088,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3137,7 +3137,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3187,7 +3187,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3239,7 +3239,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3290,7 +3290,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3341,7 +3341,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3392,7 +3392,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3443,7 +3443,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3494,7 +3494,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3545,7 +3545,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3593,7 +3593,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3645,7 +3645,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3695,7 +3695,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3746,7 +3746,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3798,7 +3798,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3849,7 +3849,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3900,7 +3900,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -3951,7 +3951,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4002,7 +4002,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4053,7 +4053,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4105,7 +4105,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4154,7 +4154,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4205,7 +4205,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4257,7 +4257,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4308,7 +4308,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4359,7 +4359,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4410,7 +4410,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4461,7 +4461,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
@@ -4512,7 +4512,7 @@ if (!apikey) {
     // Referensi ke API key di Firebase
     const dbRef = ref(database); // `database` adalah instance Firebase Database
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-    const apiKeyRef = ref(database, `apiKeys/${apikey}`);
+    const apiKeyRef = ref(dbRef, `apiKeys/${apikey}`);
 
     // Jika API key tidak ditemukan
     if (!snapshot.exists()) {
