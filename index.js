@@ -2183,7 +2183,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await Rusdi(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2396,7 +2396,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await gemini(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2449,7 +2449,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await Brat(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2500,7 +2500,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await halodoc(search);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2551,7 +2551,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await bingsearch(search);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2601,7 +2601,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await gptpic(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2652,7 +2652,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await prodia(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2703,7 +2703,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await txt2img(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2754,7 +2754,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await pinterest(search);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2805,7 +2805,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await uphd(search);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2855,7 +2855,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await bukaSearch(search);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2906,7 +2906,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await Steam(search);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -2956,7 +2956,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await gsm(search);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3007,7 +3007,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await igdl(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3058,7 +3058,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await remini(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3109,7 +3109,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await hdimg(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3158,7 +3158,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await removebg(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3208,7 +3208,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await spotifydl(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3260,7 +3260,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await idn(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3311,7 +3311,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await capcut(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3362,7 +3362,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await mf(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3413,7 +3413,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await fb(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3464,7 +3464,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await terabox(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3515,7 +3515,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await ssweb(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3564,7 +3564,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
 
     const response = await checkip();
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3614,7 +3614,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await tiktok(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3666,7 +3666,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await twiterdl(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3716,7 +3716,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await gpt4o(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3767,7 +3767,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await llama(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3819,7 +3819,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await openai(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3870,7 +3870,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await videy(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3921,7 +3921,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await GDriveDl(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -3972,7 +3972,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await igstalk(search);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4023,7 +4023,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await aio(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4074,7 +4074,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await yt(url);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4126,7 +4126,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await letmegpt(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4175,7 +4175,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await gptturbo(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4226,7 +4226,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await simi(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4278,7 +4278,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await ragBot(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4329,7 +4329,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await degreeGuru(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4380,7 +4380,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await Renvy(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4431,7 +4431,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await simi(message);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -4482,7 +4482,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
     const response = await smartContract(text);
     const updatedUsage = apiKeyDetails.usage + 1;
-    await update(apiKeyRef, { usage: updatedUsage });
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
