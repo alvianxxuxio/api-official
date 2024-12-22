@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
 const yts = require("yt-search");
+const ytdl = require("ytdl-core");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
 const os = require('os');
@@ -1948,6 +1949,85 @@ app.post('/keys/create', (req, res) => {
     apiKey: customApikey,
     validApiKeys: validApiKeys
   });
+});
+
+
+// ytmp3
+app.get('/api/ytmp3', async (req, res) => {
+    const url = req.query.url;
+    const bitrate = parseInt(req.query.bitrate, 10);
+
+    if (!url || !ytdl.validateURL(url)) {
+        logRequestDetails(req, 'audio', 'Failed: Invalid URL');
+        return res.status(400).send('Invalid YouTube URL');
+    }
+
+    try {
+        const info = await ytdl.getInfo(url);
+        const videoDetails = info.videoDetails;
+
+        const audioFormat = ytdl.chooseFormat(info.formats, {
+            quality: 'highestaudio',
+            filter: 'audioonly',
+            audioBitrate: bitrate
+        });
+
+        if (!audioFormat) {
+            throw new Error('No suitable audio format found.');
+        }
+
+        const audioPath = path.join(__dirname, 'tmp', `audio_${Date.now()}.mp3`);
+
+        await new Promise((resolve, reject) => {
+            ytdl(url, { format: audioFormat })
+                .pipe(fs.createWriteStream(audioPath))
+                .on('finish', resolve)
+                .on('error', reject);
+        });
+
+        const fileSizeMB = (fs.statSync(audioPath).size / (1024 * 1024)).toFixed(2);
+
+        if (!validateFileSize(audioPath, 200)) {
+            return res.status(400).send('Audio file size exceeds the 200 MB limit.');
+        }
+
+        // Upload to Catbox
+        const uploadResult = await UploadImage.catbox(audioPath);
+        if (!uploadResult || !uploadResult.url) {
+            throw new Error('Failed to upload to Catbox.');
+        }
+
+        const duration = videoDetails.lengthSeconds;
+        const resolution = 'N/A'; // Audio-only, no resolution
+        const fileSize = `${fileSizeMB} MB`;
+
+        logRequestDetails(req, 'audio', 'Success', {
+            resolution,
+            duration,
+            fileSize,
+            uploadURL: uploadResult.url,
+            bitrate: `${bitrate} kbps`
+        });
+
+        // Send the response back to the client
+        res.json({
+            success: true,
+            message: 'Audio uploaded successfully',
+            url: uploadResult.url,
+            details: {
+                resolution,
+                duration: `${duration} seconds`,
+                size: fileSize,
+                bitrate: `${bitrate} kbps`
+            }
+        });
+
+        // Clean up the temporary file after a delay
+        deleteFileAfterDelay(audioPath);
+    } catch (error) {
+        logRequestDetails(req, 'audio', `Failed: ${error.message}`);
+        res.status(500).send(`Error downloading audio: ${error.message}`);
+    }
 });
 
 // status
