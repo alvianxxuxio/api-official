@@ -32,6 +32,41 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
+// bukalapak
+async function bukaSearch(nameProduk) {
+  try {
+    const { data: html } = await axios.get(
+      `https://m.bukalapak.com/products?source=navbar&from=omnisearch&search%5Bkeywords%5D=${nameProduk}`
+    );
+    const $ = cheerio.load(html);
+    const products = [];
+
+    $('.dp-card-container').each((index, element) => {
+      const name = $(element).find('.dp-card__name-tag').text().trim();
+      const price = $(element).find('.bl-text--body-16.bl-text--bold').text().trim();
+      const discountPrice = $(element).find('.discount-price').text().trim() || "No Discount";
+      const rating = $(element).find('.bl-text--caption-10').first().text().trim();
+      const sold = $(element).find('.bl-text--caption-10').last().text().trim();
+      const imageUrl = $(element).find('.dp-card__img').attr('src');
+      const productLink = $(element).find('a.dp-card__head').attr('href');
+
+      products.push({
+        name,
+        price,
+        discountPrice,
+        rating,
+        sold,
+        imageUrl,
+        productLink: `https://m.bukalapak.com${productLink}`,
+      });
+    });
+
+    return products;
+  } catch (error) {
+    console.error('Error in bukaSearch:', error);
+    return [];
+  }
+}
 // check ip
 async function checkip() {
     try {
@@ -2667,6 +2702,54 @@ if (!apikey) {
   }
 });
 
+// bukalapak
+app.get('/api/bukalapak', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await bukaSearch(search);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // steam search
 app.get('/api/steam-search', async (req, res) => {
