@@ -70,13 +70,22 @@ async function bukaSearch(nameProduk) {
 // check ip
 async function checkip() {
     try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        console.log(data); // Menampilkan hasil JSON langsung di console
-        return data; // Mengembalikan hasil JSON
+        // Fetch the public IP address
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const ip = ipData.ip; // Get the IP address
+
+        console.log('Public IP:', ip); // Log the public IP address
+
+        // Now fetch information about the IP address
+        const ipInfoResponse = await fetch(`http://ipwho.is/${ip}`);
+        const ipInfoData = await ipInfoResponse.json();
+
+        // Only return the IP information without the IP itself
+        return ipInfoData; // Return only the IP information
     } catch (error) {
         console.error('Error fetching IP:', error);
-        throw error; // Melempar ulang error jika diperlukan
+        throw error; // Rethrow the error if needed
     }
 }
 //ssweb
