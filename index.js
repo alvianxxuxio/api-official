@@ -3955,6 +3955,12 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
         info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
       });
     }
+    if (!apiKeyDetails.premium) {
+      return res.status(403).json({ 
+        error: 'Fitur ini hanya tersedia untuk user premium', 
+        info: 'Silakan upgrade ke paket premium untuk mengakses fitur ini' 
+      });
+    }
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
@@ -4276,6 +4282,12 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
       return res.status(403).json({ 
         error: 'Limit penggunaan API telah tercapai', 
         info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!apiKeyDetails.premium) {
+      return res.status(403).json({ 
+        error: 'Fitur ini hanya tersedia untuk user premium', 
+        info: 'Silakan upgrade ke paket premium untuk mengakses fitur ini' 
       });
     }
     if (!text) {
