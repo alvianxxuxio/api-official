@@ -733,7 +733,7 @@
         <div id="dropdown50" class="dropdown-content">
           <form class="form-group" action="/api/check-ip" onsubmit="cek(event, '/api/check-ip')">
             <label for="apikey50">Enter API Key:</label>
-        <input type="text" id="apikey50" name="apiKey" placeholder="Enter Your ApiKeys" required>
+        <input type="text" id="apikey50" name="apikey" placeholder="Enter Your ApiKeys" required>
             <button type="submit">Try Now</button>
             <div class="info-row">
             <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
@@ -1272,11 +1272,11 @@ window.search = function(event, endpoint) {
             showToast('Error: ' + error, true);
         });
 }
-window.check = function(event, endpoint) {
+window.cek = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
-    const message = form.querySelector('input[name="apiKey"]').value;
-    const query = `?apiKey=${encodeURIComponent(message)}`;
+    const message = form.querySelector('input[name="apikey"]').value;
+    const query = `?apikey=${encodeURIComponent(message)}`;
     
 
     const baseUrl = 'https://api.alvianuxio.my.id';
@@ -1312,11 +1312,12 @@ window.check = function(event, endpoint) {
             
             showToast('Error: ' + error, true);
         });
-window.cek = function(event, endpoint) {
+}
+window.check = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
     const message = form.querySelector('input[name="apiKey"]').value;
-    const query = `?apikey=${encodeURIComponent(message)}`;
+    const query = `?apiKey=${encodeURIComponent(message)}`;
     
 
     const baseUrl = 'https://api.alvianuxio.my.id';
