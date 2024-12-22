@@ -32,7 +32,19 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
-// ssweb
+// check ip
+async function checkip() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        console.log(data); // Menampilkan hasil JSON langsung di console
+        return data; // Mengembalikan hasil JSON
+    } catch (error) {
+        console.error('Error fetching IP:', error);
+        throw error; // Melempar ulang error jika diperlukan
+    }
+}
+//ssweb
 // Fungsi untuk memilih kunci API secara acak
 function pickRandom(keys) {
     return keys[Math.floor(Math.random() * keys.length)];
@@ -3277,6 +3289,53 @@ if (!apikey) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await ssweb(url);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// check ip
+app.get('/api/check-ip', async (req, res) => {
+  try {
+    const { apikey } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+
+    const response = await checkip();
     apiKeyDetails.usage += 1;
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
