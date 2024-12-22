@@ -32,6 +32,31 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
+
+// uhd wallpaper
+async function uphd(searchTerm) {
+    try {
+        const response = await axios.get(`https://www.uhdpaper.com/search?q=${searchTerm}&by-date=true`);
+        const html = response.data;
+        const $ = cheerio.load(html);
+        const results = [];
+ 
+ 
+        $('article.post-outer-container').each((index, element) => {
+            const title = $(element).find('.snippet-title h2').text().trim();
+            const imageUrl = $(element).find('.snippet-title img').attr('src');
+            const resolution = $(element).find('.wp_box b').text().trim();
+            const link = $(element).find('a').attr('href');
+ 
+            results.push({ title, imageUrl, resolution, link });
+        });
+ 
+        return results;
+    } catch (error) {
+        console.error('Error server UHDPaper:', error);
+        return [];
+    }
+}
 // bukalapak
 async function bukaSearch(nameProduk) {
   try {
@@ -2711,6 +2736,54 @@ if (!apikey) {
   }
 });
 
+// uhd wallpaper
+app.get('/api/uhd-wallpaper', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const dbRef = ref(database); // `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await uphd(search);
+    apiKeyDetails.usage += 1;
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // bukalapak
 app.get('/api/bukalapak', async (req, res) => {
   try {
