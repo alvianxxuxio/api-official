@@ -2629,6 +2629,60 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await axios.get(`https://api.siputzx.my.id/api/m/brat?text=${encodeURIComponent(text)}`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'image/png');
     res.send(response.data);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message })
+  }
+})
+
+// tts
+app.get("/api/tts", async (req, res) => { 
+  try {
+    const { apikey, text } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
+    }
+    const response = await axios.get(`https://api.siputzx.my.id/api/tools/tts?text=${encodeURIComponent(text)}`, { responseType: 'arraybuffer' });
+    res.setHeader('Content-Type', 'audio/mp4');
+    res.send(response.data);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message })
   }

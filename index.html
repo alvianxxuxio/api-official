@@ -753,9 +753,29 @@
 <div class="containera">
     <div class="headera">
 <span><b>Tools</b></span>
-      <span>19 Endpoints</span>
+      <span>20 Endpoints</span>
     </div>
         <div class="content-container">
+                    <div class="btn" onclick="toggleDropdown('dropdown55')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>/api/tts</div>
+<div class="active" style='font-size:12px'>active</div>
+        </div>
+        <div id="dropdown55" class="dropdown-content">
+          <form class="form-group" action="/api/tts" onsubmit="text(event, '/api/tts')">
+            <label for="message55">Enter text:</label>
+            <input type="text" id="message55" name="text" placeholder="your text here" required>
+
+        <label for="apikey55">Enter API Key:</label>
+        <input type="text" id="apikey55" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
         <div class="btn" onclick="toggleDropdown('dropdown53')">
     <div class='sdfg'>POST</div>
     <div style='flex-grow: 1; text-align: left; padding-left: 5px;'>/api/uploader</div>
