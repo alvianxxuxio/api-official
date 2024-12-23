@@ -1975,6 +1975,68 @@ app.post('/keys/create', (req, res) => {
   });
 });
 
+
+//uploader 
+const GITHUB_OWNER = 'alvianxxuxio'; // Ganti dengan username GitHub Anda
+const GITHUB_REPO = 'cloud'; // Ganti dengan nama repositori GitHub Anda
+const GITHUB_BRANCH = 'main'; // Branch target (contoh: main/master)
+const GITHUB_TOKEN = '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'; // GitHub personal access token
+const BASE_URL = 'https://cloud.alvianuxio.my.id'; // URL custom Anda
+
+app.post('/api/uploader', async (req, res) => {
+    const { fileName, content } = req.body;
+
+    if (!fileName || !content) {
+        return res.status(400).json({ error: 'File name and content are required.' });
+    }
+
+    try {
+        // Validasi ekstensi file dari fileName
+        const fileParts = fileName.split('.');
+        if (fileParts.length < 2) {
+            return res.status(400).json({ error: 'Invalid file name. Must include an extension.' });
+        }
+
+        const fileExtension = fileParts.pop(); // Ambil ekstensi file
+        const baseName = fileParts.join('.'); // Ambil nama file tanpa ekstensi
+
+        // Encode content ke Base64
+        const base64Content = Buffer.from(content).toString('base64');
+
+        // URL API GitHub untuk upload file
+        const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${fileName}`;
+
+        // Payload untuk upload file
+        const payload = {
+            message: `Add file ${fileName}`,
+            content: base64Content,
+            branch: GITHUB_BRANCH,
+        };
+
+        // Kirim permintaan ke GitHub API
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        // Periksa hasil respons
+        if (!response.ok) {
+            const errorData = await response.json();
+            return res.status(response.status).json(errorData);
+        }
+
+        // Respons sukses
+        const cloudUrl = `${BASE_URL}/${baseName}.${fileExtension}`;
+        return res.status(200).json({ message: 'File uploaded successfully', url: cloudUrl });
+    } catch (error) {
+        console.error('Error uploading file:', error.message);
+        return res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    }
+});
 // status
 app.get('/status', (req, res) => {
   const cpus = os.cpus();
