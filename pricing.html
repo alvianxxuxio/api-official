@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Key Pricing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      width: 80%;
+      border-radius: 16px;
+      border: 1px solid #ddd;
+      box-shadow: 0px rgba(0, 0, 0, 0.1);
+    }
+    .title {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #4a4a4a;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 5px;
+      color: #4a4a4a;
+      margin-right: 6px;
+    }
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      outline: none;
+    }
+    .form-group select:hover {
+      background: rgb(218,224,255)
+    }
+    .btn-container {
+      text-align: center;
+    }
+    .btn {
+      text-decoration: none;
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 20px;
+      background-color: #4a90e2;
+      color: white;
+      border-radius: 12px;
+      font-size: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #357ABD;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">API Key Pricing</h1>
+
+    <div class="form-group">
+      <label for="apikey-type">Select API Key Type:</label>
+      <select id="apikey-type">
+        <option value="Basic">Basic</option>
+        <option value="Premium">Premium</option>
+        <option value="Executive">Executive</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="apikey-limit">Select Limit:</label>
+      <select id="apikey-limit">
+        <option value="3000-3K" data-type="Basic">3000 Limit - 3K</option>
+        <option value="6000-5K" data-type="Basic">6000 Limit - 5K</option>
+        <option value="10000-7K" data-type="Basic">10000 Limit - 7K</option>
+        <option value="50000-8K" data-type="Premium">50000 Limit - 8K</option>
+        <option value="80000-9K" data-type="Premium">80000 Limit - 9K</option>
+        <option value="1000000-10K" data-type="Premium">1000000 Limit - 10K</option>
+        <option value="50000-11K" data-type="Executive">50000 Limit - 11K</option>
+        <option value="80000-13K" data-type="Executive">80000 Limit - 13K</option>
+        <option value="1000000-15K" data-type="Executive">1000000 Limit - 15K</option>
+      </select>
+    </div>
+
+    <div class="btn-container">
+      <a id="buy-button" class="btn" href="#" target="_blank">Buy API Key</a>
+    </div>
+  </div>
+
+  <script>
+    const buyButton = document.getElementById('buy-button');
+    const apiKeyType = document.getElementById('apikey-type');
+    const apiKeyLimit = document.getElementById('apikey-limit');
+
+    function updateBuyLink() {
+      const type = apiKeyType.value;
+      const selectedOption = Array.from(apiKeyLimit.options).find(option => option.selected);
+      const [limit, price] = selectedOption.value.split('-');
+      const message = `BUY APIKEY ${type.toUpperCase()}%0ALimit: ${limit}%0APrice: ${price}`;
+      buyButton.href = `https://wa.me/6285895988045?text=${message}`;
+    }
+
+    // Filter limits based on selected type
+    function filterLimits() {
+      const selectedType = apiKeyType.value;
+      for (const option of apiKeyLimit.options) {
+        option.style.display = option.getAttribute('data-type') === selectedType ? 'block' : 'none';
+      }
+      apiKeyLimit.value = Array.from(apiKeyLimit.options).find(option => option.style.display === 'block').value;
+      updateBuyLink();
+    }
+
+    apiKeyType.addEventListener('change', () => {
+      filterLimits();
+      updateBuyLink();
+    });
+    apiKeyLimit.addEventListener('change', updateBuyLink);
+
+    // Initialize the link on page load
+    filterLimits();
+    updateBuyLink();
+  </script>
+</body>
+</html>
