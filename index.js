@@ -1943,10 +1943,111 @@ async function prodia(text) {
 
 
 // Endpoint untuk servis dokumen HTML
-app.get('/', (req, res) => {
+app.get('/docs', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+app.get('/', (req, res) => {
+res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALVIAN UXIO - API Portfolio</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --text-color: #ffffff;
+      --neon-color: #00bfff;
+      --roundness: 20px;
+    }
 
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      border-radius: 13px;
+      background: linear-gradient(145deg, #0e1d2c, #0a131e);
+      box-shadow: 0px 4px 15px rgba(0, 191, 255, 0.5);
+      width: 80%;
+      max-width: 500px;
+      border: 2px solid rgba(0, 191, 255, 0.7);
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--neon-color);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: var(--bg-color);
+      background: var(--neon-color);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      width: 80%;
+      font-weight: bold;
+      box-shadow: 0px 4px 10px rgba(0, 191, 255, 0.7);
+      transition: transform 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <center><div class="logo">
+      <img src="https://files.catbox.moe/r2c1pe.jpg" alt="Logo" style='width:50px;height:50px;border-radius:50px'>
+    </div></center>
+    <div class="title">ALVIAN UXIO - API</div>
+    <div class="subtitle">WELCOME!</div>
+    <div class="description">
+      API ini dibuat oleh ALVIAN UXIO Inc.
+API ini dirancang untuk mempermudah integrasi berbagai layanan digital dengan teknologi terkini. Dikembangkan dengan fokus pada kecepatan, keandalan, dan keamanan, API ini mendukung berbagai kebutuhan seperti data scraping, komunikasi, dan pengelolaan sistem.
+    </div>
+    <a href="https://whatsapp.com/channel/0029VaAQKcJEquiQVH2RM10U" class="btn">Follow Saluran WhatsApp</a>
+    <a href="/docs" class="btn">Documentation</a>
+  </div>
+  <footer>© 2024 ALVIAN UXIO Inc.</footer>
+</body>
+</html>`);
+});
 app.get('/apikey/create', (req, res) => {
   res.sendFile(path.join(__dirname, 'create.html')); // Mengarahkan ke create.html
 });
