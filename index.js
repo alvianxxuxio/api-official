@@ -2676,7 +2676,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await axios.get(`https://api.siputzx.my.id/api/tools/tts?text=${encodeURIComponent(text)}`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'audio/mp4');
+    res.setHeader('Content-Type', 'audio/mp3');
     res.send(response.data);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
