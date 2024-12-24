@@ -1443,15 +1443,14 @@ window.search = function(event, endpoint) {
 window.checks = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
-    const message = form.querySelector('input[name="apiKey"]').value;
-    const apikey = form.querySelector('input[name="apikey"]').value;
+    const apiKey = form.querySelector('input[name="apiKey"]').value;
 
-    if (!apikey) {
+    if (!apiKey) {
         console.error('API key is missing.');
         return; 
     }
 
-    const query = `?apiKey=${encodeURIComponent(apikey)}`;
+    const query = `?apiKey=${encodeURIComponent(apiKey)}`;
     
 
     const baseUrl = 'https://api.alvianuxio.my.id';
