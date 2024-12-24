@@ -183,7 +183,7 @@ const chatbot = async (question, model) => {
 };
 //gemini
 async function gemini(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/bard?message=${encodeURIComponent(query)}`;
+    const apiUrl = `https://restapi.apibotwa.biz.id/api/bard?message=${encodeURIComponent(query)}`;
     try {
         const response = await fetch(apiUrl, {
             method: 'GET',
@@ -235,7 +235,7 @@ async function bingsearch(query) {
 }
 //openai
 async function openai(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/openai?message=${encodeURIComponent(query)}`;
+    const apiUrl = `https://restapi.apibotwa.biz.id/api/openai?message=${encodeURIComponent(query)}`;
     try {
         const response = await fetch(apiUrl, {
             method: 'GET',
@@ -573,7 +573,7 @@ async function halodoc(query) {
 
 // llama3
 async function llama(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/llama?message=${encodeURIComponent(query)}`;
+    const apiUrl = `https://restapi.apibotwa.biz.id/api/llama?message=${encodeURIComponent(query)}`;
 
     try {
         const response = await fetch(apiUrl, {
@@ -600,7 +600,7 @@ async function llama(query) {
 
 //gpt4o
 async function gpt4o(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/gpt4o?text=${encodeURIComponent(query)}`;
+    const apiUrl = `https://restapi.apibotwa.biz.id/api/gpt4o?text=${encodeURIComponent(query)}`;
 
     try {
         const response = await fetch(apiUrl, {
@@ -993,7 +993,7 @@ async function callGroqAPI(text, prompt) {
 
 //gpt turbo
 async function gptturbo(query) {
-    const apiUrl = `https://restapii.rioooxdzz.web.id/api/gptturbo?message=${encodeURIComponent(query)}`;
+    const apiUrl = `https://restapi.apibotwa.biz.id/api/gptturbo?message=${encodeURIComponent(query)}`;
 
     try {
         const response = await fetch(apiUrl, {
