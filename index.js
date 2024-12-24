@@ -2116,6 +2116,28 @@ if (!firebaseAdmin.apps.length) {
     credential: firebaseAdmin.credential.applicationDefault(),
   });
 }
+// Rute untuk memperbarui password
+app.post('/update-password', async (req, res) => {
+  const { oobCode, newPassword } = req.body;
+
+  // Validasi parameter
+  if (!oobCode || !newPassword) {
+    return res.status(400).send(renderHTML('Invalid Request', 'Missing parameters.', '/'));
+  }
+
+  try {
+    const auth = getAuth(); // Pastikan auth telah diinisialisasi
+    // Verifikasi kode reset password
+    await auth.verifyPasswordResetCode(oobCode);
+    // Perbarui password
+    await auth.confirmPasswordReset(oobCode, newPassword);
+    // Tampilkan pesan sukses
+    return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/'));
+  } catch (error) {
+    console.error('Error resetting password:', error); // Tambahkan log untuk menangkap kesalahan
+    return res.status(500).send(renderHTML('Error', `Error resetting password: ${error.message}`, '/'));
+  }
+});
 // Pastikan ini sesuai dengan import Anda
 app.get('/auth', async (req, res) => {
   const auth = getAuth();
@@ -2315,30 +2337,6 @@ function renderResetPasswordHTML(oobCode) {
     </html>
   `;
 }
-// updated pass 
-// Rute untuk memperbarui password
-app.post('/update-password', async (req, res) => {
-  const { oobCode, newPassword } = req.body;
-
-  if (!oobCode || !newPassword) {
-    return res.status(400).send(renderHTML('Invalid Request', 'Missing parameters.', '/'));
-  }
-
-  try {
-    const auth = getAuth();
-    
-    // Gunakan oobCode untuk mengonfirmasi tindakan reset password
-    const userInfo = await auth.verifyPasswordResetCode(oobCode);
-    
-    // Update password untuk pengguna yang terdaftar
-    await auth.confirmPasswordReset(oobCode, newPassword);
-    
-    // Tampilkan pesan sukses
-    return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/docs'));
-  } catch (error) {
-    return res.status(500).send(renderHTML('Error', `Error resetting password: ${error.message}`, '/'));
-  }
-});
 app.get('/', (req, res) => {
 res.send(`<!DOCTYPE html>
 <html lang="en">
