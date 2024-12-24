@@ -899,7 +899,7 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
 <div class="active" style='font-size:12px'>active</div>
         </div>
         <div id="dropdown50" class="dropdown-content">
-          <form class="form-group" action="/api/check-ip" onsubmit="cek(event, '/api/check-ip')">
+          <form class="form-group" action="/api/check-ip" onsubmit="checks(event, '/api/check-ip')">
             <label for="apikey50">Enter API Key:</label>
         <input type="text" id="apikey50" name="apikey" placeholder="Enter Your ApiKeys" required>
             <button type="submit">Try Now</button>
@@ -1207,7 +1207,7 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
         <div id="dropdown45" class="dropdown-content">
           <form class="form-group" action="/apikey/check" onsubmit="checks(event, '/apikey/check')">
             <label for="message45">Enter Name ApiKey</label>
-            <input type="text" id="message45" name="apiKey" required>
+            <input type="text" id="message45" name="apikey" required>
             <button type="submit">Check</button>
             <div class="info-row">
             <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
@@ -1443,14 +1443,14 @@ window.search = function(event, endpoint) {
 window.checks = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
-    const apiKey = form.querySelector('input[name="apiKey"]').value;
+    const apikey = form.querySelector('input[name="apikey"]').value;
 
     if (!apiKey) {
         console.error('API key is missing.');
         return; 
     }
 
-    const query = `?apiKey=${encodeURIComponent(apiKey)}`;
+    const query = `?apiKey=${encodeURIComponent(apikey)}`;
     
 
     const baseUrl = 'https://api.alvianuxio.my.id';
@@ -1487,48 +1487,6 @@ window.checks = function(event, endpoint) {
             showToast('Error: ' + error, true);
         });
 }
-window.cek = function(event, endpoint) {
-    event.preventDefault();
-    const form = event.target;
-    const message = form.querySelector('input[name="apikey"]').value;
-    const query = `?apikey=${encodeURIComponent(message)}`;
-    
-
-    const baseUrl = 'https://api.alvianuxio.my.id';
-    const requestUrl = baseUrl + endpoint + query;
-
-    
-    fetch(endpoint + query)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            
-            const message = JSON.stringify(data, null, 2);
-            const kres = `
-            ${message}
-            
-            © ALVIAN UXIO Inc.
-            ® ALVIAN UXIO - APIs
-            `
-            showToast(kres, true);
-
-            
-            totalRequests++;
-            updateTotalRequests();
-
-
-            
-        })
-        .catch(error => {
-            
-            showToast('Error: ' + error, true);
-        });
-}
-
 window.uploader = async function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
