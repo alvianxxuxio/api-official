@@ -792,7 +792,7 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
         <div id="dropdown56" class="dropdown-content">
           <form class="form-group" action="/api/flux" onsubmit="flux(event, '/api/flux')">
             <label for="message56">Enter Prompt:</label>
-            <input type="text" id="message56" name="text" placeholder="your prompt here" required>
+            <input type="text" id="message56" name="prompt" placeholder="your prompt here" required>
 
         <label for="apikey56">Enter API Key:</label>
         <input type="text" id="apikey56" name="apikey" placeholder="Enter Your ApiKeys" required>
@@ -1404,6 +1404,54 @@ window.search = function(event, endpoint) {
     }
 
     const query = `?search=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apikey)}`;
+    
+
+    const baseUrl = 'https://api.alvianuxio.my.id';
+    const requestUrl = baseUrl + endpoint + query;
+
+    
+    fetch(endpoint + query)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            
+            const message = JSON.stringify(data, null, 2);
+            const sres = `
+            ${message}
+            
+            Request :
+            ${requestUrl}
+            `
+            showToast(sres, true);
+
+            
+            totalRequests++;
+            updateTotalRequests();
+
+
+            
+        })
+        .catch(error => {
+            
+            showToast('Error: ' + error, true);
+        });
+}
+window.flux = function(event, endpoint) {
+    event.preventDefault();
+    const form = event.target;
+    const message = form.querySelector('input[name="prompt"]').value;
+    const apikey = form.querySelector('input[name="apikey"]').value;
+
+    if (!apikey) {
+        console.error('API key is missing.');
+        return; 
+    }
+
+    const query = `?prompt=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apikey)}`;
     
 
     const baseUrl = 'https://api.alvianuxio.my.id';
