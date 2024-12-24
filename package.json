@@ -35,7 +35,6 @@
     "@octokit/rest": "^21.0.1",
     "os": "^0.1.2",
     "firebase-admin": "^13.0.2",
-    "firebase": "^11.1.0",
-    "firebase/auth": "^1.8.1"
+    "firebase": "^11.1.0"
   }
 }
