@@ -20,6 +20,7 @@ const undici = require('undici')
 const { ref, set, get, child, update } = require('firebase/database');
 const { database } = require('./firebase.js');
 const UploadImage = require('./lib/uploader.js');
+const Uploader = require("./lib/uploader.js");
 const app = express();
 // Initial valid API keys
 const validApiKeys = ['aluxi', 'alvianuxio', 'admin', 'global', 'world', 'sepuh', 'indonesia'];
@@ -33,6 +34,63 @@ app.use(cors());
 
 
 
+// flux
+const freeflux = {
+  models: ["flux_1_schnell", "flux_1_dev", "sana_1_6b"],
+  sizes: ["1_1", "1_1_HD", "1_2", "2_1", "2_3", "4_5", "9_16", "3_2", "4_3", "16_9"],
+  styles: ["no_style", "anime", "digital", "fantasy", "neon_punk", "dark", "low_poly", "line_art", "pixel_art", "comic", "analog_film", "surreal"],
+  colors: ["no_color", "cool", "muted", "vibrant", "pastel", "bw"],
+  lightings: ["no_lighting", "lighting", "dramatic", "volumetric", "studio", "sunlight", "low_light", "golden_hour"],
+ 
+  create: async function(prompt, model = 1, size = 1, style = 1, color = 1, lighting = 1) {
+    const errors = [];
+    if (!prompt?.trim()) errors.push("Prompt nya kagak boleh kosong woyyyy 🫵");
+    if (!this.models[model - 1]) errors.push(`Index model nya kagak valid, harus pilih dari nomor 1 sampe ${this.models.length}`);
+    if (!this.sizes[size - 1]) errors.push(`Index size nya kagak valid, harus pilih dari nomor 1 sampe ${this.sizes.length}`);
+    if (!this.styles[style - 1]) errors.push(`Index style nya kagak valid, harus pilih dari nomor 1 sampe ${this.styles.length}`);
+    if (!this.colors[color - 1]) errors.push(`Index color nya kagak valid, harus pilih dari nomor 1 sampe ${this.colors.length}`);
+    if (!this.lightings[lighting - 1]) errors.push(`Index lighthing nya kagak valid, harus pilih dari nomor 1 sampe ${this.lightings.length}`);
+ 
+    if (errors.length > 0) {
+      return { errors };
+    }
+ 
+    try {
+      const formData = new FormData();
+      formData.append('prompt', prompt);
+      formData.append('model', this.models[model - 1]);
+      formData.append('size', this.sizes[size - 1]);
+      formData.append('style', this.styles[style - 1]);
+      formData.append('color', this.colors[color - 1]);
+      formData.append('lighting', this.lightings[lighting - 1]);
+ 
+      const response = await axios.post('https://api.freeflux.ai/v1/images/generate', formData, {
+        headers: {
+          'accept': 'application/json, text/plain, */*',
+          'content-type': 'multipart/form-data',
+          'origin': 'https://freeflux.ai',
+          'priority': 'u=1, i',
+          'referer': 'https://freeflux.ai/',
+          'user-agent': 'Postify/1.0.0'
+        }
+      });
+ 
+      const { id, status, result, processingTime, width, height, nsfw, seed } = response.data;
+  const base64Data = result.split(',')[1];
+
+ let up = await Uploader.catbox(Buffer.from(base64Data, 'base64'))
+      return {
+        data: { id, status, up, processingTime, width, height, nsfw, seed }
+      };
+ 
+    } catch (error) {
+      console.error(error);
+      return { 
+        errors: error.message
+      };
+    }
+  }
+};
 // uhd wallpaper
 async function uphd(searchTerm) {
     try {
@@ -2741,7 +2799,59 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
   }
 });
 
-// status
+// flux
+app.get('/api/flux', async (req, res) => {
+  try {
+    const { apikey, prompt } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!prompt) {
+      return res.status(400).json({ error: 'Parameter "prompt" tidak ditemukan' });
+    }
+    const response = await freeflux.create(prompt);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //Brat 
 app.get('/api/Brat', async (req, res) => {
