@@ -1362,7 +1362,7 @@ window.executeApi = function(event, endpoint) {
     const requestUrl = baseUrl + endpoint + query;
 
     
-    fetch(endpoint + query)
+    fetch(baseUrl + endpoint + query)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1410,7 +1410,7 @@ window.search = function(event, endpoint) {
     const requestUrl = baseUrl + endpoint + query;
 
     
-    fetch(endpoint + query)
+    fetch(baseUrl + endpoint + query)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1451,7 +1451,7 @@ window.check = function(event, endpoint) {
     const requestUrl = baseUrl + endpoint + query;
 
     
-    fetch(endpoint + query)
+    fetch(baseUrl + endpoint + query)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1560,7 +1560,7 @@ window.url = function(event, endpoint) {
     const requestUrl = baseUrl + endpoint + query;
 
     
-    fetch(endpoint + query)
+    fetch(baseUrl + endpoint + query)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1608,7 +1608,7 @@ window.text = function(event, endpoint) {
     const requestUrl = baseUrl + endpoint + query;
 
     
-    fetch(endpoint + query)
+    fetch(baseUrl + endpoint + query)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1658,7 +1658,7 @@ window.text = function(event, endpoint) {
     const requestUrl = baseUrl + endpoint + query;
 
     
-    fetch(endpoint + query)
+    fetch(baseUrl + endpoint + query)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1708,7 +1708,7 @@ window.lang = function(event, endpoint) {
     const requestUrl = baseUrl + endpoint + query;
 
     
-    fetch(endpoint + query)
+    fetch(baseUrl + endpoint + query)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1757,7 +1757,7 @@ window.chat = function(event, endpoint) {
     const requestUrl = baseUrl + endpoint + query;
 
     
-    fetch(endpoint + query)
+    fetch(baseUrl + endpoint + query)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
