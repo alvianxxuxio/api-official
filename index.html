@@ -899,7 +899,7 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
 <div class="active" style='font-size:12px'>active</div>
         </div>
         <div id="dropdown50" class="dropdown-content">
-          <form class="form-group" action="/api/check-ip" onsubmit="checks(event, '/api/check-ip')">
+          <form class="form-group" action="/api/check-ip" onsubmit="check(event, '/api/check-ip')">
             <label for="apikey50">Enter API Key:</label>
         <input type="text" id="apikey50" name="apikey" placeholder="Enter Your ApiKeys" required>
             <button type="submit">Try Now</button>
@@ -1443,7 +1443,7 @@ window.search = function(event, endpoint) {
 window.check = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
-    const message = form.querySelector('input[name="apiKey"]').value;
+    const message = form.querySelector('input[name="apikey"]').value;
     const query = `?apiKey=${encodeURIComponent(message)}`;
     
 
