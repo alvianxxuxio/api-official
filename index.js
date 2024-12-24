@@ -2118,7 +2118,7 @@ if (!firebaseAdmin.apps.length) {
 }
 // Rute untuk memperbarui password
 app.post('/update-password', async (req, res) => {
-  const { oobCode, newPassword } = req.query;
+  const { oobCode, newPassword } = req.body;
 
   // Validasi parameter
   if (!oobCode || !newPassword) {
@@ -2128,9 +2128,9 @@ app.post('/update-password', async (req, res) => {
   try {
     const auth = getAuth(); // Pastikan auth telah diinisialisasi
     // Verifikasi kode reset password
-    await verifyPasswordResetCode(oobCode);
+    await verifyPasswordResetCode(auth, oobCode);
     // Perbarui password
-    await confirmPasswordReset(oobCode, newPassword);
+    await confirmPasswordReset(auth, oobCode, newPassword);
     // Tampilkan pesan sukses
     return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/'));
   } catch (error) {
