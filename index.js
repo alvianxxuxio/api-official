@@ -19,7 +19,7 @@ const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const { ref, set, get, child, update } = require('firebase/database');
-const { getAuth, applyActionCode } = require("firebase/auth");
+const { getAuth, applyActionCode, confirmPasswordReset, verifyPasswordResetCode } = require("firebase/auth");
 const { database, auth } = require('./firebase.js');
 const UploadImage = require('./lib/uploader.js');
 const Uploader = require("./lib/uploader.js");
@@ -2118,7 +2118,7 @@ if (!firebaseAdmin.apps.length) {
 }
 // Rute untuk memperbarui password
 app.post('/update-password', async (req, res) => {
-  const { oobCode, newPassword } = req.body;
+  const { oobCode, newPassword } = req.query;
 
   // Validasi parameter
   if (!oobCode || !newPassword) {
@@ -2128,9 +2128,9 @@ app.post('/update-password', async (req, res) => {
   try {
     const auth = getAuth(); // Pastikan auth telah diinisialisasi
     // Verifikasi kode reset password
-    await auth.verifyPasswordResetCode(oobCode);
+    await verifyPasswordResetCode(oobCode);
     // Perbarui password
-    await auth.confirmPasswordReset(oobCode, newPassword);
+    await confirmPasswordReset(oobCode, newPassword);
     // Tampilkan pesan sukses
     return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/'));
   } catch (error) {
