@@ -19,7 +19,7 @@ const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const { ref, set, get, child, update } = require('firebase/database');
-const { applyActionCode } = require("firebase/auth");
+const { getAuth, applyActionCode } = require('firebase/auth');
 const { database, auth } = require('./firebase.js');
 const UploadImage = require('./lib/uploader.js');
 const Uploader = require("./lib/uploader.js");
@@ -2116,6 +2116,7 @@ if (!firebaseAdmin.apps.length) {
     credential: firebaseAdmin.credential.applicationDefault(),
   });
 }
+// Pastikan ini sesuai dengan import Anda
 app.get('/auth', async (req, res) => {
   const auth = getAuth();
   const { mode, oobCode } = req.query;
@@ -2161,10 +2162,9 @@ function renderHTML(title, description, redirectURL) {
           background-color: #f4f4f9;
         }
         .container {
-          display: flex; /* Gunakan flexbox */
-    flex-direction: column; /* Atur arah vertikal */
-    justify-content: space-around;
-          align-content: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           align-items: center;
           text-align: center;
           background: #fff;
@@ -2172,8 +2172,8 @@ function renderHTML(title, description, redirectURL) {
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           padding: 20px;
           width: 80%;
-          height: 50%;
-          
+          max-width: 500px; /* Membatasi lebar maksimal */
+          height: auto; /* Biarkan tinggi otomatis sesuai konten */
         }
         .logo {
           font-size: 2rem;
@@ -2184,6 +2184,11 @@ function renderHTML(title, description, redirectURL) {
         h1 {
           font-size: 1.5rem;
           color: #333;
+          margin: 0; /* Menghapus margin untuk menyesuaikan dengan styling */
+        }
+        hr {
+          width: 50%; /* Membuat garis horizontal lebih kecil */
+          margin: 10px auto; /* Pusatkan garis horizontal */
         }
         p {
           color: #666;
@@ -2198,6 +2203,7 @@ function renderHTML(title, description, redirectURL) {
           border-radius: 13px;
           width: 75%;
           font-weight: bold;
+          transition: background-color 0.3s; /* Tambahkan transisi untuk efek hover */
         }
         a:hover {
           background-color: rgba(77,97,210,0.458);
@@ -2207,7 +2213,8 @@ function renderHTML(title, description, redirectURL) {
     <body>
       <div class="container">
         <div class="logo">ALVIAN UXIO - APIs</div>
-        <h1>${title}<hr></h1>
+        <h1>${title}</h1>
+        <hr>
         <p>${description}</p>
         <a href="${redirectURL}">Back to Home</a>
       </div>
