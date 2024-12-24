@@ -1205,7 +1205,7 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
 <div class="active" style='font-size:12px'>verified</div>
         </div>
         <div id="dropdown45" class="dropdown-content">
-          <form class="form-group" action="/apikey/check" onsubmit="checks(event, '/apikey/check')">
+          <form class="form-group" action="/apikey/check" onsubmit="check(event, '/apikey/check')">
             <label for="message45">Enter Name ApiKey</label>
             <input type="text" id="message45" name="apikey" required>
             <button type="submit">Check</button>
@@ -1440,17 +1440,11 @@ window.search = function(event, endpoint) {
             showToast('Error: ' + error, true);
         });
 }
-window.checks = function(event, endpoint) {
+window.check = function(event, endpoint) {
     event.preventDefault();
     const form = event.target;
-    const apikey = form.querySelector('input[name="apikey"]').value;
-
-    if (!apiKey) {
-        console.error('API key is missing.');
-        return; 
-    }
-
-    const query = `?apiKey=${encodeURIComponent(apikey)}`;
+    const message = form.querySelector('input[name="apiKey"]').value;
+    const query = `?apiKey=${encodeURIComponent(message)}`;
     
 
     const baseUrl = 'https://api.alvianuxio.my.id';
@@ -1467,13 +1461,13 @@ window.checks = function(event, endpoint) {
         .then(data => {
             
             const message = JSON.stringify(data, null, 2);
-            const sres = `
+            const kres = `
             ${message}
             
-            Request :
-            ${requestUrl}
+            © ALVIAN UXIO Inc.
+            ® ALVIAN UXIO - APIs
             `
-            showToast(sres, true);
+            showToast(kres, true);
 
             
             totalRequests++;
