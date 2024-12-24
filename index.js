@@ -7,6 +7,8 @@ const yts = require("yt-search");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
 const os = require('os');
+const { getAuth, applyActionCode } = require('firebase-admin/auth');
+const firebaseAdmin = require('firebase-admin');
 const {
   GoogleGenerativeAI,
   HarmCategory,
@@ -2107,6 +2109,40 @@ async function prodia(text) {
 app.get('/docs', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+// action firebase
+if (!firebaseAdmin.apps.length) {
+  firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.applicationDefault(),
+  });
+}
+app.get('/auth', async (req, res) => {
+  const auth = getAuth();
+  const { mode, oobCode } = req.query;
+
+  if (!mode || !oobCode) {
+    return res.status(400).send('Invalid request parameters');
+  }
+
+  try {
+    switch (mode) {
+      case 'verifyEmail':
+        await auth.applyActionCode(oobCode);
+        res.send('Email verified successfully!');
+        break;
+
+      case 'resetPassword':
+        res.redirect(`/reset-password?oobCode=${oobCode}`);
+        break;
+
+      default:
+        res.status(400).send('Invalid mode');
+    }
+  } catch (error) {
+    res.status(500).send(`Error handling action: ${error.message}`);
+  }
+});
+
 app.get('/', (req, res) => {
 res.send(`<!DOCTYPE html>
 <html lang="en">

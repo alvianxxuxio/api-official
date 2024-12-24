@@ -34,6 +34,7 @@
     "js-beautify": "^1.15.1",
     "jose": "^5.9.6",
     "@octokit/rest": "^21.0.1",
-    "os": "^0.1.2"
+    "os": "^0.1.2",
+    "firebase-admin": "^13.0.2"
   }
 }
