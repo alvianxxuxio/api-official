@@ -2217,6 +2217,7 @@ function renderHTML(title, description, redirectURL) {
     </html>
   `;
 }
+// reset pass
 app.get('/reset-password', (req, res) => {
   const { oobCode } = req.query;
 
@@ -2314,7 +2315,30 @@ function renderResetPasswordHTML(oobCode) {
     </html>
   `;
 }
+// updated pass 
+// Rute untuk memperbarui password
+app.post('/update-password', async (req, res) => {
+  const { oobCode, newPassword } = req.body;
 
+  if (!oobCode || !newPassword) {
+    return res.status(400).send(renderHTML('Invalid Request', 'Missing parameters.', '/'));
+  }
+
+  try {
+    const auth = getAuth();
+    
+    // Gunakan oobCode untuk mengonfirmasi tindakan reset password
+    const userInfo = await auth.verifyPasswordResetCode(oobCode);
+    
+    // Update password untuk pengguna yang terdaftar
+    await auth.confirmPasswordReset(oobCode, newPassword);
+    
+    // Tampilkan pesan sukses
+    return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/docs'));
+  } catch (error) {
+    return res.status(500).send(renderHTML('Error', `Error resetting password: ${error.message}`, '/'));
+  }
+});
 app.get('/', (req, res) => {
 res.send(`<!DOCTYPE html>
 <html lang="en">
