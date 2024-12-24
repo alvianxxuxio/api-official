@@ -2127,7 +2127,7 @@ app.get('/auth', async (req, res) => {
   try {
     switch (mode) {
       case 'verifyEmail':
-        await applyActionCode(oobCode);
+        await applyActionCode(auth, oobCode);
         return res.send(renderHTML('Email Verified', 'Your email has been verified successfully!', '/'));
       
       case 'resetPassword':
