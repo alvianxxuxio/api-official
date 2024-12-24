@@ -2121,27 +2121,100 @@ app.get('/auth', async (req, res) => {
   const { mode, oobCode } = req.query;
 
   if (!mode || !oobCode) {
-    return res.status(400).send('Invalid request parameters');
+    return res.status(400).send(renderHTML('Invalid Request', 'Invalid request parameters', '/'));
   }
 
   try {
     switch (mode) {
       case 'verifyEmail':
         await auth.applyActionCode(oobCode);
-        res.send('Email verified successfully!');
-        break;
-
+        return res.send(renderHTML('Email Verified', 'Your email has been verified successfully!', '/'));
+      
       case 'resetPassword':
-        res.redirect(`/reset-password?oobCode=${oobCode}`);
-        break;
-
+        return res.redirect(`/reset-password?oobCode=${oobCode}`);
+      
       default:
-        res.status(400).send('Invalid mode');
+        return res.status(400).send(renderHTML('Invalid Mode', 'Invalid mode specified in the request', '/'));
     }
   } catch (error) {
-    res.status(500).send(`Error handling action: ${error.message}`);
+    return res.status(500).send(renderHTML('Error', `Error handling action: ${error.message}`, '/'));
   }
 });
+
+// Helper function to render HTML
+function renderHTML(title, description, redirectURL) {
+  return `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${title}</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          background-color: #f4f4f9;
+        }
+        .container {
+          display: flex; /* Gunakan flexbox */
+    flex-direction: column; /* Atur arah vertikal */
+    justify-content: space-around;
+          align-content: center;
+          align-items: center;
+          text-align: center;
+          background: #fff;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          width: 80%;
+          height: 50%;
+          
+        }
+        .logo {
+          font-size: 2rem;
+          font-weight: bold;
+          color: rgba(77,97,210,0.458);
+          margin-bottom: 20px;
+        }
+        h1 {
+          font-size: 1.5rem;
+          color: #333;
+        }
+        p {
+          color: #666;
+          margin: 10px 0 20px;
+        }
+        a {
+          display: inline-block;
+          padding: 10px 20px;
+          text-decoration: none;
+          color: #fff;
+          background-color: rgba(44,70,218,0.646);
+          border-radius: 13px;
+          width: 75%;
+          font-weight: bold;
+        }
+        a:hover {
+          background-color: rgba(77,97,210,0.458);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="logo">ALVIAN UXIO - APIs</div>
+        <h1>${title}<hr></h1>
+        <p>${description}</p>
+        <a href="${redirectURL}">Back to Home</a>
+      </div>
+    </body>
+    </html>
+  `;
+}
 
 app.get('/', (req, res) => {
 res.send(`<!DOCTYPE html>
