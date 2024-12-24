@@ -2117,8 +2117,8 @@ if (!firebaseAdmin.apps.length) {
   });
 }
 // Rute untuk memperbarui password
-app.post('/update-password', async (req, res) => {
-  const { oobCode, newPassword } = req.body; // Expecting parameters from request body
+app.get('/update-password', async (req, res) => {
+  const { oobCode, newPassword } = req.query; // Retrieve parameters from query string
 
   // Validate parameters
   if (!oobCode || !newPassword) {
@@ -2138,7 +2138,7 @@ app.post('/update-password', async (req, res) => {
     await confirmPasswordReset(auth, oobCode, newPassword); // Ensure you pass the auth instance
 
     // Display success message
-    return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/'));
+    return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/docs'));
   } catch (error) {
     console.error('Error resetting password:', error); // Log error details
     return res.status(500).send(renderHTML('Error', `Error resetting password: ${error.message}`, '/'));
