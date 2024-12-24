@@ -2138,7 +2138,7 @@ app.get('/update-password', async (req, res) => {
     await confirmPasswordReset(auth, oobCode, newPassword); // Ensure you pass the auth instance
 
     // Display success message
-    return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/docs'));
+    return res.send(renderHTML('Password Reset', 'Your password has been successfully reset!', '/'));
   } catch (error) {
     console.error('Error resetting password:', error); // Log error details
     return res.status(500).send(renderHTML('Error', `Error resetting password: ${error.message}`, '/'));
@@ -2333,11 +2333,11 @@ function renderResetPasswordHTML(oobCode) {
         <h3>Reset Password<hr></h3>
 
         <p>Please enter your new password:</p>
-        <form action="/update-password" method="POST">
-          <input type="hidden" name="oobCode" value="${oobCode}">
-          <input type="password" name="newPassword" placeholder="New Password" required>
-          <button type="submit">Reset Password</button>
-        </form>
+<form action="/update-password" method="GET">
+  <input type="hidden" name="oobCode" value="${oobCode}"> <!-- Keep oobCode hidden -->
+  <input type="password" name="newPassword" placeholder="New Password" required>
+  <button type="submit">Reset Password</button>
+</form>
       </div>
     </body>
     </html>
