@@ -2129,7 +2129,7 @@ app.get('/auth', async (req, res) => {
     switch (mode) {
       case 'verifyEmail':
         await applyActionCode(auth, oobCode);
-        return res.send(renderHTML('Email Verified', 'Your email has been verified successfully!', '/'));
+        return res.send(renderHTML('Email Verified', 'Your email has been verified successfully!', '/docs'));
       
       case 'resetPassword':
         return res.redirect(`/reset-password?oobCode=${oobCode}`);
@@ -2162,9 +2162,10 @@ function renderHTML(title, description, redirectURL) {
           background-color: #f4f4f9;
         }
         .container {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
+          display: flex; /* Gunakan flexbox */
+    flex-direction: column; /* Atur arah vertikal */
+    justify-content: space-around;
+          align-content: center;
           align-items: center;
           text-align: center;
           background: #fff;
@@ -2172,8 +2173,8 @@ function renderHTML(title, description, redirectURL) {
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           padding: 20px;
           width: 80%;
-          max-width: 500px; /* Membatasi lebar maksimal */
-          height: auto; /* Biarkan tinggi otomatis sesuai konten */
+          height: 30%;
+          
         }
         .logo {
           font-size: 2rem;
@@ -2184,26 +2185,21 @@ function renderHTML(title, description, redirectURL) {
         h1 {
           font-size: 1.5rem;
           color: #333;
-          margin: 0; /* Menghapus margin untuk menyesuaikan dengan styling */
-        }
-        hr {
-          width: 50%; /* Membuat garis horizontal lebih kecil */
-          margin: 10px auto; /* Pusatkan garis horizontal */
         }
         p {
           color: #666;
           margin: 10px 0 20px;
         }
         a {
-          display: inline-block;
           padding: 10px 20px;
-          text-decoration: none;
-          color: #fff;
-          background-color: rgba(44,70,218,0.646);
+          border: none;
           border-radius: 13px;
-          width: 75%;
+          background-color: rgba(44,70,218,0.646);
+          color: #fff;
           font-weight: bold;
-          transition: background-color 0.3s; /* Tambahkan transisi untuk efek hover */
+          cursor: pointer;
+          width: 90%;
+          text-decoration: none;
         }
         a:hover {
           background-color: rgba(77,97,210,0.458);
@@ -2213,10 +2209,106 @@ function renderHTML(title, description, redirectURL) {
     <body>
       <div class="container">
         <div class="logo">ALVIAN UXIO - APIs</div>
-        <h1>${title}</h1>
-        <hr>
+        <h1>${title}<hr></h1>
         <p>${description}</p>
         <a href="${redirectURL}">Back to Home</a>
+      </div>
+    </body>
+    </html>
+  `;
+}
+app.get('/reset-password', (req, res) => {
+  const { oobCode } = req.query;
+
+  if (!oobCode) {
+    return res.status(400).send(renderHTML('Invalid Request', 'No action code provided.', '/'));
+  }
+
+  // Render halaman reset password
+  res.send(renderResetPasswordHTML(oobCode));
+});
+
+// Halaman reset password
+function renderResetPasswordHTML(oobCode) {
+  return `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Reset Password</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          background-color: #f4f4f9;
+        }
+        .container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          background: #fff;
+          border-radius: 13px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          width: 80%;
+          max-width: 500px; /* Maksimal lebar */
+        }
+        h1 {
+          font-size: 1.5rem;
+          color: #333;
+          margin: 0;
+        }
+        p {
+          color: #666;
+          margin: 10px 0 20px;
+        }
+        input {
+          padding: 10px;
+          margin: 10px 0;
+          width: 80%;
+          border: 1px solid #ccc;
+          border-radius: 13px;
+          outline:none;
+        }
+                .logo {
+          font-size: 2rem;
+          font-weight: bold;
+          color: rgba(77,97,210,0.458);
+          margin-bottom: 20px;
+        }
+        button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 13px;
+          background-color: rgba(44,70,218,0.646);
+          color: #fff;
+          font-weight: bold;
+          cursor: pointer;
+          width: 90%;
+        }
+        button:hover {
+          background-color: rgba(77,97,210,0.458);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1 class='logo'>ALVIAN UXIO - APIs</h1>
+        <h3>Reset Password<hr></h3>
+
+        <p>Please enter your new password:</p>
+        <form action="/update-password" method="POST">
+          <input type="hidden" name="oobCode" value="${oobCode}">
+          <input type="password" name="newPassword" placeholder="New Password" required>
+          <button type="submit">Reset Password</button>
+        </form>
       </div>
     </body>
     </html>
