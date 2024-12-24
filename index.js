@@ -7,7 +7,6 @@ const yts = require("yt-search");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
 const os = require('os');
-const { getAuth, applyActionCode } = require('firebase-admin/auth');
 const firebaseAdmin = require('firebase-admin');
 const {
   GoogleGenerativeAI,
@@ -20,7 +19,8 @@ const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const { ref, set, get, child, update } = require('firebase/database');
-const { database } = require('./firebase.js');
+const { applyActionCode } = require("firebase/auth");
+const { database, auth } = require('./firebase.js');
 const UploadImage = require('./lib/uploader.js');
 const Uploader = require("./lib/uploader.js");
 const app = express();

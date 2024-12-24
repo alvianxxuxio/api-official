@@ -1,6 +1,7 @@
 // firebase.js
 const { initializeApp } = require("firebase/app");
 const { getDatabase } = require("firebase/database");
+const { getAuth, applyActionCode } = require("firebase/auth");
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -17,5 +18,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+const auth = getAuth(app);
 
-module.exports = { database };
+module.exports = { database, auth };
