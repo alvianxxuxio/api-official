@@ -590,65 +590,152 @@ async function igstalk(username) {
   }
 }
 
+// ytdl 
+async function ytdl(link, qualityIndex, typeIndex) {
+    const qualities = {
+        audio: { 1: '32', 2: '64', 3: '128', 4: '192' },
+        video: { 1: '144', 2: '240', 3: '360', 4: '480', 5: '720', 6: '1080', 7: '1440', 8: '2160' }
+    };
 
+    const headers = {
+        accept: '*/*',
+        referer: 'https://ytshorts.savetube.me/',
+        origin: 'https://ytshorts.savetube.me/',
+        'user-agent': 'Postify/1.0.0',
+        'Content-Type': 'application/json'
+    };
+
+    const getCdnNumber = () => Math.floor(Math.random() * 11) + 51;
+    const type = typeIndex === 1 ? 'audio' : 'video';
+    const quality = qualities[type][qualityIndex];
+    const cdnNumber = getCdnNumber();
+    const cdnUrl = `cdn${cdnNumber}.savetube.su`;
+
+    try {
+        const videoInfoResponse = await axios.post(
+            `https://${cdnUrl}/info`,
+            { url: link },
+            { headers: { ...headers, authority: `cdn${cdnNumber}.savetube.su` } }
+        );
+
+        const videoInfo = videoInfoResponse.data.data;
+        if (!videoInfo) {
+            throw new Error('Video information could not be retrieved.');
+        }
+
+        const body = {
+            downloadType: type,
+            quality,
+            key: videoInfo.key
+        };
+
+        const downloadResponse = await axios.post(
+            `https://${cdnUrl}/download`,
+            body,
+            { headers: { ...headers, authority: `cdn${cdnNumber}.savetube.su` } }
+        );
+
+        const downloadData = downloadResponse.data.data;
+        if (!downloadData || !downloadData.downloadUrl) {
+            throw new Error('Download URL could not be retrieved.');
+        }
+
+        return {
+            title: videoInfo.title,
+            titleSlug: videoInfo.titleSlug,
+            videoUrl: videoInfo.url,
+            duration: videoInfo.duration,            
+            id: videoInfo.id,
+            thumbnail: videoInfo.thumbnail,
+            quality,
+            type,
+            link: downloadData.downloadUrl                  
+        };
+    } catch (error) {
+        console.error('Error:', error.message);
+        return { error: error.message };
+    }
+}
+async function ytmp3(url) {
+    const ytd = url;
+    const qualityIndex = 1; // Pilih kualitas audio atau video sesuai indeks
+    const typeIndex = 1; // 1 untuk audio, 2 untuk video
+
+    try {
+        const response = await ytdl(ytd, qualityIndex, typeIndex);
+        return response;
+    } catch (error) {
+        console.error('Error downloading video:', error);
+    }
+}
+async function ytmp4(url) {
+    const ytd = url;
+    const qualityIndex = 1; // Pilih kualitas audio atau video sesuai indeks
+    const typeIndex = 2; // 1 untuk audio, 2 untuk video
+
+    try {
+        const response = await ytdl(ytd, qualityIndex, typeIndex);
+        return response;
+    } catch (error) {
+        console.error('Error downloading video:', error);
+    }
+}
 // youtube
 async function yt(query) {
- const form = new FormData();
- form.append('query', query);
+  const form = new FormData();
+  form.append('query', query);
 
- try {
- const response = await axios.post('https://yttomp4.pro/', form, {
- headers: {
- ...form.getHeaders()
- }
- });
+  try {
+    const response = await axios.post('https://yttomp4.pro/', form, {
+      headers: {
+        ...form.getHeaders()
+      }
+    });
 
- const $ = cheerio.load(response.data);
+    const $ = cheerio.load(response.data);
 
- const results = {
- success: true,
- title: $('.vtitle').text().trim(),
- duration: $('.res_left p').text().replace('Duration: ', '').trim(),
- image: $('.ac img').attr('src'),
- video: [],
- audio: [],
- other: []
- };
- 
- $('.tab-item-data').each((index, tab) => {
- const tabTitle = $(tab).attr('id');
- $(tab).find('tbody tr').each((i, element) => {
- const fileType = $(element).find('td').eq(0).text().trim();
- const fileSize = $(element).find('td').eq(1).text().trim();
- const downloadLink = $(element).find('a.dbtn').attr('href');
+    const results = {
+      success: true,
+      title: $('.vtitle').text().trim(),
+      duration: $('.res_left p').text().replace('Duration: ', '').trim(),
+      image: $('.ac img').attr('src'),
+      video: null,
+      audio: null,
+      other: null
+    };
 
- if (tabTitle === 'tab-item-1') {
- results.video.push({
- fileType,
- fileSize,
- downloadLink
- });
- } else if (tabTitle === 'tab-item-2') {
- results.audio.push({
- fileType,
- fileSize,
- downloadLink
- });
- } else if (tabTitle === 'tab-item-3') {
- results.other.push({
- fileType,
- fileSize,
- downloadLink
- });
- }
- });
- });
- 
- return results;
- } catch (error) {
- return { success: false, message: error.message };
- console.log('Error:' + error);
- }
+    $('.tab-item-data').each((index, tab) => {
+      const tabTitle = $(tab).attr('id');
+      let lowestQuality = null;
+
+      $(tab).find('tbody tr').each((i, element) => {
+        const fileType = $(element).find('td').eq(0).text().trim();
+        const fileSize = $(element).find('td').eq(1).text().trim();
+        const downloadLink = $(element).find('a.dbtn').attr('href');
+
+        // Parse the file size into a numeric value for comparison (e.g., "1 MB" to 1)
+        const numericSize = parseFloat(fileSize.replace(/[^\d.]/g, '')) || Infinity;
+
+        if (!lowestQuality || numericSize < lowestQuality.size) {
+          lowestQuality = { fileType, fileSize, downloadLink, size: numericSize };
+        }
+      });
+
+      // Assign the lowest quality result to the appropriate category
+      if (tabTitle === 'tab-item-1' && lowestQuality) {
+        results.video = lowestQuality;
+      } else if (tabTitle === 'tab-item-2' && lowestQuality) {
+        results.audio = lowestQuality;
+      } else if (tabTitle === 'tab-item-3' && lowestQuality) {
+        results.other = lowestQuality;
+      }
+    });
+
+    return results;
+  } catch (error) {
+    console.log('Error:' + error);
+    return { success: false, message: error.message };
+  }
 }
 // mediafire 
 async function mf(url) {
@@ -5213,7 +5300,113 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
   }
 });
 
+//ytmp3
+app.get('/api/ytmp3', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
 
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await ytmp3(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//ytmp4
+app.get('/api/ytmp4', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await ytmp4(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //letmeGPT
 app.get('/api/letmegpt', async (req, res) => {
   try {
