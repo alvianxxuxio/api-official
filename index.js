@@ -1750,7 +1750,87 @@ async function fb(url) {
     return results
 }
 
+// instagram 2
+const instadl = async (url) => {
+    let data = qs.stringify({
+        'url': url,
+        'v': '3',
+        'lang': 'en'
+    });
 
+    let config = {
+        method: 'POST',
+        url: 'https://api.downloadgram.org/media',
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'accept-language': 'id-ID',
+            'referer': 'https://downloadgram.org/',
+            'origin': 'https://downloadgram.org',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-site',
+            'priority': 'u=0',
+            'te': 'trailers'
+        },
+        data: data
+    };
+
+    try {
+        const response = await axios.request(config);
+        const $ = cheerio.load(response.data);
+        let mediaInfo = {};
+
+        // Ekstrak ID dari URL
+        const urlParts = url.split('/');
+        const id = urlParts[5]; // ID biasanya berada di indeks ke-5 dalam format URL Instagram
+
+        // Mengambil nilai dari parameter query
+        const queryString = url.split('?')[1];
+        const urlParams = new URLSearchParams(queryString);
+        const igsh = urlParams.get('igsh'); // Mengambil nilai igsh
+
+        // Menentukan tipe media dan URL
+        if ($('video').length) {
+            mediaInfo.url = $('video source').attr('src');
+            mediaInfo.type = 'video'; // Menambahkan tipe media
+        } else if ($('img').length) {
+            mediaInfo.url = $('img').attr('src');
+            mediaInfo.type = 'image'; // Menambahkan tipe media
+        } else {
+            return {
+                status: 'error',
+                code: 404,
+                message: 'Media not found'
+            };
+        }
+
+        // Menghapus karakter escape
+        mediaInfo.url = mediaInfo.url.replace(/\\\\"/g, '').replace(/\\"/g, '');
+
+        // Format respons profesional
+        return {
+            status: 'success',
+            code: 200,
+            message: 'Media retrieved successfully',
+            data: {
+                id: id || null, // ID dari URL
+                igsh: igsh || null, // Nilai igsh dari parameter query
+                media: {
+type: mediaInfo.type || null, // Tipe media (image atau video)
+                    url: mediaInfo.url || null // URL media                    
+                }
+            }
+        };
+    } catch (error) {
+        return {
+            status: 'error',
+            code: 500,
+            message: 'Internal Server Error',
+            error: error.message
+        };
+    }
+};
 //instagram
 const getDownloadLinks = url => {
   return new Promise(async (resolve, reject) => {
@@ -3734,6 +3814,59 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
   }
 });
 
+//instagram 2
+app.get('/api/instagram2', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await instadl(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //remini
 app.get('/api/remini', async (req, res) => {
   try {
