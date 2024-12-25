@@ -3,7 +3,6 @@ const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
-const fs = require("fs");
 const yts = require("yt-search");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
@@ -2652,38 +2651,64 @@ app.post('/keys/create', (req, res) => {
 
 
 //uploader 
-app.post('/api/uploader', upload.single('file'), async (req, res) => {
-    const { platform } = req.body; // Platform: pomf2, catbox, tmpfiles, ucarecdn
-    const file = req.file;
+const GITHUB_OWNER = 'alvianxxuxio'; // Ganti dengan username GitHub Anda
+const GITHUB_REPO = 'cloud'; // Ganti dengan nama repositori GitHub Anda
+const GITHUB_BRANCH = 'main'; // Branch target (contoh: main/master)
+const GITHUB_TOKEN = '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'; // GitHub personal access token
+const BASE_URL = 'https://cloud.alvianuxio.my.id'; // URL custom Anda
 
-    if (!file) {
-        return res.status(400).json({ error: 'File is required.' });
-    }
+app.post('/api/uploader', async (req, res) => {
+    const { fileName, content } = req.body;
 
-    const fileName = file.originalname;
-
-    // Validasi ekstensi file
-    if (!Uploader.isValidFile(fileName)) {
-        fs.unlinkSync(file.path); // Hapus file jika tidak valid
-        return res.status(400).json({ error: 'Invalid file type. Supported types: mp3, mpeg, opus, jpg, png, jpeg, mp4.' });
+    if (!fileName || !content) {
+        return res.status(400).json({ error: 'File name and content are required.' });
     }
 
     try {
-        // Pastikan platform yang diminta tersedia
-        if (!Uploader[platform]) {
-            fs.unlinkSync(file.path); // Hapus file jika platform tidak valid
-            return res.status(400).json({ error: `Platform ${platform} is not supported.` });
+        // Validasi ekstensi file dari fileName
+        const fileParts = fileName.split('.');
+        if (fileParts.length < 2) {
+            return res.status(400).json({ error: 'Invalid file name. Must include an extension.' });
         }
 
-        // Panggil fungsi upload sesuai platform
-        const uploadResult = await Uploader[platform](file.path, fileName);
+        const fileExtension = fileParts.pop(); // Ambil ekstensi file
+        const baseName = fileParts.join('.'); // Ambil nama file tanpa ekstensi
 
-        fs.unlinkSync(file.path); // Hapus file sementara setelah upload berhasil
-        return res.status(200).json({ message: 'File uploaded successfully', data: uploadResult });
+        // Encode content ke Base64
+        const base64Content = Buffer.from(content).toString('base64');
+
+        // URL API GitHub untuk upload file
+        const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${fileName}`;
+
+        // Payload untuk upload file
+        const payload = {
+            message: `Add file ${fileName}`,
+            content: base64Content,
+            branch: GITHUB_BRANCH,
+        };
+
+        // Kirim permintaan ke GitHub API
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        // Periksa hasil respons
+        if (!response.ok) {
+            const errorData = await response.json();
+            return res.status(response.status).json(errorData);
+        }
+
+        // Respons sukses
+        const cloudUrl = `${BASE_URL}/${baseName}.${fileExtension}`;
+        return res.status(200).json({ message: 'File uploaded successfully', url: cloudUrl });
     } catch (error) {
-        fs.unlinkSync(file.path); // Hapus file jika terjadi error
         console.error('Error uploading file:', error.message);
-        return res.status(500).json({ error: 'Failed to upload file', details: error.message });
+        return res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
 // status
