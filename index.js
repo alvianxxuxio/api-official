@@ -35,7 +35,97 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
+// play
+const formatAudio = ['mp3', 'm4a', 'webm', 'aac', 'flac', 'opus', 'ogg', 'wav'];
+const formatVideo = ['360', '480', '720', '1080', '1440', '4k'];
 
+const ddownr = {
+  download: async (url, format) => {
+    if (!formatAudio.includes(format) && !formatVideo.includes(format)) {
+      throw new Error('Format tidak didukung, cek daftar format yang tersedia.');
+    }
+
+    const config = {
+      method: 'GET',
+      url: `https://p.oceansaver.in/ajax/download.php?format=${format}&url=${encodeURIComponent(url)}&api=dfcb6d76f2f6a9894gjkege8a4ab232222`,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      }
+    };
+
+    try {
+      const response = await axios.request(config);
+
+      if (response.data && response.data.success) {
+        const { id, title, info } = response.data;
+        const { image } = info;
+        const downloadUrl = await ddownr.cekProgress(id);
+
+        return {
+          id: id,
+          image: image,
+          title: title,
+          downloadUrl: downloadUrl
+        };
+      } else {
+        throw new Error('Gagal mengambil detail video.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  },
+  cekProgress: async (id) => {
+    const config = {
+      method: 'GET',
+      url: `https://p.oceansaver.in/ajax/progress.php?id=${id}`,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      }
+    };
+
+    try {
+      while (true) {
+        const response = await axios.request(config);
+
+        if (response.data && response.data.success && response.data.progress === 1000) {
+          return response.data.download_url;
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  }
+};
+
+async function play(query, format) {
+  try {
+    const results = await yts(query);
+    if (results && results.videos && results.videos.length > 0) {
+      const video = results.videos[0]; // Get the first video result
+
+      // Gather additional information from the video
+      const downloadData = await ddownr.download(video.url, format);
+
+      return {
+        title: video.title,
+        duration: video.timestamp, // Duration in hh:mm:ss format
+        uploadDate: video.ago, // Upload date string
+        views: video.views, // Number of views
+        channel: video.author, // Channel name
+        image: downloadData.image,
+        downloadUrl: downloadData.downloadUrl
+      };
+    } else {
+      throw new Error('No videos found for the given query.');
+    }
+  } catch (error) {
+    console.error('Error in play function:', error);
+    throw error; // Rethrow the error for handling outside
+  }
+}
 // flux
 const freeflux = {
   models: ["flux_1_schnell", "flux_1_dev", "sana_1_6b"],
@@ -3797,6 +3887,63 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await igdl(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// play
+app.get('/api/play', async (req, res) => {
+  try {
+    const { apikey, query, format } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!query) {
+      return res.status(400).json({ error: 'Parameter "query" tidak ditemukan' });
+    }
+    if (!format) {
+      return res.status(400).json({ error: 'Parameter "format" tidak ditemukan' });
+    }
+    const response = await play(query, format);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 
