@@ -102,22 +102,32 @@ const ddownr = {
 
 async function play(query, format) {
   try {
+    // Fetch results with a limit on the number of videos
     const results = await yts(query);
     if (results && results.videos && results.videos.length > 0) {
       const video = results.videos[0]; // Get the first video result
 
       // Gather additional information from the video
-      const downloadData = await ddownr.download(video.url, format);
+      const downloadPromise = ddownr.download(video.url, format); // Start download in parallel
 
-      return {
+      // Prepare video information without waiting for download to finish
+      const videoInfo = {
         title: video.title,
         duration: video.timestamp, // Duration in hh:mm:ss format
         uploadDate: video.ago, // Upload date string
         views: video.views, // Number of views
         channel: video.author, // Channel name
-        image: downloadData.image,
-        downloadUrl: downloadData.downloadUrl
+        videoUrl: video.url // Video URL
       };
+
+      // Wait for the download data to complete
+      const downloadData = await downloadPromise;
+
+      // Add download data to videoInfo
+      videoInfo.image = downloadData.image;
+      videoInfo.downloadUrl = downloadData.downloadUrl;
+
+      return videoInfo;
     } else {
       throw new Error('No videos found for the given query.');
     }
