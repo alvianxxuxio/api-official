@@ -2812,34 +2812,25 @@ app.post('/api/uploader', async (req, res) => {
 app.get('/status', (req, res) => {
   const cpus = os.cpus();
 
-  // Menghitung waktu per siklus CPU dalam milidetik
-  const cpuSpeedsInMs = cpus.map(cpu => ({
-    core: cpu.model,
-    speed: `${(1000 / cpu.speed).toFixed(2)} ms` // Kecepatan dalam ms
-  }));
-
-  // Menghitung uptime server
+  // Mendapatkan informasi uptime server
   const uptime = `${Math.floor(os.uptime() / 3600)} hours ${Math.floor((os.uptime() % 3600) / 60)} minutes`;
 
-  // Mendapatkan informasi memori
-  const totalMemory = os.totalmem(); // Total memory in bytes
-  const freeMemory = os.freemem(); // Free memory in bytes
-  const usedMemory = totalMemory - freeMemory; // Used memory in bytes
+  // Mendapatkan informasi memori (RAM)
+  const totalMemory = os.totalmem();
+  const freeMemory = os.freemem();
+  const usedMemory = totalMemory - freeMemory;
 
-  // Menghitung memori dalam MB
   const memoryInfo = {
-    total: `${(totalMemory / 1024 / 1024).toFixed(2)} MB`, // Total memory in MB
-    free: `${(freeMemory / 1024 / 1024).toFixed(2)} MB`, // Free memory in MB
-    used: `${(usedMemory / 1024 / 1024).toFixed(2)} MB`, // Used memory in MB
+    total: `${(totalMemory / 1024 / 1024).toFixed(2)} MB`,
+    used: `${(usedMemory / 1024 / 1024).toFixed(2)} MB`,
   };
 
-  // Informasi sistem
+  // Menyiapkan informasi sistem
   const status = {
-    cpuModel: cpus[0].model,
-    cpuCores: cpus.length,
-    speed: cpuSpeedsInMs, // Menampilkan kecepatan dalam ms per siklus
+    cpuModel: cpus[0].model, // Model CPU
+    cpuCores: cpus.length, // Jumlah core CPU
+    memory: memoryInfo,
     uptime: uptime,
-    memory: memoryInfo, // Menambahkan informasi memori
   };
 
   res.json({
