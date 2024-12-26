@@ -223,9 +223,65 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
 <div class="containera">
     <div class="headera">
 <span><b>Downloader</b></span>
-      <span class="qwr">12 Endpoints</span>
+      <span class="qwr">17 Endpoints</span>
     </div>
-    <div class="content-container">
+    <div class="content-container">  
+            <div class="btn" onclick="toggleDropdown('dropdown60')">
+  <div class="sdfg">GET</div>
+  <div style="flex-grow: 1; text-align: left; padding-left: 5px;">/api/ytmp4</div>
+  <div class="active" style="font-size: 12px;">active</div>
+</div>
+<div id="dropdown60" class="dropdown-content">
+  <form class="form-group" action="/api/ytmp4" onsubmit="url(event, '/api/ytmp4')">
+    <label for="message60">Enter url:</label>
+    <input type="text" id="message60" name="url" placeholder="https or http" required>
+    <label for="apikey59">Enter API Key:</label>
+    <input type="text" id="apikey60" name="apikey" placeholder="Enter Your ApiKeys" required>
+    <button type="submit">Try Now</button>
+    <div class="info-row">
+      <span>
+        <h5 style="padding: 0px; margin: 0px; animation: fadeInUp 1s ease-in-out;">Code</h5>
+      </span>
+      <span>
+        <h5 style="padding: 0px; margin: 0px; animation: fadeIn 0.5s ease-in-out;">Description</h5>
+      </span>
+    </div>
+    <div class="info-row"><span>200</span><span>Success</span></div>
+    <div class="info-row"><span>404</span><span>Not Found</span></div>
+    <div class="info-row"><span>400</span><span>Bad Request</span></div>
+    <div class="info-row"><span>403</span><span>Unauthorized API Key invalid</span></div>
+    <div class="info-row"><span>500</span><span>Internal server error</span></div>
+    <div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+  </form>
+</div>  
+        <div class="btn" onclick="toggleDropdown('dropdown59')">
+  <div class="sdfg">GET</div>
+  <div style="flex-grow: 1; text-align: left; padding-left: 5px;">/api/ytmp3</div>
+  <div class="active" style="font-size: 12px;">active</div>
+</div>
+<div id="dropdown59" class="dropdown-content">
+  <form class="form-group" action="/api/ytmp3" onsubmit="url(event, '/api/ytmp3')">
+    <label for="message59">Enter url:</label>
+    <input type="text" id="message59" name="url" placeholder="https or http" required>
+    <label for="apikey59">Enter API Key:</label>
+    <input type="text" id="apikey59" name="apikey" placeholder="Enter Your ApiKeys" required>
+    <button type="submit">Try Now</button>
+    <div class="info-row">
+      <span>
+        <h5 style="padding: 0px; margin: 0px; animation: fadeInUp 1s ease-in-out;">Code</h5>
+      </span>
+      <span>
+        <h5 style="padding: 0px; margin: 0px; animation: fadeIn 0.5s ease-in-out;">Description</h5>
+      </span>
+    </div>
+    <div class="info-row"><span>200</span><span>Success</span></div>
+    <div class="info-row"><span>404</span><span>Not Found</span></div>
+    <div class="info-row"><span>400</span><span>Bad Request</span></div>
+    <div class="info-row"><span>403</span><span>Unauthorized API Key invalid</span></div>
+    <div class="info-row"><span>500</span><span>Internal server error</span></div>
+    <div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+  </form>
+</div> 
     <div class="btn" onclick="toggleDropdown('dropdown58')">
   <div class="sdfg">GET</div>
   <div style="flex-grow: 1; text-align: left; padding-left: 5px;">/api/play</div>
