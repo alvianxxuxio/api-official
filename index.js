@@ -1,5 +1,4 @@
 const express = require('express');
-const multer = require('multer');
 const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
@@ -16,9 +15,10 @@ const {
 } = require("@google/generative-ai");
 const cheerio = require('cheerio');
 const qs = require('qs');
-const fetch = require('node-fetch')
-const uploadFile = require('./lib/uploadFile.js')
-const undici = require('undici')
+const fetch = require('node-fetch');
+const multer = require('multer');
+const uploadFile = require('./lib/uploadFile.js');
+const undici = require('undici');
 const { ref, set, get, child, update } = require('firebase/database');
 const { getAuth, applyActionCode, confirmPasswordReset, verifyPasswordResetCode } = require("firebase/auth");
 const { database, auth } = require('./firebase.js');
