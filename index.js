@@ -23,6 +23,7 @@ const { getAuth, applyActionCode, confirmPasswordReset, verifyPasswordResetCode 
 const { database, auth } = require('./firebase.js');
 const UploadImage = require('./lib/uploader.js');
 const Uploader = require("./lib/uploader.js");
+const mongoose = require("mongoose");
 const app = express();
 // Initial valid API keys
 const validApiKeys = ['aluxi', 'alvianuxio', 'admin', 'global', 'world', 'sepuh', 'indonesia'];
@@ -33,8 +34,69 @@ app.set("json spaces", 2);
 
 // Middleware untuk CORS
 app.use(cors());
+app.use(express.json());
 
+// uploaderdb
+// MongoDB Connection
+mongoose.connect('mongodb+srv://alvianuxio:Aluxi31.#$@cluster0.qulik.mongodb.net/mydatabase?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Error connecting to MongoDB:', err));
 
+// File Schema
+const fileSchema = new mongoose.Schema({
+    name: String,
+    content: Buffer,
+    mimetype: String,
+    uploadedAt: { type: Date, default: Date.now },
+});
+
+const File = mongoose.model('File', fileSchema);
+
+// Multer Configuration
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// File Upload Endpoint
+app.post('/upload', upload.single('file'), async (req, res) => {
+    try {
+        const { originalname, mimetype, buffer } = req.file;
+
+        const newFile = new File({
+    name: originalname,
+    content: buffer,
+    mimetype: mimetype,
+    uploadedAt: new Date(), // Tambahkan waktu unggah
+});
+
+        const savedFile = await newFile.save();
+
+        res.status(200).json({ 
+            message: 'File uploaded successfully!',
+            fileId: savedFile._id,
+            fileLink: `https://api.alvianuxio.my.id/file/${savedFile._id}`,
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error uploading file: ' + error.message });
+    }
+});
+
+// File Access Endpoint
+app.get('/file/:id', async (req, res) => {
+    try {
+        const file = await File.findById(req.params.id);
+
+        if (!file) {
+            return res.status(404).json({ message: 'File not found!' });
+        }
+
+        res.set('Content-Type', file.mimetype);
+        res.send(file.content);
+    } catch (error) {
+        res.status(500).json({ error: 'Error retrieving file: ' + error.message });
+    }
+});
 // play
 const formatAudio = ['mp3', 'm4a', 'webm', 'aac', 'flac', 'opus', 'ogg', 'wav'];
 const formatVideo = ['360', '480', '720', '1080', '1440', '4k'];
