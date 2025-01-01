@@ -35,6 +35,24 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
+//total rquest
+async function trackTotalRequest() {
+  const requestRef = ref(database, "requests/count"); // Lokasi di database
+  try {
+    const snapshot = await get(requestRef);
+
+    if (snapshot.exists()) {
+      const currentCount = snapshot.val();
+      await set(requestRef, currentCount + 1); // Tambahkan 1 jika data sudah ada
+    } else {
+      // Jika belum ada data, buat data baru dengan nilai 1
+      await set(requestRef, 1);
+      console.log("Database 'requests/count' berhasil dibuat dengan nilai awal 1.");
+    }
+  } catch (error) {
+    console.error("Error updating total requests:", error);
+  }
+}
 // play
 const formatAudio = ['mp3', 'm4a', 'webm', 'aac', 'flac', 'opus', 'ogg', 'wav'];
 const formatVideo = ['360', '480', '720', '1080', '1440', '4k'];
@@ -2809,7 +2827,7 @@ app.post('/api/uploader', async (req, res) => {
     }
 });
 // status
-app.get('/status', (req, res) => {
+app.get('/status', async (req, res) => {
   const cpus = os.cpus();
 
   // Mendapatkan informasi uptime server
@@ -2833,10 +2851,31 @@ app.get('/status', (req, res) => {
     uptime: uptime,
   };
 
-  res.json({
-    status: 'success',
-    data: status,
-  });
+  // Mendapatkan total request dari Firebase
+  try {
+    const requestRef = ref(database, "requests/count"); // Lokasi di database
+    const snapshot = await get(requestRef);
+
+    let totalRequests = 0;
+    if (snapshot.exists()) {
+      totalRequests = snapshot.val(); // Ambil total request dari database
+    }
+
+    // Menambahkan total requests ke status
+    status.totalRequests = totalRequests;
+
+    res.json({
+      status: 'success',
+      data: status,
+    });
+  } catch (error) {
+    console.error("Error fetching total requests:", error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'Unable to fetch total requests',
+      error: error.message 
+    });
+  }
 });
 //GPT logic
 app.get('/api/gptlogic', async (req, res) => {
@@ -3008,6 +3047,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await Rusdi(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3183,6 +3223,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     res.send(response.data);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3232,6 +3273,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     res.send(response.data);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3278,6 +3320,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await gemini(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3332,6 +3375,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await freeflux.create(prompt);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3386,6 +3430,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await Brat(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3440,6 +3485,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await halodoc(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3494,6 +3540,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await bingsearch(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3547,6 +3594,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await gptpic(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3601,6 +3649,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await prodia(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3655,6 +3704,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await txt2img(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3709,6 +3759,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await pinterest(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3763,6 +3814,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await uphd(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3816,6 +3868,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await bukaSearch(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3870,6 +3923,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await Steam(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3923,6 +3977,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await gsm(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -3977,6 +4032,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await igdl(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4034,6 +4090,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await play(query, format);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4088,6 +4145,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await instadl(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4141,6 +4199,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await remini(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4195,6 +4254,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await hdimg(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4247,6 +4307,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await removebg(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4300,6 +4361,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await spotifydl(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4355,6 +4417,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await idn(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4409,6 +4472,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await capcut(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4463,6 +4527,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await mf(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4517,6 +4582,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await fb(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4571,6 +4637,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await terabox(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4625,6 +4692,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await ssweb(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4677,6 +4745,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await checkip();
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4730,6 +4799,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await tiktok(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4784,6 +4854,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await ttsave.video(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4838,6 +4909,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await twiterdl(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4891,6 +4963,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await gpt4o(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -4945,6 +5018,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await llama(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5000,6 +5074,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await openai(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5060,6 +5135,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await videy(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5114,6 +5190,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await GDriveDl(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5168,6 +5245,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await igstalk(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5222,6 +5300,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await aio(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5276,6 +5355,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await yt(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5330,6 +5410,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await ytmp3(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5384,6 +5465,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await ytmp4(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5437,6 +5519,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await letmegpt(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5495,6 +5578,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await gptturbo(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5549,6 +5633,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await simi(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5604,6 +5689,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await ragBot(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5658,6 +5744,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await degreeGuru(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5712,6 +5799,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await Renvy(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5766,6 +5854,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await simi(message);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5820,6 +5909,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await smartContract(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
@@ -5874,6 +5964,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     const response = await blackboxAIChat(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
 
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
