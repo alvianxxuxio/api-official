@@ -2804,9 +2804,9 @@ app.post('/api/uploader', async (req, res) => {
 
         // Kirim permintaan ke GitHub API
         const response = await fetch(apiUrl, {
-            method: 'POST',
+            method: 'PUT', // Ubah dari POST ke PUT
             headers: {
-                'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                'Authorization': `token ${GITHUB_TOKEN}`, // Pastikan menggunakan 'token' di sini
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(payload),
@@ -2819,7 +2819,7 @@ app.post('/api/uploader', async (req, res) => {
         }
 
         // Respons sukses
-        const cloudUrl = `${BASE_URL}/${baseName}.${fileExtension}`;
+        const cloudUrl = `${BASE_URL}/${fileName}`;
         return res.status(200).json({ message: 'File uploaded successfully', url: cloudUrl });
     } catch (error) {
         console.error('Error uploading file:', error.message);
