@@ -2851,29 +2851,37 @@ app.get('/status', async (req, res) => {
     uptime: uptime,
   };
 
-  // Mendapatkan total request dari Firebase
   try {
-    const requestRef = ref(database, "requests/count"); // Lokasi di database
-    const snapshot = await get(requestRef);
+    // Mendapatkan total requests dari Firebase
+    const requestRef = ref(database, 'requests/count');
+    const requestSnapshot = await get(requestRef);
+    const totalRequests = requestSnapshot.exists() ? requestSnapshot.val() : 0;
 
-    let totalRequests = 0;
-    if (snapshot.exists()) {
-      totalRequests = snapshot.val(); // Ambil total request dari database
-    }
+    // Mendapatkan total visitor dari Firebase
+    const visitorRef = ref(database, 'visitor/count');
+    const visitorSnapshot = await get(visitorRef);
+    const totalVisitor = visitorSnapshot.exists() ? visitorSnapshot.val() : 0;
 
-    // Menambahkan total requests ke status
+    // Mendapatkan total user dari Firebase
+    const usersRef = ref(database, 'users/');
+    const usersSnapshot = await get(usersRef);
+    const totalUsers = usersSnapshot.exists() ? Object.keys(usersSnapshot.val()).length : 0;
+
+    // Menambahkan informasi ke status
     status.totalRequests = totalRequests;
+    status.totalVisitor = totalVisitor;
+    status.totalUsers = totalUsers;
 
     res.json({
       status: 'success',
       data: status,
     });
   } catch (error) {
-    console.error("Error fetching total requests:", error);
-    res.status(500).json({ 
-      status: 'error', 
-      message: 'Unable to fetch total requests',
-      error: error.message 
+    console.error('Error fetching data:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Unable to fetch data',
+      error: error.message,
     });
   }
 });
