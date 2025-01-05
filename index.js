@@ -35,22 +35,7 @@ app.set("json spaces", 2);
 app.use(cors());
 
 // yt-search
-async function youtubes(query) {
-    try {
-        const searchResult = await yts(query);
-        const videoResults = searchResult.videos || [];
-        return videoResults.map(video => ({
-            title: video.title,
-            url: video.url,
-            ago: video.ago,
-            views: video.views,
-            timestamp: video.timestamp,
-        }));
-    } catch (error) {
-        console.error('Error in yts function:', error);
-        return [];
-    }
-}
+
 //total rquest
 async function trackTotalRequest() {
   const requestRef = ref(database, "requests/count"); // Lokasi di database
@@ -4108,7 +4093,7 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     if (!query) {
       return res.status(400).json({ error: 'Parameter "query" tidak ditemukan' });
     }
-    const response = await youtubes(query);
+    const response = await fitursearch(query);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
