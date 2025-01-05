@@ -824,7 +824,6 @@ async function tiktok3(query) {
       const result = {
         Id: videoData.id,
         title: videoData.title,
-        cover: videoData.cover,
         size: videoData.size,
         wmsize: videoData.wm_size,
         hdsize: videoData.hd_size,
@@ -838,6 +837,11 @@ async function tiktok3(query) {
         nickname: videoData.author.unique_id,
         avatar: videoData.author.avatar,
       };
+
+      // Add cover image if available
+      if (videoData.cover) {
+        result.image = videoData.cover;  // Add image field
+      }
 
       // Add video play URLs if available
       if (videoData.play) {
@@ -860,7 +864,7 @@ async function tiktok3(query) {
       reject(error);
     }
   });
-} 
+}
 //tiktok
 async function tiktok(query) {
   return new Promise(async (resolve, reject) => {
