@@ -34,11 +34,10 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
-
-// yts
-async function ytsc(query) {
+// yt-search
+async function youtubes(query) {
     try {
-        const searchResult = await yts(query);
+        const searchResult = await ytSearch(query);
         const videoResults = searchResult.videos || [];
         return videoResults.map(video => ({
             title: video.title,
@@ -52,7 +51,6 @@ async function ytsc(query) {
         return [];
     }
 }
-
 //total rquest
 async function trackTotalRequest() {
   const requestRef = ref(database, "requests/count"); // Lokasi di database
@@ -4075,6 +4073,61 @@ await trackTotalRequest();
 });
 
 // play
+app.get('/api/yt-search', async (req, res) => {
+  try {
+    const { apikey, query } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!query) {
+      return res.status(400).json({ error: 'Parameter "query" tidak ditemukan' });
+    }
+    const response = await youtubes(query);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// yt-search
 app.get('/api/play', async (req, res) => {
   try {
     const { apikey, query, format } = req.query;
@@ -4131,9 +4184,6 @@ await trackTotalRequest();
     res.status(500).json({ error: error.message });
   }
 });
-
-// yts
-
 //instagram 2
 app.get('/api/instagram2', async (req, res) => {
   try {
