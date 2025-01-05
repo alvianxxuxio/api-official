@@ -801,6 +801,66 @@ async function mf(url) {
     });
 }
 
+// tiktok 3
+async function tiktok3(query) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Encode the query URL and append your API key
+      const url = encodeURIComponent(query);
+      const apiKey = 'aluxi';  // The API key to use
+
+      const response = await axios({
+        method: "GET",  // Use GET since the parameters are passed in the URL
+        url: `https://api.alvianuxio.my.id/api/tiktok3?url=${url}&apikey=${apiKey}`,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          "User-Agent":
+            "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36",
+        },
+      });
+
+      const videoData = response.data.data.response.data;  // Access the video data
+
+      const result = {
+        Id: videoData.id,
+        title: videoData.title,
+        cover: videoData.cover,
+        size: videoData.size,
+        wmsize: videoData.wm_size,
+        hdsize: videoData.hd_size,
+        music: videoData.music,
+        music_info: videoData.music_info,
+        play_count: videoData.play_count,
+        digg_count: videoData.digg_count,
+        comment_count: videoData.comment_count,
+        share_count: videoData.share_count,
+        collect_count: videoData.collect_count,
+        nickname: videoData.author.unique_id,
+        avatar: videoData.author.avatar,
+      };
+
+      // Add video play URLs if available
+      if (videoData.play) {
+        result.play = videoData.play;
+        result.wmplay = videoData.wmplay;
+        result.hdplay = videoData.hdplay;
+      }
+
+      // Add music info if available
+      if (videoData.music_info) {
+        result.music_info = {
+          title: videoData.music_info.title,
+          author: videoData.music_info.author,
+          play: videoData.music_info.play,
+        };
+      }
+
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
+} 
 //tiktok
 async function tiktok(query) {
   return new Promise(async (resolve, reject) => {
@@ -4839,8 +4899,62 @@ await trackTotalRequest();
     res.status(500).json({ error: error.message });
   }
 });
-//tiktok
+// tiktok
 app.get('/api/tiktok', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await tiktok3(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+//tiktok 3
+app.get('/api/tiktok3', async (req, res) => {
   try {
     const { apikey, url } = req.query;
 if (!apikey) {
