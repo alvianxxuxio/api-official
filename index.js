@@ -3,7 +3,7 @@ const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
-const yts = require("yt-search");
+const yts = require("earch");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
 const os = require('os');
@@ -37,7 +37,7 @@ app.use(cors());
 // yt-search
 async function youtubes(query) {
     try {
-        const searchResult = await ytSearch(query);
+        const searchResult = await yts(query);
         const videoResults = searchResult.videos || [];
         return videoResults.map(video => ({
             title: video.title,
@@ -4072,7 +4072,7 @@ await trackTotalRequest();
   }
 });
 
-// play
+// yt-search
 app.get('/api/yt-search', async (req, res) => {
   try {
     const { apikey, query } = req.query;
@@ -4127,7 +4127,7 @@ await trackTotalRequest();
   }
 });
 
-// yt-search
+// play
 app.get('/api/play', async (req, res) => {
   try {
     const { apikey, query, format } = req.query;
