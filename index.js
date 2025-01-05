@@ -35,6 +35,24 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
+// yts
+async function ytsc(query) {
+    try {
+        const searchResult = await yts(query);
+        const videoResults = searchResult.videos || [];
+        return videoResults.map(video => ({
+            title: video.title,
+            url: video.url,
+            ago: video.ago,
+            views: video.views,
+            timestamp: video.timestamp,
+        }));
+    } catch (error) {
+        console.error('Error in yts function:', error);
+        return [];
+    }
+}
+
 //total rquest
 async function trackTotalRequest() {
   const requestRef = ref(database, "requests/count"); // Lokasi di database
@@ -4114,6 +4132,59 @@ await trackTotalRequest();
   }
 });
 
+// yts
+app.get('/api/yt-search', async (req, res) => {
+  try {
+    const { apikey, query } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!query) {
+      return res.status(400).json({ error: 'Parameter "query" tidak ditemukan' });
+    }
+    if (!format) {
+      return res.status(400).json({ error: 'Parameter "format" tidak ditemukan' });
+    }
+    const response = await ytsc(query);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
 //instagram 2
 app.get('/api/instagram2', async (req, res) => {
   try {
