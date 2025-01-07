@@ -34,6 +34,47 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+
+// txt2img v2
+async function txt2imgv2(prompt) {
+const requestData = JSON.stringify({ "prompt": prompt })
+const requestConfig = {
+method: 'POST',
+url: 'https://imgsys.org/api/initiate',
+headers: {
+'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+'Content-Type': 'application/json',
+'accept-language': 'id-ID',
+'referer': 'https://imgsys.org/',
+'origin': 'https://imgsys.org',
+'sec-fetch-dest': 'empty',
+'sec-fetch-mode': 'cors',
+'sec-fetch-site': 'same-origin',
+'priority': 'u=0',
+'te': 'trailers'
+},
+data: requestData
+}
+try {
+const initiateResponse = await axios.request(requestConfig)
+const { requestId } = initiateResponse.data
+let imageResponse
+do {
+imageResponse = await axios.get(`https://imgsys.org/api/get?requestId=${requestId}`)
+if (imageResponse.data.message) {
+await new Promise(resolve => setTimeout(resolve, 1000))
+}
+} while (imageResponse.data.message)
+return imageResponse.data
+} catch (e) {
+console.error('Error:', e)
+throw e
+}}
+// tinyurl
+async function tiny(url) {
+  let res = await fetch(`https://tinyurl.com/api-create.php?url=${url}`);
+  return await res.text();
+}
 // yt-search
 async function youtubes(query) {
     try {
@@ -3756,7 +3797,7 @@ await trackTotalRequest();
 // txt2img
 app.get('/api/txt2img', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, prompt } = req.query;
 if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
@@ -3786,10 +3827,65 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
         info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
       });
     }
-    if (!message) {
+    if (!prompt) {
+      return res.status(400).json({ error: 'Parameter "prompt" tidak ditemukan' });
+    }
+    const response = await txt2img(prompt);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// txt2img v2
+app.get('/api/txt2img/v2', async (req, res) => {
+  try {
+    const { apikey, prompt } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!prompt) {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
-    const response = await txt2img(message);
+    const response = await txt2imgv2(prompt);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
@@ -4136,6 +4232,60 @@ await trackTotalRequest();
   }
 });
 
+// tinyurl
+app.get('/api/tinyurl', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await tiny(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //yt-search 
 app.get('/api/yt-search', async (req, res) => {
   try {
