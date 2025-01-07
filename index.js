@@ -2899,8 +2899,15 @@ API ini dirancang untuk mempermudah integrasi berbagai layanan digital dengan te
 </body>
 </html>`);
 });
-app.get('/apikey/create', (req, res) => {
-  res.sendFile(path.join(__dirname, 'create.html')); // Mengarahkan ke create.html
+app.get('/create/apikey', (req, res) => {
+    const secret = req.query.secret;
+
+    // Validasi secret
+    if (secret === adminPassword) {
+        res.sendFile(path.join(__dirname, 'create.html')); // Kirim file HTML jika secret benar
+    } else {
+        res.status(401).send('Unauthorized'); // Kirim error jika secret salah
+    }
 });
 
 // pricing
@@ -2910,91 +2917,7 @@ app.get('/pricing', (req, res) => {
   
 
 // Route untuk menangani pembuatan API key baru
-app.post('/keys/create', (req, res) => {
-  const { customApikey } = req.body;
 
-  if (!customApikey) {
-    return res.status(400).json({ error: 'Custom API key is required' });
-  }
-
-  // Mengecek apakah API key yang dimasukkan sudah ada dalam validApiKeys
-  if (validApiKeys.includes(customApikey)) {
-    return res.status(400).json({ error: 'API key already exists' });
-  }
-
-  // Menambahkan API key baru ke validApiKeys
-  validApiKeys.push(customApikey);
-
-  // Mengembalikan respons dengan API key yang baru dibuat
-  return res.status(201).json({
-    message: 'API key created successfully',
-    apiKey: customApikey,
-    validApiKeys: validApiKeys
-  });
-});
-
-
-//uploader 
-const GITHUB_OWNER = 'alvianxxuxio'; // Ganti dengan username GitHub Anda
-const GITHUB_REPO = 'cloud'; // Ganti dengan nama repositori GitHub Anda
-const GITHUB_BRANCH = 'main'; // Branch target (contoh: main/master)
-const GITHUB_TOKEN = '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'; // GitHub personal access token
-const BASE_URL = 'https://cloud.alvianuxio.my.id'; // URL custom Anda
-
-app.post('/api/uploader', async (req, res) => {
-    const { fileName, content } = req.body;
-
-    if (!fileName || !content) {
-        return res.status(400).json({ error: 'File name and content are required.' });
-    }
-
-    try {
-        // Validasi ekstensi file dari fileName
-        const fileParts = fileName.split('.');
-        if (fileParts.length < 2) {
-            return res.status(400).json({ error: 'Invalid file name. Must include an extension.' });
-        }
-
-        const fileExtension = fileParts.pop(); // Ambil ekstensi file
-        const baseName = fileParts.join('.'); // Ambil nama file tanpa ekstensi
-
-        // Encode content ke Base64
-        const base64Content = Buffer.from(content).toString('base64');
-
-        // URL API GitHub untuk upload file
-        const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${fileName}`;
-
-        // Payload untuk upload file
-        const payload = {
-            message: `Add file ${fileName}`,
-            content: base64Content,
-            branch: GITHUB_BRANCH,
-        };
-
-        // Kirim permintaan ke GitHub API
-        const response = await fetch(apiUrl, {
-            method: 'PUT', // Ubah dari POST ke PUT
-            headers: {
-                'Authorization': `token ${GITHUB_TOKEN}`, // Pastikan menggunakan 'token' di sini
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
-
-        // Periksa hasil respons
-        if (!response.ok) {
-            const errorData = await response.json();
-            return res.status(response.status).json(errorData);
-        }
-
-        // Respons sukses
-        const cloudUrl = `${BASE_URL}/${fileName}`;
-        return res.status(200).json({ message: 'File uploaded successfully', url: cloudUrl });
-    } catch (error) {
-        console.error('Error uploading file:', error.message);
-        return res.status(500).json({ error: 'Internal Server Error', details: error.message });
-    }
-});
 // status
 app.get('/status', async (req, res) => {
   const cpus = os.cpus();
