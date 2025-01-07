@@ -3495,6 +3495,65 @@ await trackTotalRequest();
   }
 })
 
+
+// tt stalk
+app.get("/api/stalk/tiktok", async (req, res) => {
+  try {
+    const { apikey, username } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+
+    // Validasi parameter username
+    if (!username) {
+      return res.status(400).json({ error: 'Parameter "username" tidak ditemukan' });
+    }
+
+    // Panggil API eksternal untuk mendapatkan data TikTok
+    const response = await axios.get(`https://api.siputzx.my.id/api/stalk/tiktok?username=${encodeURIComponent(username)}`);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+
+    // Cek status dari API eksternal
+    if (response.data.status) {
+      res.status(200).json(response.data);
+    } else {
+      res.status(404).json({ error: 'Data TikTok tidak ditemukan' });
+    }
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+});
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
