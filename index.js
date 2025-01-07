@@ -34,7 +34,55 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+// terabox v2
+async function teradlx(url) {
+    try {
+        const getdm = await axios.get(`https://ins.neastooid.xyz/api/Tools/getins?url=https://www.terabox.app/wap/share/filelist?surl=${encodeURIComponent(url)}`);
+        
+        if (!getdm.data || !getdm.data.jsToken || !getdm.data.bdstoken) {
+            throw new Error('Token tidak ditemukan');
+        }
 
+        const { jsToken, bdstoken } = getdm.data;
+
+        const getrsd = await axios.get(`https://ins.neastooid.xyz/api/downloader/Metaterdltes?url=${encodeURIComponent(url)}`);
+        
+        if (!getrsd.data || !getrsd.data.metadata) {
+            throw new Error('Metadata tidak ditemukan');
+        }
+
+        const { shareId, userKey, sign, timestamp, files } = getrsd.data.metadata;
+
+        const traboxdlxins = await axios.post('https://ins.neastooid.xyz/api/downloader/terade', {
+            shareId,
+            userKey,
+            sign,
+            timestamp,
+            jsToken,
+            bdstoken,
+            files
+        });
+
+        const response = traboxdlxins.data;
+
+        if (!response || !response.filename || !response.download) {
+            throw new Error('Data file tidak valid');
+        }
+
+        // Memformat hasil
+        const formattedFile = {
+            name: response.filename,
+            type: response.filename.split('.').pop(),
+            size: response.size !== '-1 bytes' ? response.size : 'Unknown', // Jika ukuran tidak ditemukan
+            link: response.download
+        };
+
+        return formattedFile;
+    } catch (error) {
+        console.error('Terjadi kesalahan:', error.message);
+        throw error;
+    }
+}
 // txt2img v2
 async function txt2imgv2(prompt) {
 const requestData = JSON.stringify({ "prompt": prompt })
@@ -4400,7 +4448,7 @@ await trackTotalRequest();
 });
 
 //instagram 2
-app.get('/api/instagram2', async (req, res) => {
+app.get('/api/instagram/v2', async (req, res) => {
   try {
     const { apikey, url } = req.query;
 if (!apikey) {
@@ -4946,6 +4994,61 @@ await trackTotalRequest();
   }
 });
 
+// terabox v2
+app.get('/api/terabox/v2', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await teradlx(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // ssweb
 app.get('/api/ssweb', async (req, res) => {
   try {
@@ -5163,7 +5266,7 @@ await trackTotalRequest();
 });
 
 // tiktok2
-app.get('/api/tiktok2', async (req, res) => {
+app.get('/api/tiktok/v2', async (req, res) => {
   try {
     const { apikey, url } = req.query;
 if (!apikey) {
