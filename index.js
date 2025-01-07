@@ -3544,8 +3544,8 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
 
-    // Cek status dari API eksternal
-    if (response.data.status) {
+    // Periksa apakah respons memiliki status true dan data
+    if (response.data.status && response.data.data) {
       res.status(200).json(response.data);
     } else {
       res.status(404).json({ error: 'Data TikTok tidak ditemukan' });
