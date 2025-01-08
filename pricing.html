@@ -16,7 +16,7 @@
       max-width: 900px;
       margin: 20px auto;
       padding: 20px;
-      background: #fff;
+      background: #eee;
       width: 80%;
       border-radius: 16px;
       border: 1px solid #ddd;
@@ -29,6 +29,8 @@
       color: #4a4a4a;
     }
     .form-group {
+      align-content: center !important;
+      justify-content: center !important;
       margin-bottom: 20px;
     }
     .form-group label {
@@ -39,14 +41,21 @@
       margin-right: 6px;
     }
     .form-group select {
-      width: 100%;
+      width: 90%;
+      padding: 10px 20px 10px 10px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      outline: none;
+    }
+    .form-group input {
+      width: 83%;
       padding: 10px;
       border-radius: 12px;
       border: 1px solid #ddd;
       outline: none;
     }
-    .form-group select:hover {
-      background: rgb(218,224,255)
+    .form-group select:hover, .form-group input:hover {
+      background: rgb(218,224,255);
     }
     .btn-container {
       text-align: center;
@@ -60,7 +69,7 @@
       color: white;
       border-radius: 12px;
       font-size: 16px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px rgba(0, 0, 0, 0.1);
       width: 80%;
       transition: background-color 0.3s ease;
     }
@@ -71,68 +80,121 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="title">API Key Pricing</h1>
-
-    <div class="form-group">
-      <label for="apikey-type">Select API Key Type:</label>
-      <select id="apikey-type">
-        <option value="Basic">Basic</option>
-        <option value="Premium">Premium</option>
-        <option value="Executive">Executive</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="apikey-limit">Select Limit:</label>
-      <select id="apikey-limit">
-        <option value="3000-3K" data-type="Basic">3000 Limit - 3K</option>
-        <option value="6000-5K" data-type="Basic">6000 Limit - 5K</option>
-        <option value="10000-7K" data-type="Basic">10000 Limit - 7K</option>
-        <option value="50000-8K" data-type="Premium">50000 Limit - 8K</option>
-        <option value="80000-9K" data-type="Premium">80000 Limit - 9K</option>
-        <option value="1000000-10K" data-type="Premium">1000000 Limit - 10K</option>
-        <option value="50000-11K" data-type="Executive">50000 Limit - 11K</option>
-        <option value="80000-13K" data-type="Executive">80000 Limit - 13K</option>
-        <option value="1000000-15K" data-type="Executive">1000000 Limit - 15K</option>
-      </select>
-    </div>
-
-    <div class="btn-container">
-      <a id="buy-button" class="btn" href="#" target="_blank">Buy API Key</a>
-    </div>
+    <center>
+      <h1 class="title">API Key Pricing</h1>
+      <div class="form-group">
+        <label for="apikey-type">Select API Key Type:</label>
+        <select id="apikey-type">
+          <option value="Basic">Basic</option>
+          <option value="Premium">Premium</option>
+          <option value="Executive">Executive</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="apikey-limit">Select Limit:</label>
+        <select id="apikey-limit">
+          <!-- Options will be populated dynamically -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="contact-method">Select Contact Method:</label>
+        <select id="contact-method">
+          <option value="whatsapp">WhatsApp</option>
+          <option value="email">Email</option>
+        </select>
+      </div>
+      <div class="form-group" id="custom-key-container">
+        <label for="custom-key">Custom API Key:</label>
+        <input type="text" id="custom-key" placeholder="Enter your custom API key" value="au-xxxx" readonly>
+      </div>
+      <div class="btn-container">
+        <a id="buy-button" class="btn" href="#" target="_blank">Purchase Your API Key Now</a>
+      </div>
+    </center>
   </div>
 
   <script>
     const buyButton = document.getElementById('buy-button');
     const apiKeyType = document.getElementById('apikey-type');
     const apiKeyLimit = document.getElementById('apikey-limit');
+    const customKeyInput = document.getElementById('custom-key');
+    const contactMethod = document.getElementById('contact-method');
+
+    const limits = {
+      Basic: [
+        { value: "3000-3K", label: "3000 Limit - 3K" },
+        { value: "6000-5K", label: "6000 Limit - 5K" },
+        { value: "10000-7K", label: "10000 Limit - 7K" }
+      ],
+      Premium: [
+        { value: "50000-8K", label: "50000 Limit - 8K" },
+        { value: "80000-9K", label: "80000 Limit - 9K" },
+        { value: "150000-10K", label: "150000 Limit - 10K" }
+      ],
+      Executive: [
+        { value: "50000-11K", label: "50000 Limit - 11K" },
+        { value: "80000-13K", label: "80000 Limit - 13K" },
+        { value: "1000000-15K", label: "1000000 Limit - 15K" }
+      ]
+    };
+
+    function updateLimitOptions() {
+      const selectedType = apiKeyType.value;
+      const availableLimits = limits[selectedType] || [];
+
+      apiKeyLimit.innerHTML = '';
+
+      availableLimits.forEach(limit => {
+        const option = document.createElement('option');
+        option.value = limit.value;
+        option.textContent = limit.label;
+        apiKeyLimit.appendChild(option);
+      });
+
+      updateBuyLink();
+    }
 
     function updateBuyLink() {
       const type = apiKeyType.value;
       const selectedOption = Array.from(apiKeyLimit.options).find(option => option.selected);
-      const [limit, price] = selectedOption.value.split('-');
-      const message = `BUY APIKEY ${type.toUpperCase()}%0ALimit: ${limit}%0APrice: ${price}`;
-      buyButton.href = `https://wa.me/6285895988045?text=${message}`;
+      const [limit, price] = selectedOption ? selectedOption.value.split('-') : ['', ''];
+      const customKey = customKeyInput.value.trim();
+      const contact = contactMethod.value;
+
+      let message = `Good afternoon, I would like to purchase an API key.%0A%0AType: ${type}%0ALimit: ${limit}%0APrice: ${price}%0ACustom API Key: ${customKey}`;
+
+      if (contact === 'whatsapp') {
+        buyButton.href = `https://wa.me/6285895988045?text=${message}`;
+      } else if (contact === 'email') {
+        buyButton.href = `mailto:admin@alvianuxio.my.id?subject=API Key Purchase&body=${message}`;
+      }
     }
 
-    // Filter limits based on selected type
-    function filterLimits() {
+    function updateCustomKeyBehavior() {
       const selectedType = apiKeyType.value;
-      for (const option of apiKeyLimit.options) {
-        option.style.display = option.getAttribute('data-type') === selectedType ? 'block' : 'none';
+      if (selectedType === 'Basic') {
+        customKeyInput.value = 'au-xxxx';
+        customKeyInput.style.backgroundColor = 'lightgray';
+        customKeyInput.setAttribute('readonly', true);
+      } else {
+        customKeyInput.value = '';
+        customKeyInput.removeAttribute('readonly');
+        customKeyInput.style.backgroundColor = 'white';
       }
-      apiKeyLimit.value = Array.from(apiKeyLimit.options).find(option => option.style.display === 'block').value;
       updateBuyLink();
     }
 
     apiKeyType.addEventListener('change', () => {
-      filterLimits();
-      updateBuyLink();
+      updateCustomKeyBehavior();
+      updateLimitOptions();
     });
-    apiKeyLimit.addEventListener('change', updateBuyLink);
 
-    // Initialize the link on page load
-    filterLimits();
+    apiKeyLimit.addEventListener('change', updateBuyLink);
+    customKeyInput.addEventListener('input', updateBuyLink);
+    contactMethod.addEventListener('change', updateBuyLink);
+
+    updateLimitOptions();
+    updateCustomKeyBehavior();
     updateBuyLink();
   </script>
 </body>
