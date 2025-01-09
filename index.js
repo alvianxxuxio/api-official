@@ -34,6 +34,12 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+// track ip
+let ipinfoToken = '882ffefc502ce1';
+async function getIPInfo(ip) {
+    const response = await axios.get(`http://ipinfo.io/${ip}/json?token=${ipinfoToken}`);
+    return response.data;
+}
 // terabox v2
 async function teradlx(url) {
     try {
@@ -3545,7 +3551,7 @@ await trackTotalRequest();
     await update(apiKeRef, { usage: updatedUsage });
 
     // Periksa apakah respons memiliki status true dan data
-    if (response.data.status && response.data.data) {
+    if (response.data && response.data.status && response.data.data) {
       res.status(200).json(response.data);
     } else {
       res.status(404).json({ error: 'Data TikTok tidak ditemukan' });
@@ -5301,6 +5307,63 @@ await trackTotalRequest();
     res.status(500).json({ error: error.message });
   }
 });
+
+// track ip
+app.get('/api/track-ip', async (req, res) => {
+  try {
+    const { apikey, ip } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'Limit penggunaan API telah tercapai', 
+        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+      });
+    }
+    if (!ip) {
+      return res.status(400).json({ error: 'Parameter "ip" tidak ditemukan' });
+    }
+
+    const response = await getIPInfo(ip);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // tiktok
 app.get('/api/tiktok', async (req, res) => {
   try {
