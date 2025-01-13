@@ -3178,8 +3178,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
 
@@ -3228,8 +3228,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
 
@@ -3278,8 +3278,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
 
@@ -3330,8 +3330,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!message) {
@@ -3611,8 +3611,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
 
@@ -3675,8 +3675,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -3730,8 +3730,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -3791,8 +3791,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!prompt) {
@@ -3852,8 +3852,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!message) {
@@ -3913,8 +3913,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!search) {
@@ -3974,8 +3974,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!search) {
@@ -4034,8 +4034,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!message) {
@@ -4095,8 +4095,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!message) {
@@ -4156,8 +4156,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!prompt) {
@@ -4217,8 +4217,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!prompt) {
@@ -4278,8 +4278,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!search) {
@@ -4339,8 +4339,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!search) {
@@ -4399,8 +4399,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!search) {
@@ -4460,8 +4460,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!search) {
@@ -4520,8 +4520,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!search) {
@@ -4581,8 +4581,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -4642,8 +4642,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -4702,8 +4702,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!query) {
@@ -4763,8 +4763,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!query) {
@@ -4827,8 +4827,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -4887,8 +4887,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -4948,8 +4948,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5007,8 +5007,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5067,8 +5067,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5129,8 +5129,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!message) {
@@ -5190,8 +5190,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5251,8 +5251,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5312,8 +5312,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5373,8 +5373,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5434,8 +5434,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5495,8 +5495,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5556,8 +5556,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
 
@@ -5615,8 +5615,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!ip) {
@@ -5677,8 +5677,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5737,8 +5737,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5798,8 +5798,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5859,8 +5859,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -5919,8 +5919,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -5980,8 +5980,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -6042,8 +6042,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -6103,8 +6103,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!apiKeyDetails.premium) {
@@ -6170,8 +6170,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -6231,8 +6231,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!search) {
@@ -6292,8 +6292,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!message) {
@@ -6353,8 +6353,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -6414,8 +6414,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -6475,8 +6475,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!url) {
@@ -6535,8 +6535,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -6594,8 +6594,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!apiKeyDetails.premium) {
@@ -6661,8 +6661,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -6723,8 +6723,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!message) {
@@ -6784,8 +6784,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -6845,8 +6845,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -6906,8 +6906,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!message) {
@@ -6967,8 +6967,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -7028,8 +7028,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
