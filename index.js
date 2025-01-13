@@ -3172,8 +3172,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3222,8 +3222,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3272,8 +3272,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3324,8 +3324,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3477,6 +3477,14 @@ app.get('/apikey/check', async (req, res) => {
 
     const apiKeyDetails = snapshot.val();
 
+    // Check if the API key is suspended
+    if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+
     // Check if the expired field is valid
     if (!apiKeyDetails.expired) {
       return res.status(400).json({ error: 'Expiration date is missing for this API key.' });
@@ -3540,14 +3548,14 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
-        error: 'API key telah disuspend',
-        info: 'API key Anda telah disuspend dan tidak bisa digunakan.'
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
     if (!text) {
@@ -3597,8 +3605,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3661,8 +3669,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3716,8 +3724,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3777,8 +3785,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3838,8 +3846,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3899,8 +3907,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -3960,8 +3968,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4020,8 +4028,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4081,8 +4089,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4142,8 +4150,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4203,8 +4211,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4264,8 +4272,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4325,8 +4333,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4385,8 +4393,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4446,8 +4454,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4506,8 +4514,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4567,8 +4575,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4628,8 +4636,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4688,8 +4696,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4749,8 +4757,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4813,8 +4821,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4873,8 +4881,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4934,8 +4942,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -4993,8 +5001,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5053,8 +5061,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5115,8 +5123,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5176,8 +5184,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5237,8 +5245,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5298,8 +5306,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5359,8 +5367,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5420,8 +5428,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5481,8 +5489,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5542,8 +5550,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5601,8 +5609,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5663,8 +5671,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5723,8 +5731,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5784,8 +5792,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5845,8 +5853,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5905,8 +5913,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -5966,8 +5974,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6028,8 +6036,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6089,8 +6097,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6156,8 +6164,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6217,8 +6225,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6278,8 +6286,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6339,8 +6347,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6400,8 +6408,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6461,8 +6469,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6521,8 +6529,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6580,8 +6588,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6647,8 +6655,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6709,8 +6717,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6770,8 +6778,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6831,8 +6839,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6892,8 +6900,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -6953,8 +6961,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
@@ -7014,8 +7022,8 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
     // Validasi batas penggunaan
     if (apiKeyDetails.usage >= apiKeyDetails.limit) {
       return res.status(403).json({ 
-        error: 'Limit penggunaan API telah tercapai', 
-        info: `Limit maksimum: ${apiKeyDetails.limit}, penggunaan saat ini: ${apiKeyDetails.usage}` 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
 if (apiKeyDetails.status === 'suspended') {
