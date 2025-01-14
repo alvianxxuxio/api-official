@@ -3158,10 +3158,16 @@ app.get('/status', async (req, res) => {
     const usersSnapshot = await get(usersRef);
     const totalUsers = usersSnapshot.exists() ? Object.keys(usersSnapshot.val()).length : 0;
 
+    // Mendapatkan total API keys dari Firebase
+    const apiKeysRef = ref(database, 'apiKeys/');
+    const apiKeysSnapshot = await get(apiKeysRef);
+    const totalApiKeys = apiKeysSnapshot.exists() ? Object.keys(apiKeysSnapshot.val()).length : 0;
+
     // Menambahkan informasi ke status
     status.totalRequests = totalRequests;
     status.totalVisitor = totalVisitor;
     status.totalUsers = totalUsers;
+    status.totalApiKeys = totalApiKeys;
 
     res.json({
       status: 'success',
