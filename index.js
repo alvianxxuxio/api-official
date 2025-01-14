@@ -18,6 +18,7 @@ const qs = require('qs');
 const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
+const { lookup } = require("mime-types");
 const { ref, set, get, child, update } = require('firebase/database');
 const { getAuth, applyActionCode, confirmPasswordReset, verifyPasswordResetCode } = require("firebase/auth");
 const { database, auth } = require('./firebase.js');
@@ -34,6 +35,35 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+
+// mf 2
+async function mediafire2(url) {
+    return new Promise(async (resolve, reject) => {
+        const response = await fetch(url);
+        const html = await response.text();
+        const $ = cheerio.load(html);
+
+        const type = $(".dl-btn-cont").find(".icon").attr("class").split("archive")[1].trim();
+        const filename = $(".dl-btn-label").attr("title");
+        const size = $('.download_link .input').text().trim().match(/\((.*?)\)/)[1];
+        const ext = filename.split(".").pop();
+        const mimetype =
+            lookup(ext.toLowerCase()) || "application/" + ext.toLowerCase();
+        const download = $(".input").attr("href");
+        resolve({
+            filename,
+            type,
+            size,
+            ext,
+            mimetype,
+            download,
+        });
+    }).catch((e) =>
+        reject({
+            msg: "Gagal mengambil data dari link tersebut",
+        }),
+    );
+}
 // track ip
 let ipinfoToken = '882ffefc502ce1';
 async function getIPInfo(ip) {
@@ -3284,6 +3314,12 @@ if (apiKeyDetails.status === 'suspended') {
     }
 
     const response = await chatbot(text, model);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
   information: `https://go.alvianuxio.my.id/contact`,
   creator: "ALVIAN UXIO Inc",
@@ -5259,6 +5295,67 @@ if (apiKeyDetails.status === 'suspended') {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await mf(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// mf 2
+app.get('/api/mediafire/v2', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await mediafire2(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
