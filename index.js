@@ -3118,11 +3118,14 @@ app.get('/pricing', (req, res) => {
 // Route untuk menangani pembuatan API key baru
 
 // status
+const appStartTime = Date.now();
+
 app.get('/status', async (req, res) => {
   const cpus = os.cpus();
 
-  // Mendapatkan informasi uptime server
-  const uptime = `${Math.floor(os.uptime() / 3600)} hours ${Math.floor((os.uptime() % 3600) / 60)} minutes`;
+  // Mendapatkan informasi uptime server berdasarkan waktu aplikasi dijalankan
+  const uptimeInSeconds = Math.floor((Date.now() - appStartTime) / 1000);
+  const uptime = `${Math.floor(uptimeInSeconds / 3600)} hours ${Math.floor((uptimeInSeconds % 3600) / 60)} minutes`;
 
   // Mendapatkan informasi memori (RAM)
   const totalMemory = os.totalmem();
