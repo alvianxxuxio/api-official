@@ -3142,7 +3142,7 @@ app.get('/status', async (req, res) => {
 
   // Menyiapkan informasi sistem
   const status = {
-    hostname: os.hostname(),
+    hostname: "alvianuxio",
     platform: os.platform(),
     osType: os.type(),
     cpuModel: cpus[0].model, // Model CPU
