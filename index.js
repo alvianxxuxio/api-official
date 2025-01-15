@@ -3121,6 +3121,7 @@ app.get('/pricing', (req, res) => {
 const appStartTime = Date.now();
 
 app.get('/status', async (req, res) => {
+  const os = require('os');
   const cpus = os.cpus();
 
   // Mendapatkan informasi uptime server berdasarkan waktu aplikasi dijalankan
@@ -3131,14 +3132,19 @@ app.get('/status', async (req, res) => {
   const totalMemory = os.totalmem();
   const freeMemory = os.freemem();
   const usedMemory = totalMemory - freeMemory;
+  const memoryUsagePercent = ((usedMemory / totalMemory) * 100).toFixed(2);
 
   const memoryInfo = {
     total: `${(totalMemory / 1024 / 1024).toFixed(2)} MB`,
     used: `${(usedMemory / 1024 / 1024).toFixed(2)} MB`,
+    usagePercentage: `${memoryUsagePercent} %`,
   };
 
   // Menyiapkan informasi sistem
   const status = {
+    hostname: os.hostname(),
+    platform: os.platform(),
+    osType: os.type(),
     cpuModel: cpus[0].model, // Model CPU
     cpuCores: cpus.length, // Jumlah core CPU
     memory: memoryInfo,
