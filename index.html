@@ -1203,16 +1203,56 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
     </form>
 </div>
         <div class="btn" onclick="toggleDropdown('dropdown40')">
-          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>bing-search</div>
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>bing search</div>
 <div class="active" style='font-size:12px'>ACTIVE</div>
         </div>
         <div id="dropdown40" class="dropdown-content">
-          <form class="form-group" action="/api/bing-search" onsubmit="search(event, '/api/bing-search')">
+          <form class="form-group" action="/api/bing/search" onsubmit="search(event, '/api/bing/search')">
             <label for="message40">Enter query:</label>
             <input type="text" id="message40" name="search" placeholder="enter query here" required>
 
         <label for="apikey40">Enter API Key:</label>
         <input type="text" id="apikey40" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+                <div class="btn" onclick="toggleDropdown('dropdown65')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>bing image</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown65" class="dropdown-content">
+          <form class="form-group" action="/api/bing/image" onsubmit="search(event, '/api/bing/image')">
+            <label for="message65">Enter query:</label>
+            <input type="text" id="message65" name="search" placeholder="enter query here" required>
+
+        <label for="apikey65">Enter API Key:</label>
+        <input type="text" id="apikey65" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+                <div class="btn" onclick="toggleDropdown('dropdown66')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>bing video</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown66" class="dropdown-content">
+          <form class="form-group" action="/api/bing/video" onsubmit="search(event, '/api/bing/video')">
+            <label for="message66">Enter query:</label>
+            <input type="text" id="message66" name="search" placeholder="enter query here" required>
+
+        <label for="apikey66">Enter API Key:</label>
+        <input type="text" id="apikey66" name="apikey" placeholder="Enter Your ApiKeys" required>
             <button type="submit">Try Now</button>
             <div class="info-row">
             <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>

@@ -881,6 +881,44 @@ async function bingsearch(query) {
     return [];
   }
 }
+
+// bing img & video
+async function bingimg(query) {
+const response = await axios.get(`https://www.bing.com/images/search?q=${query}`);
+const html = response.data;
+const $ = cheerio.load(html);
+const urls = [];
+$(".imgpt > a").each((i, el) => {
+urls[i] = $(el).attr("href");
+});
+const results = urls.map(url => ({
+photo: `https://www.bing.com${url}`
+}));
+return results;
+}
+
+async function bingvid(query) {
+const { data } = await axios.get(`https://www.bing.com/videos/search?q=${query}`);
+const $ = cheerio.load(data);
+const videoDetails = [];
+$('.mc_vtvc').each((index, element) => {
+const title = $(element).find('.mc_vtvc_title strong').text();
+const duration = $(element).find('.mc_bc_rc.items').first().text();
+const views = $(element).find('.meta_vc_content').first().text();
+const uploadDate = $(element).find('.meta_pd_content').first().text();
+const channel = $(element).find('.mc_vtvc_meta_row_channel').text();
+const link = $(element).find('a').attr('href');
+videoDetails.push({
+title,
+duration,
+views,
+uploadDate,
+channel,
+link: `https://www.bing.com${link}`
+});
+});
+return videoDetails;
+}
 //openai
 async function openai(query) {
     const apiUrl = `https://restapi.apibotwa.biz.id/api/openai?message=${encodeURIComponent(query)}`;
@@ -4558,7 +4596,7 @@ await trackTotalRequest();
 });
 
 //bingsearch
-app.get('/api/bing-search', async (req, res) => {
+app.get('/api/bing/search', async (req, res) => {
   try {
     const { apikey, search } = req.query;
 if (!apikey) {
@@ -4600,6 +4638,126 @@ if (apiKeyDetails.status === 'suspended') {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await bingsearch(search);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/bing/image', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await bingimg(search);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// bing vid
+app.get('/api/bing/video', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await bingvid(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
@@ -4925,7 +5083,7 @@ await trackTotalRequest();
 // pinterest 2
 app.get('/api/pinterest/v2', async (req, res) => {
   try {
-    const { apikey, search } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
@@ -4961,10 +5119,10 @@ if (apiKeyDetails.status === 'suspended') {
         info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
-    if (!search) {
-      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await pin2(search);
+    const response = await pin2(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
