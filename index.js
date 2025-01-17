@@ -37,33 +37,165 @@ app.use(cors());
 
 
 // mf 2
-async function mediafire2(url) {
+async function mf2(url) {
     return new Promise(async (resolve, reject) => {
-        const response = await fetch(url);
-        const html = await response.text();
-        const $ = cheerio.load(html);
+        try {
+            // Prepare the API request URL
+            const apiUrl = `https://api.alvianuxio.my.id/api/mediafire/old?url=${encodeURIComponent(url)}&apikey=aluxi`;
+            const response = await require("undici").fetch(apiUrl);
+            const data = await response.json(); // Parse the response as JSON
 
-        const type = $(".dl-btn-cont").find(".icon").attr("class").split("archive")[1].trim();
-        const filename = $(".dl-btn-label").attr("title");
-        const size = $('.download_link .input').text().trim().match(/\((.*?)\)/)[1];
-        const ext = filename.split(".").pop();
-        const mimetype =
-            lookup(ext.toLowerCase()) || "application/" + ext.toLowerCase();
-        const download = $(".input").attr("href");
-        resolve({
-            filename,
-            type,
-            size,
-            ext,
-            mimetype,
-            download,
-        });
-    }).catch((e) =>
-        reject({
-            msg: "Gagal mengambil data dari link tersebut",
-        }),
-    );
+            if (data.data && data.data.response) {
+                let info = data.data.response;
+
+                // Extract file extension from the link
+                const extension = info.link.split('.').pop().split(/\#|\?/)[0]; // Get file extension
+                let mimeType;
+
+                // Map the extension to its MIME type
+                switch (extension) {
+    // Audio
+    case 'mp3':
+        mimeType = 'audio/mpeg';
+        break;
+    case 'wav':
+        mimeType = 'audio/wav';
+        break;
+    case 'ogg':
+        mimeType = 'audio/ogg';
+        break;
+    case 'flac':
+        mimeType = 'audio/flac';
+        break;
+    
+    // Video
+    case 'mp4':
+        mimeType = 'video/mp4';
+        break;
+    case 'mkv':
+        mimeType = 'video/x-matroska';
+        break;
+    case 'webm':
+        mimeType = 'video/webm';
+        break;
+    case 'avi':
+        mimeType = 'video/x-msvideo';
+        break;
+    case 'mov':
+        mimeType = 'video/quicktime';
+        break;
+
+    // Images
+    case 'jpg':
+    case 'jpeg':
+        mimeType = 'image/jpeg';
+        break;
+    case 'png':
+        mimeType = 'image/png';
+        break;
+    case 'gif':
+        mimeType = 'image/gif';
+        break;
+    case 'bmp':
+        mimeType = 'image/bmp';
+        break;
+    case 'webp':
+        mimeType = 'image/webp';
+        break;
+    case 'svg':
+        mimeType = 'image/svg+xml';
+        break;
+    
+    // Documents
+    case 'pdf':
+        mimeType = 'application/pdf';
+        break;
+    case 'doc':
+    case 'docx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        break;
+    case 'xls':
+    case 'xlsx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        break;
+    case 'ppt':
+    case 'pptx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+        break;
+    case 'txt':
+        mimeType = 'text/plain';
+        break;
+    case 'csv':
+        mimeType = 'text/csv';
+        break;
+
+    // Archives
+    case 'zip':
+        mimeType = 'application/zip';
+        break;
+    case 'rar':
+        mimeType = 'application/vnd.rar';
+        break;
+    case '7z':
+        mimeType = 'application/x-7z-compressed';
+        break;
+    case 'tar':
+        mimeType = 'application/x-tar';
+        break;
+    case 'gz':
+        mimeType = 'application/gzip';
+        break;
+
+    // Code files
+    case 'html':
+    case 'htm':
+        mimeType = 'text/html';
+        break;
+    case 'css':
+        mimeType = 'text/css';
+        break;
+    case 'js':
+        mimeType = 'application/javascript';
+        break;
+    case 'json':
+        mimeType = 'application/json';
+        break;
+    case 'xml':
+        mimeType = 'application/xml';
+        break;
+
+    // Default fallback
+    default:
+        mimeType = 'application/octet-stream'; // Fallback type
+        break;
 }
+
+                // Prepare the result object
+                const hasil = {
+                    status: "success",
+                    name: info.filename,
+                    mimeType: mimeType, // Computed MIME type
+                    extension: extension, // Extracted file extension
+                    size: info.detail.match(/Filesize:(\S+)/)[1], // Extract the file size
+                    uploaded: info.detail.match(/Uploaded:(\S+)/)[1], // Extract the uploaded date
+                    link: info.link
+                };
+
+                // Log both MIME type and extension
+                console.log('MIME Type:', hasil.mimeType);
+                console.log('Extension:', hasil.extension);
+
+                resolve(hasil);
+            } else {
+                reject(new Error('Invalid response structure'));
+            }
+        } catch (err) {
+            console.error(err);
+            reject(err);
+        }
+    });
+}
+
 // track ip
 let ipinfoToken = '882ffefc502ce1';
 async function getIPInfo(ip) {
@@ -5268,7 +5400,7 @@ await trackTotalRequest();
 });
 
 // mediafire
-app.get('/api/mediafire', async (req, res) => {
+app.get('/api/mediafire/old', async (req, res) => {
   try {
     const { apikey, url } = req.query;
 if (!apikey) {
@@ -5329,7 +5461,7 @@ await trackTotalRequest();
 });
 
 // mf 2
-app.get('/api/mediafire/v2', async (req, res) => {
+app.get('/api/mediafire', async (req, res) => {
   try {
     const { apikey, url } = req.query;
 if (!apikey) {
@@ -5370,7 +5502,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await mediafire2(url);
+    const response = await mf2(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
