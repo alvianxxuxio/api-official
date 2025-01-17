@@ -36,6 +36,203 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
+// otakudese
+
+async function otaksearch(search) {
+    const url = 'https://otakudesu.cloud/?s=' + encodeURIComponent(search) + '&post_type=anime';
+    try {
+        const response = await axios.get(url);
+        const $ = cheerio.load(response.data);
+        const results = [];
+
+        $('ul.chivsrc li').each((index, element) => {
+            const title = $(element).find('h2 a').text();
+            const link = $(element).find('h2 a').attr('href');
+            const image = $(element).find('img').attr('src');
+            const genres = [];
+
+            $(element).find('.set a').each((i, el) => {
+                genres.push($(el).text());
+            });
+
+            const status = $(element).find('.set:contains("Status")').text().replace('Status : ', '').trim();
+            const rating = $(element).find('.set:contains("Rating")').text().replace('Rating : ', '').trim();
+
+            results.push({ title, link, image, genres, status, rating });
+        });
+
+        return results;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return [];
+    }
+}
+
+async function otakepisode(link) {
+    try {
+        const response = await axios.get(link);
+        const $ = cheerio.load(response.data);
+        const downanime = [];
+
+        $('.episodelist ul li span a').each((index, element) => {
+            downanime.push($(element).attr('href'));
+        });
+
+        return downanime;
+    } catch (error) {
+        console.error('Error fetching episode links:', error);
+        return [];
+    }
+}
+
+async function otakdetail(link) {
+    try {
+        const response = await axios.get(link);
+        const $ = cheerio.load(response.data);
+        const hasil = [];
+
+        const thumbnail = $('img.attachment-post-thumbnail').attr('src');
+        const judul = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Judul')).parent().text().trim().split(': ')[1];
+        const skor = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Skor')).parent().text().trim().split(': ')[1];
+        const produser = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Produser')).parent().text().trim().split(': ')[1];
+        const tipe = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Tipe')).parent().text().trim().split(': ')[1];
+        const status = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Status')).parent().text().trim().split(': ')[1];
+        const studio = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Studio')).parent().text().trim().split(': ')[1];
+        const rilis = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Tanggal Rilis')).parent().text().trim().split(': ')[1];
+        const episode = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Total Episode')).parent().text().trim().split(': ')[1];
+
+        let sinopsis = '';
+        $('.sinopc p').each((index, element) => {
+            sinopsis += $(element).text().trim() + '\n';
+        });
+
+        const genreArray = [];
+        $('div.infozingle span b').filter((index, element) => $(element).text().includes('Genre')).siblings('a').each((index, element) => {
+            genreArray.push($(element).text().trim());
+        });
+        const genre = genreArray.join(', ');
+        const downanime = await LinkEpisode(link);
+
+        hasil.push({
+            judul,
+            skor,
+            produser,
+            tipe,
+            status,
+            studio,
+            rilis,
+            episode,
+            genre,
+            thumbnail,
+            downanime,
+            sinopsis: sinopsis.trim()
+        });
+
+        return hasil;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+}
+
+async function otakupdate() {
+    const url = 'https://otakudesu.cloud/ongoing-anime/';
+    try {
+        const response = await axios.get(url);
+        const $ = cheerio.load(response.data);
+        const updates = [];
+
+        $('ul > li .detpost').each((index, element) => {
+            const episode = $(element).find('.epz').text().trim();
+            const day = $(element).find('.epztipe').text().trim();
+            const date = $(element).find('.newnime').text().trim();
+            const link = $(element).find('.thumb a').attr('href');
+            const title = $(element).find('.thumbz h2.jdlflm').text().trim();
+
+            updates.push({ title, episode, day, date, link });
+        });
+
+        return updates;
+    } catch (error) {
+        console.error("Error fetching updates:", error);
+        return [];
+    }
+}
+
+async function otakdl(link) {
+    try {
+        const response = await axios.get(link);
+        const $ = cheerio.load(response.data);
+        let links = [];
+
+        $('li').each((_, element) => {
+            const resolution = $(element).find('strong').text().trim();
+            const size = $(element).find('i').text().trim();
+            const links = $(element).find('a');
+
+            links.each((_, link) => {
+                const server = $(link).text().trim();
+                const url = $(link).attr('href');
+                if (resolution && url) {
+                    links.push({
+                        resolution,
+                        server,
+                        url,
+                        size: size || "N/A"
+                    });
+                }
+            });
+        });
+
+        return links;
+    } catch (error) {
+        console.error('Error fetching episode links:', error);
+        return [];
+    }
+}
+
+// pin 2
+async function pin2(url) {
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      }
+    })
+    const $ = cheerio.load(response.data)
+
+    const title = $('meta[property="og:title"]').attr('content') || '-'
+    const description = $('meta[name="description"]').attr('content') || '-'
+    const uploaded = $('meta[property="og:updated_time"]').attr('content') || '-'
+
+    const height = $('meta[property="og:image:height"]').attr('content') || '-'
+    const width = $('meta[property="og:image:width"]').attr('content') || '-'
+    const fullsource = $('meta[property="og:see_also"]').attr('content') || '-'
+    const source = fullsource ? new URL(fullsource).hostname : '-' 
+
+    const { data } = await axios.get(url)
+    const img = []
+    const $$ = cheerio.load(data)
+    $$('img').each((i, el) => {
+      img.push($$(el).attr('src'))
+    })
+
+    return {
+      title,
+      description,
+      uploaded,
+      height,
+      width,
+      source,
+      fullsource,
+      url,
+      img,
+    }
+  } catch (e) {
+    console.error(e)
+    return []
+  }
+}
 // mf 2
 async function mf2(url) {
     return new Promise(async (resolve, reject) => {
@@ -3249,6 +3446,244 @@ app.get('/pricing', (req, res) => {
 
 // Route untuk menangani pembuatan API key baru
 
+
+// otakudesu all
+app.get('/api/otakudesu/search', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await otaksearch(search);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/otakudesu/episode', async (req, res) => {
+  try {
+    const { apikey, link } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!link) {
+      return res.status(400).json({ error: 'Parameter "link" tidak ditemukan' });
+    }
+    const response = await otakepisode(link);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/otakudesu/detail', async (req, res) => {
+  try {
+    const { apikey, link } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!link) {
+      return res.status(400).json({ error: 'Parameter "link" tidak ditemukan' });
+    }
+    const response = await otakdetail(link);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/otakudesu/dl', async (req, res) => {
+  try {
+    const { apikey, link } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!link) {
+      return res.status(400).json({ error: 'Parameter "link" tidak ditemukan' });
+    }
+    const response = await otakdl(link);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // status
 const appStartTime = Date.now();
 
@@ -4469,6 +4904,67 @@ if (apiKeyDetails.status === 'suspended') {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await pinterest(search);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// pinterest 2
+app.get('/api/pinterest/v2', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await pin2(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
