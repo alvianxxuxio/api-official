@@ -3231,11 +3231,11 @@ res.send(`<!DOCTYPE html>
       text-align: center;
       padding: 20px;
       border-radius: 13px;
-      background: linear-gradient(145deg, #0e1d2c, #0a131e);
-      box-shadow: 0px 4px 15px rgba(0, 191, 255, 0.5);
+      background: #0b225a6a;
+      box-shadow: 0px rgba(0, 191, 255, 0.5);
       width: 80%;
       max-width: 500px;
-      border: 2px solid rgba(0, 191, 255, 0.7);
+      border: 2px solid #093bb66a;
     }
 
     .title {
@@ -3261,15 +3261,15 @@ res.send(`<!DOCTYPE html>
       margin: 10px;
       padding: 10px 20px;
       font-size: 1rem;
-      color: var(--bg-color);
-      background: var(--neon-color);
-      border: none;
+      color: white;
+      background: #0b225a6a;
+      border: 2px solid #093bb66a;
       border-radius: 10px;
       cursor: pointer;
       text-decoration: none;
       width: 80%;
       font-weight: bold;
-      box-shadow: 0px 4px 10px rgba(0, 191, 255, 0.7);
+      box-shadow: 0px rgba(0, 191, 255, 0.7);
       transition: transform 0.2s;
     }
 
