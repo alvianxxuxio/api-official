@@ -113,89 +113,97 @@
     </center>
   </div>
 
-  <script>
-    const buyButton = document.getElementById('buy-button');
-    const apiKeyType = document.getElementById('apikey-type');
-    const apiKeyLimit = document.getElementById('apikey-limit');
-    const customKeyInput = document.getElementById('custom-key');
-    const contactMethod = document.getElementById('contact-method');
+ <script>
+  const buyButton = document.getElementById('buy-button');
+  const apiKeyType = document.getElementById('apikey-type');
+  const apiKeyLimit = document.getElementById('apikey-limit');
+  const customKeyInput = document.getElementById('custom-key');
+  const contactMethod = document.getElementById('contact-method');
 
-    const limits = {
-      Basic: [
-        { value: "3000-3K", label: "3000 Limit - 3K" },
-        { value: "6000-5K", label: "6000 Limit - 5K" },
-        { value: "10000-7K", label: "10000 Limit - 7K" }
-      ],
-      Premium: [
-        { value: "50000-8K", label: "50000 Limit - 8K" },
-        { value: "80000-9K", label: "80000 Limit - 9K" },
-        { value: "150000-10K", label: "150000 Limit - 10K" }
-      ],
-      Executive: [
-        { value: "50000-11K", label: "50000 Limit - 11K" },
-        { value: "80000-13K", label: "80000 Limit - 13K" },
-        { value: "1000000-15K", label: "1000000 Limit - 15K" }
-      ]
-    };
+  const limits = {
+    Basic: [
+      { value: "3000-3K", label: "3000 Limit - 3K" },
+      { value: "6000-5K", label: "6000 Limit - 5K" },
+      { value: "10000-7K", label: "10000 Limit - 7K" }
+    ],
+    Premium: [
+      { value: "50000-8K", label: "50000 Limit - 8K" },
+      { value: "80000-9K", label: "80000 Limit - 9K" },
+      { value: "150000-10K", label: "150000 Limit - 10K" }
+    ],
+    Executive: [
+      { value: "50000-11K", label: "50000 Limit - 11K" },
+      { value: "80000-13K", label: "80000 Limit - 13K" },
+      { value: "1000000-15K", label: "1000000 Limit - 15K" }
+    ]
+  };
 
-    function updateLimitOptions() {
-      const selectedType = apiKeyType.value;
-      const availableLimits = limits[selectedType] || [];
+  function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) return "Good morning";
+    if (hour >= 12 && hour < 18) return "Good afternoon";
+    return "Good evening";
+  }
 
-      apiKeyLimit.innerHTML = '';
+  function updateLimitOptions() {
+    const selectedType = apiKeyType.value;
+    const availableLimits = limits[selectedType] || [];
 
-      availableLimits.forEach(limit => {
-        const option = document.createElement('option');
-        option.value = limit.value;
-        option.textContent = limit.label;
-        apiKeyLimit.appendChild(option);
-      });
+    apiKeyLimit.innerHTML = '';
 
-      updateBuyLink();
-    }
-
-    function updateBuyLink() {
-      const type = apiKeyType.value;
-      const selectedOption = Array.from(apiKeyLimit.options).find(option => option.selected);
-      const [limit, price] = selectedOption ? selectedOption.value.split('-') : ['', ''];
-      const customKey = customKeyInput.value.trim();
-      const contact = contactMethod.value;
-
-      let message = `Good afternoon, I would like to purchase an API key.%0A%0AType: ${type}%0ALimit: ${limit}%0APrice: ${price}%0ACustom API Key: ${customKey}`;
-
-      if (contact === 'whatsapp') {
-        buyButton.href = `https://wa.me/6285895988045?text=${message}`;
-      } else if (contact === 'email') {
-        buyButton.href = `mailto:admin@alvianuxio.my.id?subject=API Key Purchase&body=${message}`;
-      }
-    }
-
-    function updateCustomKeyBehavior() {
-      const selectedType = apiKeyType.value;
-      if (selectedType === 'Basic') {
-        customKeyInput.value = 'au-xxxx';
-        customKeyInput.style.backgroundColor = 'lightgray';
-        customKeyInput.setAttribute('readonly', true);
-      } else {
-        customKeyInput.value = '';
-        customKeyInput.removeAttribute('readonly');
-        customKeyInput.style.backgroundColor = 'white';
-      }
-      updateBuyLink();
-    }
-
-    apiKeyType.addEventListener('change', () => {
-      updateCustomKeyBehavior();
-      updateLimitOptions();
+    availableLimits.forEach(limit => {
+      const option = document.createElement('option');
+      option.value = limit.value;
+      option.textContent = limit.label;
+      apiKeyLimit.appendChild(option);
     });
 
-    apiKeyLimit.addEventListener('change', updateBuyLink);
-    customKeyInput.addEventListener('input', updateBuyLink);
-    contactMethod.addEventListener('change', updateBuyLink);
-
-    updateLimitOptions();
-    updateCustomKeyBehavior();
     updateBuyLink();
-  </script>
+  }
+
+  function updateBuyLink() {
+    const type = apiKeyType.value;
+    const selectedOption = Array.from(apiKeyLimit.options).find(option => option.selected);
+    const [limit, price] = selectedOption ? selectedOption.value.split('-') : ['', ''];
+    const customKey = customKeyInput.value.trim();
+    const contact = contactMethod.value;
+    const greeting = getGreeting();
+
+    let message = `${greeting}, I would like to purchase an API key.%0A%0AType: ${type}%0ALimit: ${limit}%0APrice: ${price}%0ACustom API Key: ${customKey}`;
+
+    if (contact === 'whatsapp') {
+      buyButton.href = `https://wa.me/6285895988045?text=${message}`;
+    } else if (contact === 'email') {
+      buyButton.href = `mailto:admin@alvianuxio.my.id?subject=API Key Purchase&body=${message}`;
+    }
+  }
+
+  function updateCustomKeyBehavior() {
+    const selectedType = apiKeyType.value;
+    if (selectedType === 'Basic') {
+      customKeyInput.value = 'au-xxxx';
+      customKeyInput.style.backgroundColor = 'lightgray';
+      customKeyInput.setAttribute('readonly', true);
+    } else {
+      customKeyInput.value = '';
+      customKeyInput.removeAttribute('readonly');
+      customKeyInput.style.backgroundColor = 'white';
+    }
+    updateBuyLink();
+  }
+
+  apiKeyType.addEventListener('change', () => {
+    updateCustomKeyBehavior();
+    updateLimitOptions();
+  });
+
+  apiKeyLimit.addEventListener('change', updateBuyLink);
+  customKeyInput.addEventListener('input', updateBuyLink);
+  contactMethod.addEventListener('change', updateBuyLink);
+
+  updateLimitOptions();
+  updateCustomKeyBehavior();
+  updateBuyLink();
+</script>
 </body>
 </html>
