@@ -36,6 +36,45 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
+
+// tt stalk
+async function tiktokStalk(username) {
+    try {
+        const response = await axios.get("https://www.tiktok.com/@" + username + "?_t=ZS-8tHANz7ieoS&_r=1");
+        const html = response.data;
+        const $ = cheerio.load(html);
+        const scriptData = $('#__UNIVERSAL_DATA_FOR_REHYDRATION__').html();
+        const parsedData = JSON.parse(scriptData);
+
+        const userDetail = parsedData.__DEFAULT_SCOPE__?.['webapp.user-detail'];
+        if (!userDetail) {
+            throw new Error('user tidak ditemukan');
+        }
+
+        const userInfo = userDetail.userInfo?.user;
+        const stats = userDetail.userInfo?.stats;
+
+        const metadata = {
+            userInfo: {
+                id: userInfo?.id || null,
+                username: userInfo?.uniqueId || null,
+                nama: userInfo?.nickname || null,
+                avatar: userInfo?.avatarLarger || null,
+                bio: userInfo?.signature || null,
+                verifikasi: userInfo?.verified || false,
+                totalfollowers: stats?.followerCount || 0,
+                totalmengikuti: stats?.followingCount || 0,
+                totaldisukai: stats?.heart || 0,
+                totalvideo: stats?.videoCount || 0,
+                totalteman: stats?.friendCount || 0,
+            }
+        };
+
+        return JSON.stringify(metadata, null, 2);
+    } catch (error) {
+        return error.message;
+    }
+}
 // otakudese
 
 async function otaksearch(search) {
@@ -6704,6 +6743,67 @@ if (apiKeyDetails.status === 'suspended') {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await ttsave.video(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// tt stalk
+app.get('/api/tiktok/stalk', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await tiktokStalk(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
