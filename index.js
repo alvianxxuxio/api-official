@@ -8062,9 +8062,6 @@ await trackTotalRequest();
 
 // Handle 404 error
 app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'");
-    next();
-});
   // Ambil parameter path setelah '/'
   const path = req.originalUrl;
 
