@@ -36,7 +36,56 @@ app.set("json spaces", 2);
 app.use(cors());
 
 
-
+// wikipedia
+async function wiki(query) {
+    const res = await axios.get(`https://id.m.wikipedia.org/wiki/${query}`)
+    const $ = cheerio.load(res.data)
+    const hasil = []
+    let wiki = $('#mf-section-0').find('p').text()
+    let thumb = $('meta[property="og:image"]').attr('content')
+    hasil.push({
+        wiki, thumb
+    })
+    return hasil
+}
+// soundcloud
+async function scs(search) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const {
+                data,
+                status
+            } = await axios.get(`https://soundcloud.com/search?q=${search}`)
+            const $ = cheerio.load(data)
+            const ajg = []
+            $('#app > noscript').each((u, i) => {
+                ajg.push($(i).html())
+            })
+            const _$ = cheerio.load(ajg[1])
+            const hasil = []
+            _$('ul > li > h2 > a').each((i, u) => {
+                if ($(u).attr('href').split('/').length === 3) {
+                    const linkk = $(u).attr('href')
+                    const judul = $(u).text()
+                    const link = linkk ? linkk : 'Tidak ditemukan'
+                    const jdi = `https://soundcloud.com${link}`
+                    const jadu = judul ? judul : 'Tidak ada judul'
+                    hasil.push({
+                        link: jdi,
+                        judul: jadu
+                    })
+                }
+            })
+            if (hasil.every(x => x === undefined)) return {
+                developer: '@Fruatre',
+                mess: 'no result found'
+            }
+            resolve(hasil)
+        } catch (err) {
+            console.error(err)
+        }
+    })
+}
 // tt stalk
 async function tiktokStalk(username) {
     try {
@@ -5127,6 +5176,126 @@ await trackTotalRequest();
   }
 });
 
+// sound cloud
+app.get('/api/soundcloud', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await scs(search);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+// wikipedia
+app.get('/api/wikipedia', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await wiki(search);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // pinterest 2
 app.get('/api/pinterest/v2', async (req, res) => {
   try {
