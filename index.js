@@ -4108,7 +4108,7 @@ await trackTotalRequest();
   }
 });
 // reset limit
-app.get('/apikey/limit/reset-all', async (req, res) => {
+app.get('/admin/limit/reset', async (req, res) => {
   try {
     const { password } = req.query;
 
@@ -4129,9 +4129,11 @@ app.get('/apikey/limit/reset-all', async (req, res) => {
     const updates = {};
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key;
-      if (key.startsWith('au-')) {
+      const data = childSnapshot.val();
+
+      // Reset usage only if key starts with "au-" and limit is 200
+      if (key.startsWith('au-') && data.limit === 200) {
         updates[`apiKeys/${key}/usage`] = 0;
-        updates[`apiKeys/${key}/limit`] = 200;
       }
     });
 
@@ -4143,11 +4145,11 @@ app.get('/apikey/limit/reset-all', async (req, res) => {
     await update(ref(database), updates);
 
     res.status(200).json({
-      status: 'All matching API keys reset successfully!',
+      status: 'Usage reset successfully for matching API keys!',
       updatedKeys: Object.keys(updates),
     });
   } catch (error) {
-    console.error("Error resetting API keys:", error);
+    console.error("Error resetting usage:", error);
     res.status(500).json({ error: error.message });
   }
 });
