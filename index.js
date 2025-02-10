@@ -4107,6 +4107,50 @@ await trackTotalRequest();
     res.status(500).json({ error: error.message });
   }
 });
+// reset limit
+app.get('/apikey/limit/reset-all', async (req, res) => {
+  try {
+    const { password } = req.query;
+
+    // Check if password is correct
+    if (!password || password !== adminPassword) {
+      return res.status(403).json({ error: 'Access denied. Incorrect password.' });
+    }
+
+    // Reference to API keys in Firebase
+    const apiKeysRef = ref(database, 'apiKeys');
+
+    // Get all API keys
+    const snapshot = await get(apiKeysRef);
+    if (!snapshot.exists()) {
+      return res.status(404).json({ error: 'No API keys found.' });
+    }
+
+    const updates = {};
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key;
+      if (key.startsWith('au-')) {
+        updates[`apiKeys/${key}/usage`] = 0;
+        updates[`apiKeys/${key}/limit`] = 200;
+      }
+    });
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(200).json({ status: 'No API keys matched the criteria.' });
+    }
+
+    // Apply updates
+    await update(ref(database), updates);
+
+    res.status(200).json({
+      status: 'All matching API keys reset successfully!',
+      updatedKeys: Object.keys(updates),
+    });
+  } catch (error) {
+    console.error("Error resetting API keys:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
 // create apikey
 app.get('/admin/create', async (req, res) => {
   try {
