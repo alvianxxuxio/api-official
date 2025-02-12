@@ -1032,6 +1032,25 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
       <span class="qwr">23 Endpoints</span>
     </div>
         <div class="content-container">
+                         <div class="btn" onclick="toggleDropdown('dropdown70')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Dafont Search</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown70" class="dropdown-content">
+          <form class="form-group" action="/api/dafont" onsubmit="window.search(event, '/api/dafont')">
+            <label for="message70">search font:</label>
+            <input type="text" id="message70" name="search" placeholder="search font" required>
+            <label for="apikey70">Enter API Key:</label>
+        <input type="text" id="apikey70" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
                  <div class="btn" onclick="toggleDropdown('dropdown69')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>SoundCloud Search</div>
 <div class="active" style='font-size:12px'>ACTIVE</div>

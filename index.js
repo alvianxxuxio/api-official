@@ -35,7 +35,33 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+// Dafont
+async function sfont(q) {
+    const response = await fetch(`https://www.dafont.com/search.php?q=${q}`);
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    const results = [];
 
+    const regex = /<div class="lv1left dfbg">.*?<span class="highlight">(.*?)<\/span>.*?by <a href="(.*?)">(.*?)<\/a>.*?<\/div>.*?<div class="lv1right dfbg">.*?<a href="(.*?)">(.*?)<\/a>.*?>(.*?)<\/a>.*?<\/div>.*?<div class="lv2right">.*?<span class="light">(.*?)<\/span>.*?<\/div>.*?<div style="background-image:url\((.*?)\)" class="preview">.*?<a href="(.*?)">/g;
+    
+    let match;
+    while ((match = regex.exec(html)) !== null) {
+        const [, title, authorLink, author, themeLink, theme, , totalDownloads, previewImage, link] = match;
+
+        results.push({
+            title: title.trim() || 'Tidak diketahui',
+            authorLink: `https://www.dafont.com/${authorLink.trim()}` || 'Tidak diketahui',
+            author: author.trim() || 'Tidak diketahui',
+            themeLink: `https://www.dafont.com/${themeLink.trim()}` || 'Tidak diketahui',
+            theme: theme.trim() || 'Tidak diketahui',
+            totalDownloads: totalDownloads.trim().replace(/[^0-9]/g, '') || 'Tidak diketahui',
+            previewImage: `https://www.dafont.com${previewImage.trim()}` || 'Tidak diketahui',
+            link: `https://www.dafont.com/${link.trim()}` || 'Tidak diketahui',
+        });
+    }
+
+    return results;
+}
 // wikipedia
 async function wiki(query) {
     const res = await axios.get(`https://id.m.wikipedia.org/wiki/${query}`)
@@ -5325,6 +5351,66 @@ if (apiKeyDetails.status === 'suspended') {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
     const response = await wiki(search);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+// Dafont
+app.get('/api/dafont', async (req, res) => {
+  try {
+    const { apikey, search } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!search) {
+      return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
+    }
+    const response = await sfont(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
