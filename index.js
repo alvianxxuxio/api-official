@@ -15,6 +15,8 @@ const {
 } = require("@google/generative-ai");
 const cheerio = require('cheerio');
 const qs = require('qs');
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
 const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
