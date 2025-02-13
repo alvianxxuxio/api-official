@@ -35,6 +35,60 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+// krakenfiles
+async function krakenfiles(url) {
+    return new Promise(async(resolve, reject) => {
+         if (!/krakenfiles.com/.test(url)) return new Error("Input Url from Krakenfiles !")
+          let { data } = await axios.get(url, {     
+              headers: {
+                 "User-Agent": "Posify/1.0.0",
+                 "Referer": url,
+                 "Accept": "*/*"
+               },
+           }).catch((e) => e.response);
+           let $ = cheerio.load(data);
+           let result = {
+              metadata: {},
+              buffer: null
+          }
+          result.metadata.filename = $(".coin-info .coin-name h5").text().trim();
+          $(".nk-iv-wg4 .nk-iv-wg4-overview li").each((a, i) => {
+          let name = $(i).find(".sub-text").text().trim().split(" ").join("_").toLowerCase()
+          let value = $(i).find(".lead-text").text()
+              result.metadata[name] = value
+          })
+         $(".nk-iv-wg4-list li").each((a, i) => {
+          let name = $(i).find("div").eq(0).text().trim().split(" ").join("_").toLowerCase()
+          let value = $(i).find("div").eq(1).text().trim().split(" ").join(",")
+              result.metadata[name] = value
+         })  
+         if ($("video").html()) {
+             result.metadata.thumbnail = "https:" + $("video").attr("poster");
+             } else if ($(".lightgallery").html()) {
+             result.metadata.thumbnail = "https:" + $(".lightgallery a").attr("href");
+            } else {
+            result.metadata.thumbnail = "N\A"
+         }
+         let downloads = ""
+         if ($("video").html()) {
+              downloads = "https:" + $("video source").attr("src")
+            } else {
+              downloads = "https:" + $(".lightgallery a").attr("href");
+          }
+         const res = await axios.get(downloads, {     
+              headers: {
+               "User-Agent": "Posify/1.0.0",
+               "Referer": url ,
+               "Accept": "*/*",
+               "token": $("#dl-token").val()
+             },
+           responseType: "arraybuffer"
+         }).catch((e) => e.response);
+           if (!Buffer.isBuffer(res.data)) return new Error("Result is Not a buffer !")
+           result.buffer = res.data
+           resolve(result)
+    })
+}
 // Dafont
 async function sfont(q) {
     const response = await fetch(`https://www.dafont.com/search.php?q=${q}`);
@@ -4464,6 +4518,26 @@ await trackTotalRequest();
     res.status(500).json({ status: false, error: error.message });
   }
 });
+// uploader api
+app.post("/api/upload/:service", upload.single("file"), async (req, res) => {
+  try {
+    const { service } = req.params;
+    const media = req.file;
+
+    if (!media) {
+      return res.status(400).json({ error: "File tidak ditemukan dalam permintaan" });
+    }
+
+    if (!["catbox", "litterbox", "ucarecdn"].includes(service)) {
+      return res.status(400).json({ error: "Layanan uploader tidak valid" });
+    }
+
+    const result = await Uploader[service](media);
+    res.json({ success: true, url: result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
@@ -6505,6 +6579,67 @@ if (apiKeyDetails.status === 'suspended') {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     const response = await mf2(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// krakenfiles
+app.get('/api/krakenfiles', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await krakenfiles(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
