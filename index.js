@@ -4714,24 +4714,46 @@ await trackTotalRequest();
   }
 });
 // uploader api
-app.post("/api/upload/:service", upload.single("file"), async (req, res) => {
-  try {
-    const { service } = req.params;
-    const media = req.file;
+const GITHUB_TOKEN = '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';
+const OWNER = 'alvianxxuxio';
+const REPO = 'cloud';
+const BRANCH = 'main';
 
-    if (!media) {
-      return res.status(400).json({ error: "File tidak ditemukan dalam permintaan" });
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        const filePath = `uploads/${req.file.filename}`;
+        const fileContent = fs.readFileSync(filePath);
+        const fileName = `${Date.now()}-${req.file.originalname}`;
+        
+        const base64Content = Buffer.from(fileContent).toString('base64');
+
+        const response = await axios.put(
+            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${fileName}`,
+            {
+                message: `Upload file ${fileName}`,
+                content: base64Content,
+                branch: BRANCH,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${GITHUB_TOKEN}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        const rawUrl = `https://cloud.alvianuxio.my.id/uploads/${fileName}`;
+        fs.unlinkSync(filePath);
+        
+        res.status(200).json({ message: 'File successfully uploaded', url: rawUrl });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
     }
-
-    if (!["catbox", "litterbox", "ucarecdn"].includes(service)) {
-      return res.status(400).json({ error: "Layanan uploader tidak valid" });
-    }
-
-    const result = await Uploader[service](media);
-    res.json({ success: true, url: result });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
 });
 // tts
 app.get("/api/tts", async (req, res) => { 
