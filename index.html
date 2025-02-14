@@ -283,6 +283,44 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
       <span class="qwr">17 Endpoints</span>
     </div>
     <div class="content-container">
+                  <div class="btn" onclick="toggleDropdown('dropdown71')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Sticker Ly</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown71" class="dropdown-content">
+          <form class="form-group" action="/api/stickerly" onsubmit="window.url(event, '/api/stickerly')">
+            <label for="message71">Enter Url:</label>
+            <input type="text" id="message71" name="message" required>
+            <label for="apikey71">Enter API Key:</label>
+        <input type="text" id="apikey71" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+              <div class="btn" onclick="toggleDropdown('dropdown72')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>KrakenFiles</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown72" class="dropdown-content">
+          <form class="form-group" action="/api/krakenfiles" onsubmit="window.url(event, '/api/krakenfiles')">
+            <label for="message72">Enter Url:</label>
+            <input type="text" id="message72" name="message" required>
+            <label for="apikey72">Enter API Key:</label>
+        <input type="text" id="apikey72" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
                 <div class="btn" onclick="toggleDropdown('dropdown57')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Instagram v2</div>
 <div class="active" style='font-size:12px'>ACTIVE</div>
@@ -704,7 +742,45 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
 <span><b>Ai</b></span>
       <span class="qwr">16 Endpoints</span>
     </div>
-    <div class="content-container">    
+    <div class="content-container">   
+             <div class="btn" onclick="toggleDropdown('dropdown74')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Mistral</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown74" class="dropdown-content">
+          <form class="form-group" action="/api/mistral" onsubmit="window.ai(event, '/api/mistral')">
+            <label for="message74">Enter Message:</label>
+            <input type="text" id="message74" name="text" placeholder="your text here" required>
+            <label for="apikey15">Enter API Key:</label>
+        <input type="text" id="apikey74" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+      </div>
+              <div class="btn" onclick="toggleDropdown('dropdown75')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Deepseek</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown75" class="dropdown-content">
+          <form class="form-group" action="/api/deepseek" onsubmit="window.ai(event, '/api/deepseek')">
+            <label for="message75">Enter Message:</label>
+            <input type="text" id="message75" name="text" placeholder="your text here" required>
+            <label for="apikey15">Enter API Key:</label>
+        <input type="text" id="apikey75" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+      </div>
     <div class="btn" onclick="toggleDropdown('dropdown48')">
     <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Chatsandbox</div>
  <div class="active" style='font-size:12px'>ACTIVE</div>
@@ -1032,6 +1108,63 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
       <span class="qwr">23 Endpoints</span>
     </div>
         <div class="content-container">
+                              <div class="btn" onclick="toggleDropdown('dropdown76')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Yahoo Search</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown76" class="dropdown-content">
+          <form class="form-group" action="/api/yahoo" onsubmit="window.search(event, '/api/yahoo')">
+            <label for="message76">Enter query:</label>
+            <input type="text" id="message76" name="search" placeholder="enter query here" required>
+
+        <label for="apikey76">Enter API Key:</label>
+        <input type="text" id="apikey76" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+                        <div class="btn" onclick="toggleDropdown('dropdown77')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Jadwal Tv</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown77" class="dropdown-content">
+          <form class="form-group" action="/api/jadwal-tv" onsubmit="window.search(event, '/api/jadwal-tv')">
+            <label for="message77">Enter query:</label>
+            <input type="text" id="message77" name="search" placeholder="enter query here" required>
+
+        <label for="apikey77">Enter API Key:</label>
+        <input type="text" id="apikey77" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div> <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
+                   <div class="btn" onclick="toggleDropdown('dropdown73')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Quotes</div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown73" class="dropdown-content">
+          <form class="form-group" action="/api/quotes" onsubmit="window.cek(event, '/api/quotes')">
+            <label for="apikey73">Enter API Key:</label>
+        <input type="text" id="apikey73" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
                          <div class="btn" onclick="toggleDropdown('dropdown70')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left;padding-left: 5px;'>Dafont Search</div>
 <div class="active" style='font-size:12px'>ACTIVE</div>
