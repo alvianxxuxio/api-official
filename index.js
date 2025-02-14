@@ -75,7 +75,7 @@ async function quotes() {
     }
 }
 // sticker ly dl
-const stickerLy = async (urlSticker) => {
+const dlly = async (urlSticker) => {
     try {
         let { data: a } = await axios.get(urlSticker);
         let $ = cheerio.load(a);
@@ -6342,7 +6342,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await stickerLy(url);
+    const response = await dlly(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
