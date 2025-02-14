@@ -17,6 +17,7 @@ const cheerio = require('cheerio');
 const qs = require('qs');
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
+const https = require('https');
 const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
@@ -4714,45 +4715,35 @@ await trackTotalRequest();
   }
 });
 // uploader api
-const GITHUB_TOKEN = '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';
-const OWNER = 'alvianxxuxio';
-const REPO = 'cloud';
-const BRANCH = 'main';
+const agent = new https.Agent({ rejectUnauthorized: false });
 
-app.post('/api/upload', upload.single('file'), async (req, res) => {
+app.post('/upload', upload.array('files', 3), async (req, res) => {
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ error: 'Tidak ada file yang diunggah' });
+    }
+    
+    let formData = new FormData();
+    req.files.forEach(file => {
+        formData.append('files[]', fs.createReadStream(file.path), file.originalname);
+    });
+    
+    if (req.body.expiry_date) {
+        formData.append('expiry_date', req.body.expiry_date);
+    }
+    
     try {
-        if (!req.file) {
-            return res.status(400).json({ error: 'No file uploaded' });
-        }
-
-        const filePath = `uploads/${req.file.filename}`;
-        const fileContent = fs.readFileSync(filePath);
-        const fileName = `${Date.now()}-${req.file.originalname}`;
-        
-        const base64Content = Buffer.from(fileContent).toString('base64');
-
-        const response = await axios.put(
-            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${fileName}`,
-            {
-                message: `Upload file ${fileName}`,
-                content: base64Content,
-                branch: BRANCH,
+        const response = await axios.post('https://cdn.alvianuxio.my.id/File.php', formData, {
+            headers: {
+                ...formData.getHeaders()
             },
-            {
-                headers: {
-                    Authorization: `Bearer ${GITHUB_TOKEN}`,
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
-
-        const rawUrl = `https://cloud.alvianuxio.my.id/uploads/${fileName}`;
-        fs.unlinkSync(filePath);
+            httpsAgent: agent
+        });
         
-        res.status(200).json({ message: 'File successfully uploaded', url: rawUrl });
+        res.json(response.data);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: 'Gagal mengunggah file', details: error.message });
+    } finally {
+        req.files.forEach(file => fs.unlinkSync(file.path)); // Hapus file setelah diunggah
     }
 });
 // tts
