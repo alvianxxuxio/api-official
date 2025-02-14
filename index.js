@@ -4718,6 +4718,9 @@ await trackTotalRequest();
 const agent = new https.Agent({ rejectUnauthorized: false });
 
 app.post('/upload', upload.array('files', 3), async (req, res) => {
+    if (req.method === 'GET') {
+        return res.status(400).json({ error: 'upload hanya mendukung metode POST' });
+    }
     if (!req.files || req.files.length === 0) {
         return res.status(400).json({ error: 'Tidak ada file yang diunggah' });
     }
