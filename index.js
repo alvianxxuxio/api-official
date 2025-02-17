@@ -2008,14 +2008,8 @@ async function simi(text) {
     throw error;
   }
 }
-// aio
-/*
-Scrape aio 
-Cuma ytdl nya mati jir😂
-By rian
-Jangan delete wm
-*/
-async function aio(url) {
+// aio 2
+async function aio2(url) {
 const { data } = await axios({
         method: 'POST',
         url: 'https://aiovd.com/wp-json/aio-dl/video-data/',
@@ -2024,6 +2018,28 @@ const { data } = await axios({
 let an = data
 let a = data.medias
 return a
+}
+// aio
+async function aio(url) {
+    try {
+        const response = await fetch("https://anydownloader.com/wp-json/aio-dl/video-data/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Referer": "https://anydownloader.com/",
+                "Token": "5b64d1dc13a4b859f02bcf9e572b66ea8e419f4b296488b7f32407f386571a0d"
+            },
+            body: new URLSearchParams({
+                url
+            }),
+        }, );
+        const data = await response.json();
+        if (!data.url) return data
+        return data;
+    } catch (error) {
+        console.error("Error fetching data:", );
+        throw error
+    }
 }
 
 // gdrive
@@ -8271,7 +8287,7 @@ await trackTotalRequest();
 //aio
 app.get('/api/aio', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
@@ -8307,10 +8323,10 @@ if (apiKeyDetails.status === 'suspended') {
         info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await aio(message);
+    const response = await aio(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
@@ -8329,6 +8345,66 @@ await trackTotalRequest();
   }
 });
 
+// aio v2
+app.get('/api/aio/v2', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await aio2(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // youtube
 app.get('/api/ytdl', async (req, res) => {
   try {
