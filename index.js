@@ -7,6 +7,7 @@ const yts = require("yt-search");
 const moment = require("moment-timezone");
 const FormData = require('form-data');
 const os = require('os');
+const nodemailer = require('nodemailer');
 const firebaseAdmin = require('firebase-admin');
 const {
   GoogleGenerativeAI,
@@ -4400,51 +4401,68 @@ await trackTotalRequest();
   }
 });
 // reset limit
-app.get('/admin/limit/reset', async (req, res) => {
-  try {
-    const { password } = req.query;
 
-    // Check if password is correct
-    if (!password || password !== adminPassword) {
-      return res.status(403).json({ error: 'Access denied. Incorrect password.' });
+const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: 'bbcb123c@gmail.com', pass: 'hssc htgp mest jvsx' } });
+
+app.get('/admin/limit/reset', async (req, res) => { try { const { password } = req.query;
+
+if (!password || password !== adminPassword) {
+  return res.status(403).json({ error: 'Access denied. Incorrect password.' });
+}
+
+const apiKeysRef = ref(database, 'apiKeys');
+const snapshot = await get(apiKeysRef);
+if (!snapshot.exists()) {
+  return res.status(404).json({ error: 'No API keys found.' });
+}
+
+const updates = {};
+const emailRecipients = [];
+
+snapshot.forEach((childSnapshot) => {
+  const key = childSnapshot.key;
+  const data = childSnapshot.val();
+
+  if (key.startsWith('au-') && data.limit === 200) {
+    updates[`apiKeys/${key}/usage`] = 0;
+    if (data.email) {
+      emailRecipients.push(data.email);
     }
-
-    // Reference to API keys in Firebase
-    const apiKeysRef = ref(database, 'apiKeys');
-
-    // Get all API keys
-    const snapshot = await get(apiKeysRef);
-    if (!snapshot.exists()) {
-      return res.status(404).json({ error: 'No API keys found.' });
-    }
-
-    const updates = {};
-    snapshot.forEach((childSnapshot) => {
-      const key = childSnapshot.key;
-      const data = childSnapshot.val();
-
-      // Reset usage only if key starts with "au-" and limit is 200
-      if (key.startsWith('au-') && data.limit === 200) {
-        updates[`apiKeys/${key}/usage`] = 0;
-      }
-    });
-
-    if (Object.keys(updates).length === 0) {
-      return res.status(200).json({ status: 'No API keys matched the criteria.' });
-    }
-
-    // Apply updates
-    await update(ref(database), updates);
-
-    res.status(200).json({
-      status: 'Usage reset successfully for matching API keys!',
-      updatedKeys: Object.keys(updates),
-    });
-  } catch (error) {
-    console.error("Error resetting usage:", error);
-    res.status(500).json({ error: error.message });
   }
 });
+
+if (Object.keys(updates).length === 0) {
+  return res.status(200).json({ status: 'No API keys matched the criteria.' });
+}
+
+await update(ref(database), updates);
+
+// Kirim email ke semua pengguna yang memenuhi kriteria
+if (emailRecipients.length > 0) {
+  const mailOptions = {
+    from: 'your-email@gmail.com',
+    to: emailRecipients.join(','),
+    subject: 'API Key Usage Reset',
+    text: 'Your API key usage has been reset to 0.'
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+}
+
+res.status(200).json({
+  status: 'Usage reset successfully for matching API keys!',
+  updatedKeys: Object.keys(updates),
+});
+
+} catch (error) { console.error('Error resetting usage:', error); res.status(500).json({ error: error.message }); } });
+
+
 // create apikey
 app.get('/admin/create', async (req, res) => {
   try {
