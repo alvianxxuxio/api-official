@@ -1969,7 +1969,7 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
 
     window.ai = function(event, endpoint) {
       event.preventDefault();
-      const button = event.target.querySelector('button');
+      const button1 = event.target.querySelector('button');
       const message = event.target.querySelector('input[name="text"]').value;
       const apiKey = event.target.querySelector('input[name="apikey"]').value;
       const base = "https://api.alvianuxio.my.id";
@@ -1977,7 +1977,7 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
       const apiUrl = `${base}${endpoint}?text=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}`;
 
       try {
-      button.textContent = "Loading...";
+      button1.textContent = "Loading...";
         fetch(apiUrl, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -1985,20 +1985,20 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
         .then(response => response.json())
         .then(data => {
           showPopup(apiUrl, data);
-          button.textContent = "Try Now";
+          button1.textContent = "Try Now";
         })
         .catch(error => {
           showPopup(apiUrl, { error: error.message });
-          button.textContent = "Try Now";
+          button1.textContent = "Try Now";
         });
       } catch (error) {
         showPopup(apiUrl, { error: error.message });
-        button.textContent = "Try Now";
+        button1.textContent = "Try Now";
       }
     };
     window.search = function(event, endpoint) {
       event.preventDefault();
-      const button = event.target.querySelector('button');
+      const button2 = event.target.querySelector('button');
       const message = event.target.querySelector('input[name="search"]').value;  
       const apiKey = event.target.querySelector('input[name="apikey"]').value;
       const base = "https://api.alvianuxio.my.id";
@@ -2006,7 +2006,7 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
       const apiUrl = `${base}${endpoint}?search=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}`;
 
       try {
-      button.textContent = "Loading...";
+      button2.textContent = "Loading...";
         fetch(apiUrl, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -2015,16 +2015,16 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
         .then(data => {
 
           showPopup(apiUrl, data);
-          button.textContent = "Try Now";
+          button2.textContent = "Try Now";
         })
         .catch(error => {
 
           showPopup(apiUrl, { error: error.message });
-          button.textContent = "Try Now";
+          button2.textContent = "Try Now";
         });
       } catch (error) {
         showPopup(apiUrl, { error: error.message });
-        button.textContent = "Try Now";
+        button2.textContent = "Try Now";
       }
     };
     window.url = function(event, endpoint) {
@@ -2058,7 +2058,7 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
     };
     window.prompt = function(event, endpoint) {
       event.preventDefault();
-      const button = event.target.querySelector('button');
+      const button3 = event.target.querySelector('button');
       const message = event.target.querySelector('input[name="text"]').value;
       const apiKey = event.target.querySelector('input[name="apikey"]').value;
       const prompt = event.target.querySelector('input[name="prompt"]').value;
@@ -2067,7 +2067,7 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
       const apiUrl = `${base}${endpoint}?text=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}&prompt=${encodeURIComponent(prompt)}`;
 
       try {
-       button.textContent = "Loading...";
+       button3.textContent = "Loading...";
         fetch(apiUrl, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -2075,48 +2075,48 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
         .then(response => response.json())
         .then(data => {
           showPopup(apiUrl, data);
-          button.textContent = "Try Now";
+          button3.textContent = "Try Now";
         })
         .catch(error => {
           showPopup(apiUrl, { error: error.message });
-          button.textContent = "Try Now";
+          button3.textContent = "Try Now";
         });
       } catch (error) {
         showPopup(apiUrl, { error: error.message });
-        button.textContent = "Try Now";
+        button3.textContent = "Try Now";
       }
     };
    window.check = function(event, endpoint) {
       event.preventDefault();
-      const button = event.target.querySelector('button');
+      const button4 = event.target.querySelector('button');
       const apiKey = event.target.querySelector('input[name="apiKey"]').value;
       const base = "https://api.alvianuxio.my.id";
 
       const apiUrl = `${base}${endpoint}?apiKey=${encodeURIComponent(apiKey)}`;
 
       try {
-      button.textContent = "Loading...";
+      button4.textContent = "Loading...";
         fetch(apiUrl, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         })
         .then(response => response.json())
         .then(data => {
-          button.textContent = "Try Now";
+          button4.textContent = "Try Now";
           showPopup(apiUrl, data);
         })
         .catch(error => {
           showPopup(apiUrl, { error: error.message });
-          button.textContent = "Try Now";
+          button4.textContent = "Try Now";
         });
       } catch (error) {
         showPopup(apiUrl, { error: error.message });
-        button.textContent = "Try Now";
+        button4.textContent = "Try Now";
       }
     }; 
     window.cek = function(event, endpoint) {
       event.preventDefault();
-      const button = event.target.querySelector('button');
+      const button5 = event.target.querySelector('button');
       const apiKey = event.target.querySelector('input[name="apikey"]').value;
       const base = "https://api.alvianuxio.my.id";
 
@@ -2124,7 +2124,7 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
       const apiUrl = `${base}${endpoint}?apikey=${encodeURIComponent(apiKey)}`;
 
       try {
-      button.textContent = "Loading...";
+      button5.textContent = "Loading...";
         fetch(apiUrl, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -2132,20 +2132,20 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
         .then(response => response.json())
         .then(data => {
           showPopup(apiUrl, data);
-          button.textContent = "Try Now";
+          button5.textContent = "Try Now";
         })
         .catch(error => {
           showPopup(apiUrl, { error: error.message });
-          button.textContent = "Try Now";
+          button5.textContent = "Try Now";
         });
       } catch (error) {
         showPopup(apiUrl, { error: error.message });
-        button.textContent = "Try Now";
+        button5.textContent = "Try Now";
       }
     }; 
     window.model = function(event, endpoint) {
       event.preventDefault();
-      const button = event.target.querySelector('button');
+      const button6 = event.target.querySelector('button');
       const message = event.target.querySelector('input[name="text"]').value; 
       const apiKey = event.target.querySelector('input[name="apikey"]').value;
       const prompt = event.target.querySelector('input[name="model"]').value;
@@ -2154,7 +2154,7 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
       const apiUrl = `${base}${endpoint}?text=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}&model=${encodeURIComponent(prompt)}`;
 
       try {
-      button.textContent = "Loading...";
+      button6.textContent = "Loading...";
         fetch(apiUrl, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -2162,15 +2162,15 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
         .then(response => response.json())
         .then(data => {
           showPopup(apiUrl, data);
-          button.textContent = "Try Now";
+          button6.textContent = "Try Now";
         })
         .catch(error => {
           showPopup(apiUrl, { error: error.message });
-          button.textContent = "Try Now";
+          button6.textContent = "Try Now";
         });
       } catch (error) {
         showPopup(apiUrl, { error: error.message });
-        button.textContent = "Try Now";
+        button6.textContent = "Try Now";
       }
     };
     function copyToClipboard(id) {
