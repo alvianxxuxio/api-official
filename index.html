@@ -815,6 +815,28 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
       <span class="qwr">18 Endpoints</span>
     </div>
     <div class="content-container">   
+            <div class="btn" onclick="toggleDropdown('dropdown80')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>Lumin ai
+          <div style='font-size: 10px; color: gray;'>Talk with lumin ai</div></div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown80" class="dropdown-content">
+          <form class="form-group" action="/api/luminai" onsubmit="window.prompt(event, '/api/luminai')">
+            <label for="message80">Enter text:</label>
+            <input type="text" id="message80" name="text" placeholder="your text here" required>
+                    <label for="prompt80">Enter Prompt:</label>
+        <input type="text" id="prompt80" name="prompt" required>
+            <label for="apikey80">Enter API Key:</label>
+        <input type="text" id="apikey80" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+        </div>
              <div class="btn" onclick="toggleDropdown('dropdown74')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>Mistral<div style='font-size: 10px; color: gray;'>Talk with mistral ai</div></div>
 <div class="active" style='font-size:12px'>ACTIVE</div>
@@ -1003,13 +1025,13 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
           </form>
         </div>
         <div class="btn" onclick="toggleDropdown('dropdown5')">
-          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>BlackboxAIChat
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>Blackbox
           <div style='font-size: 10px; color: gray;'>Talk with blackbox ai</div></div>
 <div class="active" style='font-size:12px'>ACTIVE</div>
         </div>
         <div id="dropdown5" class="dropdown-content">
-          <form class="form-group" action="/api/BlackboxAIChat" onsubmit="window.ai(event, '/api/BlackboxAIChat')">
-            <label for="message5">Enter Message:</label>
+          <form class="form-group" action="/api/blackbox" onsubmit="window.ai(event, '/api/blackbox')">
+            <label for="message5">Enter text:</label>
             <input type="text" id="message5" name="text" placeholder="your text here" required>
             <label for="apikey5">Enter API Key:</label>
         <input type="text" id="apikey5" name="apikey" placeholder="Enter Your ApiKeys" required>
@@ -1110,7 +1132,7 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
  <div class="active" style='font-size:12px'>ACTIVE</div>
 </div>
 <div id="dropdown44" class="dropdown-content">
-    <form class="form-group" action="/api/gptlogic" onsubmit="prompt(event, '/api/gptlogic')">
+    <form class="form-group" action="/api/gptlogic" onsubmit="window.prompt(event, '/api/gptlogic')">
         <label for="message44">Enter Message:</label>
         <input type="text" id="message44" name="text" required>
         <label for="prompt14">Enter Prompt:</label>

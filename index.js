@@ -39,6 +39,94 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+// black box
+async function blackbox(query) {
+  const id = crypto.randomBytes(16).toString('hex');
+  const data = JSON.stringify({
+    "messages": [
+      {
+        "role": "user",
+        "content": query,
+        "id": id
+      }
+    ],
+    "agentMode": {},
+    "id": id,
+    "previewToken": null,
+    "userId": null,
+    "codeModelMode": true,
+    "trendingAgentMode": {},
+    "isMicMode": false,
+    "userSystemPrompt": null,
+    "maxTokens": 1024,
+    "playgroundTopP": null,
+    "playgroundTemperature": null,
+    "isChromeExt": false,
+    "githubToken": "",
+    "clickedAnswer2": false,
+    "clickedAnswer3": false,
+    "clickedForceWebSearch": false,
+    "visitFromDelta": false,
+    "isMemoryEnabled": false,
+    "mobileClient": false,
+    "userSelectedModel": null,
+    "validated": "00f37b34-a166-4efb-bce5-1312d87f2f94",
+    "imageGenerationMode": false,
+    "webSearchModePrompt": false,
+    "deepSearchMode": false,
+    "domains": null,
+    "vscodeClient": false,
+    "codeInterpreterMode": false,
+    "customProfile": {
+      "name": "",
+      "occupation": "",
+      "traits": [],
+      "additionalInfo": "",
+      "enableNewChats": false
+    },
+    "session": null,
+    "isPremium": false
+  });
+ 
+  const config = {
+    method: 'POST',
+    url: 'https://www.blackbox.ai/api/chat',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:131.0) Gecko/131.0 Firefox/131.0',
+      'Content-Type': 'application/json',
+      'accept-language': 'id-ID',
+      'referer': 'https://www.blackbox.ai/',
+      'origin': 'https://www.blackbox.ai',
+      'alt-used': 'www.blackbox.ai',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
+      'priority': 'u=0',
+      'te': 'trailers'
+    },
+    data: data
+  };
+ 
+  const api = await axios.request(config);
+  return api.data;
+}
+// luminai
+async function luminai(content, prompt) {
+    return new Promise(async (resolve, reject) => {
+        const payload = { content, prompt };
+
+        try {
+            const response = await axios.post('https://luminai.my.id/', payload, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            resolve(response.data.result);
+        } catch (error) {
+            reject(error.response ? error.response.data : error.message);
+        }
+    });
+}
 // quotes
 async function quotes() {
     try {
@@ -9098,8 +9186,71 @@ await trackTotalRequest();
   }
 });
 
+// luminai
+app.get('/api/luminai', async (req, res) => {
+  try {
+    const { apikey, text, prompt } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
+    }
+    if (!prompt) {
+      return res.status(400).json({ error: 'Parameter "prompt" tidak ditemukan' });
+    }
+    const response = await luminai(text, prompt);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.my.id/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // Endpoint untuk blackboxAIChat
-app.get('/api/blackboxAIChat', async (req, res) => {
+app.get('/api/blackbox', async (req, res) => {
   try {
     const { apikey, text } = req.query;
 if (!apikey) {
@@ -9140,7 +9291,10 @@ if (apiKeyDetails.status === 'suspended') {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await blackboxAIChat(text);
+    if (!prompt) {
+      return res.status(400).json({ error: 'Parameter "prompt" tidak ditemukan' });
+    }
+    const response = await blackbox(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
