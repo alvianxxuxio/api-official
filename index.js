@@ -1586,8 +1586,8 @@ async function ytdl(link, qualityIndex, typeIndex) {
 
     const headers = {
         accept: '*/*',
-        referer: 'https://ytshorts.savetube.me/',
-        origin: 'https://ytshorts.savetube.me/',
+        referer: 'https://yt.savetube.me/',
+        origin: 'https://yt.savetube.me/',
         'user-agent': 'Postify/1.0.0',
         'Content-Type': 'application/json'
     };
