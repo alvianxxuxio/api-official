@@ -3678,7 +3678,21 @@ function renderResetPasswordHTML(oobCode) {
   `;
 }
 app.get('/', (req, res) => {
-res.send(`<!DOCTYPE html>
+  const acceptHeader = req.headers.accept || '';
+
+  if (acceptHeader.includes('application/json')) {
+    res.json({
+      status: 'success',
+      message: 'Welcome to ALVIAN UXIO API',
+      author: 'ALVIAN UXIO Inc.',
+      description: 'API ini dirancang untuk mempermudah integrasi berbagai layanan digital dengan teknologi terkini.',
+      links: {
+        whatsapp_channel: 'https://whatsapp.com/channel/0029VaAQKcJEquiQVH2RM10U',
+        documentation: '/docs'
+      }
+    });
+  } else {
+    res.send(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -3770,7 +3784,7 @@ res.send(`<!DOCTYPE html>
     <div class="subtitle">WELCOME!</div>
     <div class="description">
       API ini dibuat oleh ALVIAN UXIO Inc.
-API ini dirancang untuk mempermudah integrasi berbagai layanan digital dengan teknologi terkini. Dikembangkan dengan fokus pada kecepatan, keandalan, dan keamanan, API ini mendukung berbagai kebutuhan seperti data scraping, komunikasi, dan pengelolaan sistem.
+      API ini dirancang untuk mempermudah integrasi berbagai layanan digital dengan teknologi terkini. Dikembangkan dengan fokus pada kecepatan, keandalan, dan keamanan, API ini mendukung berbagai kebutuhan seperti data scraping, komunikasi, dan pengelolaan sistem.
     </div>
     <a href="https://whatsapp.com/channel/0029VaAQKcJEquiQVH2RM10U" class="btn">Follow Saluran WhatsApp</a>
     <a href="/docs" class="btn">Documentation</a>
@@ -3778,6 +3792,7 @@ API ini dirancang untuk mempermudah integrasi berbagai layanan digital dengan te
   <footer>© 2024 ALVIAN UXIO Inc.</footer>
 </body>
 </html>`);
+  }
 });
 app.get('/create/apikey', (req, res) => {
     const secret = req.query.secret;
