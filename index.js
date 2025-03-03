@@ -4890,7 +4890,8 @@ app.post('/upload', upload.array('files', 3), async (req, res) => {
 app.get("/api/tts", async (req, res) => { 
   try {
     const { apikey, text } = req.query;
-if (!apikey) {
+
+    if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
         info: 'Sertakan API key dalam permintaan Anda' 
@@ -4899,7 +4900,7 @@ if (!apikey) {
 
     // Referensi ke API key di Firebase
     const apiKeRef = ref(database, `apiKeys/${apikey}`);
-const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const dbRef = ref(database);
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
 
     // Jika API key tidak ditemukan
@@ -4919,28 +4920,41 @@ const dbRef = ref(database);// `database` adalah instance Firebase Database
         info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
       });
     }
-if (apiKeyDetails.status === 'suspended') {
+
+    if (apiKeyDetails.status === 'suspended') {
       return res.status(403).json({
         error: 'API key has been suspended.',
         info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
+
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await axios.get(`https://api.siputzx.my.id/api/tools/tts?text=${encodeURIComponent(text)}&voice=jv-ID-DimasNeural&rate=0%&pitch=0Hz&volume=0%`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'audio/mp3');
-    res.send(response.data);
-    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
-    const updatedUsage = currentUsage + 1;
-await trackTotalRequest();
 
-    // Perbarui usage di Firebase
+    // Ambil audio dari API TTS
+    const ttsResponse = await axios.get(`https://api.siputzx.my.id/api/tools/tts?text=${encodeURIComponent(text)}&voice=jv-ID-DimasNeural&rate=0%&pitch=0Hz&volume=0%`, {
+      responseType: 'arraybuffer'
+    });
+
+    // Upload ke Catbox
+    const fileUrl = await Uploader.catbox(ttsResponse.data, "tts.mp3");
+
+    // Perbarui penggunaan API
+    const updatedUsage = (apiKeyDetails.usage || 0) + 1;
     await update(apiKeRef, { usage: updatedUsage });
+
+    // Mengembalikan hasil dalam format JSON
+    res.json({
+      status: true,
+      message: "TTS generated successfully",
+      url: fileUrl
+    });
+
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
+    res.status(500).json({ status: false, error: error.message });
   }
-})
+});
 //gemini
 app.get('/api/gemini', async (req, res) => {
   try {
