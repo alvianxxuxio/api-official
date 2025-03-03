@@ -4928,7 +4928,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await axios.get(`https://api.siputzx.my.id/api/tools/tts?text=${encodeURIComponent(text)}`, { responseType: 'arraybuffer' });
+    const response = await axios.get(`https://api.siputzx.my.id/api/tools/tts?text=${encodeURIComponent(text)}&voice=jv-ID-DimasNeural&rate=0%&pitch=0Hz&volume=0%`, { responseType: 'arraybuffer' });
     res.setHeader('Content-Type', 'audio/mp3');
     res.send(response.data);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
