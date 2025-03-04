@@ -4565,7 +4565,62 @@ res.status(200).json({
 
 } catch (error) { console.error('Error resetting usage:', error); res.status(500).json({ error: error.message }); } });
 
+// change apikey
+app.get('/admin/change', async (req, res) => {
+  res.send('Use POST method to change API keys.');
+});
+app.post('/admin/change', async (req, res) => {
+  try {
+    const { oldKey, newKey, password } = req.query;
 
+    // Check admin password
+    if (!password || password !== adminPassword) {
+      return res.status(403).json({ error: 'Access denied. Incorrect password.' });
+    }
+
+    // Validate keys
+    if (!oldKey || !newKey) {
+      return res.status(400).json({ error: 'Both "oldKey" and "newKey" are required.' });
+    }
+
+    // Reference to the old API key in Firebase
+    const oldKeyRef = ref(database, `apiKeys/${oldKey}`);
+    const snapshot = await get(oldKeyRef);
+
+    if (!snapshot.exists()) {
+      return res.status(404).json({ error: 'Old API key not found.' });
+    }
+
+    const apiKeyData = snapshot.val();
+
+    // Check if the API key is premium
+    if (!apiKeyData.premium) {
+      return res.status(403).json({ error: 'API key is not premium.' });
+    }
+
+    // Check if the new key already exists
+    const newKeyRef = ref(database, `apiKeys/${newKey}`);
+    const newKeySnapshot = await get(newKeyRef);
+    if (newKeySnapshot.exists()) {
+      return res.status(400).json({ error: 'New API key already exists.' });
+    }
+
+    // Update the key (move data to new key)
+    apiKeyData.key = newKey; // Optionally update the key field if you store it
+    await set(newKeyRef, apiKeyData);
+    await remove(oldKeyRef); // Remove the old key
+
+    res.status(200).json({
+      status: 'API key changed successfully!',
+      oldKey: oldKey,
+      newKey: newKey,
+      data: apiKeyData,
+    });
+  } catch (error) {
+    console.error('Error renaming API key:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 // create apikey
 app.get('/admin/create', async (req, res) => {
   try {
