@@ -5015,18 +5015,14 @@ await trackTotalRequest();
   }
 });
 // uploader api
-const username = "alvianxxuxio";
-const repo = "cloud";
-const token = "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";
-
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB limit
+  limits: { fileSize: 100 * 1024 * 1024 }, // Batas 100MB
 });
 
 function generateRandomFileName(extension) {
-  return crypto.randomBytes(2).toString("hex") + "." + extension;
+  return crypto.randomBytes(4).toString("hex") + "." + extension;
 }
 
 app.get("/upload", async (req, res) => {
@@ -5041,12 +5037,12 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   const originalName = req.file.originalname;
   const extension = originalName.split(".").pop();
   const fileName = generateRandomFileName(extension);
-  const fileContent = req.file.buffer.toString("base64");
+  const fileContent = req.file.buffer.toString("base64").replace(/\n/g, "");
 
-  const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/${fileName}`;
+  const apiUrl = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
 
   try {
-    await axios.put(
+    const response = await axios.put(
       apiUrl,
       {
         message: `Upload ${fileName}`,
@@ -5054,16 +5050,25 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       },
       {
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `token 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`,
           "User-Agent": "Node.js Uploader",
           Accept: "application/vnd.github.v3+json",
         },
       }
     );
 
-    res.status(200).json({ success: true, url: `https://cloud.alvianuxio.my.id/${fileName}` });
+    if (response.data && response.data.content && response.data.content.download_url) {
+      return res.json({
+        success: true,
+        url: `https://cloud.alvianuxio.my.id/${fileName}`,
+      });
+    } else {
+      console.error("GitHub API Error:", response.data);
+      return res.status(500).json({ success: false, message: "Upload failed" });
+    }
   } catch (error) {
-    res.status(500).json({ success: false, message: "Upload failed" });
+    console.error("Upload Error:", error.response ? error.response.data : error.message);
+    return res.status(500).json({ success: false, message: "Upload failed" });
   }
 });
 // tts
