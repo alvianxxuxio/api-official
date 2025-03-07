@@ -39,6 +39,60 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+
+// ytdlnew
+async function newyt(url, type) {
+    const headers = {
+        "accept": "*/*",
+        "accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+        "sec-ch-ua": '"Not A(Brand";v="8", "Chromium";v="132"',
+        "sec-ch-ua-mobile": "?1",
+        "sec-ch-ua-platform": '"Android"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "Referer": "https://id.ytmp3.mobi/",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+    };
+
+    try {
+        // Parallel request untuk inisialisasi dan ID video
+        const [initial, idMatch] = await Promise.all([
+            axios.get(`https://d.ymcdn.org/api/v1/init?p=y&23=1llum1n471&_=${Math.random()}`, { headers }),
+            Promise.resolve(url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|.*embed\/))([^&?/]+)/))
+        ]);
+
+        const init = initial.data;
+        if (!init?.convertURL || !idMatch?.[1]) {
+            throw new Error("Gagal mendapatkan data inisialisasi atau ID video tidak valid");
+        }
+
+        const id = idMatch[1];
+        const mp4_ = `${init.convertURL}&v=${id}&f=mp4&_=${Math.random()}`;
+        const mp3_ = `${init.convertURL}&v=${id}&f=mp3&_=${Math.random()}`;
+
+        // Parallel request untuk MP4 dan MP3
+        const [mp4Res, mp3Res] = await Promise.all([
+            axios.get(mp4_, { headers }),
+            axios.get(mp3_, { headers })
+        ]);
+
+        if (!mp4Res?.data?.downloadURL || !mp3Res?.data?.downloadURL || !mp3Res?.data?.progressURL) {
+            throw new Error("Gagal mendapatkan URL unduhan atau progress dari server");
+        }
+
+        // Ambil progress hanya 1x untuk mempercepat
+        const progress = await axios.get(mp3Res.data.progressURL, { headers, timeout: 3000 }).catch(() => ({}));
+        const title = progress?.data?.title || "Tidak diketahui";
+
+        return {
+            title,
+            downloadURL: type === 'mp4' ? mp4Res.data.downloadURL : mp3Res.data.downloadURL
+        };
+    } catch (err) {
+        throw new Error(`Error: ${err.message}`);
+    }
+}
 // black box
 async function blackbox(query) {
   const id = crypto.randomBytes(16).toString('hex');
@@ -2580,43 +2634,98 @@ async function blackboxAIChat(message) {
 }
 
 //pinterest
-async function pinterest(query) {
-  const baseUrl = 'https://www.pinterest.com/resource/BaseSearchResource/get/';
-  const queryParams = {
-    source_url: '/search/pins/?q=' + encodeURIComponent(query),
-    data: JSON.stringify({
-      options: {
-        isPrefetch: false,
-        query,
-        scope: 'pins',
-        no_fetch_context_on_resource: false
-      },
-      context: {}
-    }),
-    _: Date.now()
-  };
-  const url = new URL(baseUrl);
-  Object.entries(queryParams).forEach(entry => url.searchParams.set(entry[0], entry[1]));
+async function getCookies() {
+    try {
+        const response = await axios.get('https://www.pinterest.com/csrf_error/');
+        const setCookieHeaders = response.headers['set-cookie'];
+        if (setCookieHeaders) {
+            const cookies = setCookieHeaders.map(cookieString => {
+                const cookieParts = cookieString.split(';');
+                const cookieKeyValue = cookieParts[0].trim();
+                return cookieKeyValue;
+            });
+            return cookies.join('; ');
+        } else {
+            console.warn('No set-cookie headers found in the response.');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching cookies:', error);
+        return null;
+    }
+}
 
-  try {
-    const json = await (await fetch(url.toString())).json();
-    const results = json.resource_response?.data?.results?? [];
-    return results.map(item => ({
-      pin: 'https://www.pinterest.com/pin/' + item.id?? '',
-      link: item.link?? '',
-      created_at: (new Date(item.created_at)).toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      })?? '',
-      id: item.id?? '',
-      images_url: item.images?.['736x']?.url?? '',
-      grid_title: item.grid_title?? ''
-    }));
-  } catch (error) {
-    console.error('Error mengambil data:', error);
-    return [];
-  }
+async function pinterest(query) {
+    try {
+        const cookies = await getCookies();
+        if (!cookies) {
+            console.log('Failed to retrieve cookies. Exiting.');
+            return;
+        }
+
+        const url = 'https://www.pinterest.com/resource/BaseSearchResource/get/';
+
+        const params = {
+            source_url: `/search/pins/?q=${query}`, // Use encodedQuery here
+            data: JSON.stringify({
+                "options": {
+                    "isPrefetch": false,
+                    "query": query,
+                    "scope": "pins",
+                    "no_fetch_context_on_resource": false
+                },
+                "context": {}
+            }),
+            _: Date.now()
+        };
+
+        const headers = {
+            'accept': 'application/json, text/javascript, */*, q=0.01',
+            'accept-encoding': 'gzip, deflate',
+            'accept-language': 'en-US,en;q=0.9',
+            'cookie': cookies,
+            'dnt': '1',
+            'referer': 'https://www.pinterest.com/',
+            'sec-ch-ua': '"Not(A:Brand";v="99", "Microsoft Edge";v="133", "Chromium";v="133"',
+            'sec-ch-ua-full-version-list': '"Not(A:Brand";v="99.0.0.0", "Microsoft Edge";v="133.0.3065.92", "Chromium";v="133.0.6943.142"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-model': '""',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-ch-ua-platform-version': '"10.0.0"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0',
+            'x-app-version': 'c056fb7',
+            'x-pinterest-appstate': 'active',
+            'x-pinterest-pws-handler': 'www/[username]/[slug].js',
+            'x-pinterest-source-url': '/hargr003/cat-pictures/',
+            'x-requested-with': 'XMLHttpRequest'
+        };
+
+        const { data } = await axios.get(url, {
+            headers: headers,
+            params: params
+        })
+
+        const container = [];
+        const results = data.resource_response.data.results.filter((v) => v.images?.orig);
+        results.forEach((result) => {
+            container.push({
+                upload_by: result.pinner.username,
+                fullname: result.pinner.full_name,
+                followers: result.pinner.follower_count,
+                caption: result.grid_title,
+                image: result.images.orig.url,
+                source: "https://id.pinterest.com/pin/" + result.id,
+            });
+        });
+
+        return container;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
 }
 //gpt pic
 async function gptpic(captionInput) {
@@ -8698,7 +8807,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await ytmp3(url);
+    const response = await newyt(url, "mp3");
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
@@ -8759,7 +8868,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await ytmp4(url);
+    const response = await newyt(url, "mp4");
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
