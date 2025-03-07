@@ -5015,6 +5015,10 @@ await trackTotalRequest();
   }
 });
 // uploader api
+const username = "alvianxxuxio";
+const repo = "cloud";
+const token = "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";
+
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
@@ -5025,9 +5029,10 @@ function generateRandomFileName(extension) {
   return crypto.randomBytes(2).toString("hex") + "." + extension;
 }
 
-app.get('/upload', async (req, res) => {
-  res.send('Use POST method to upload');
+app.get("/upload", async (req, res) => {
+  res.send("Use POST method to upload");
 });
+
 app.post("/upload", upload.single("file"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: "No file uploaded" });
@@ -5038,7 +5043,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   const fileName = generateRandomFileName(extension);
   const fileContent = req.file.buffer.toString("base64");
 
-  const apiUrl = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
+  const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/${fileName}`;
 
   try {
     const response = await axios.put(
@@ -5049,12 +5054,28 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       },
       {
         headers: {
-          Authorization: `token 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`,
+          Authorization: `token ${token}`,
           "User-Agent": "Node.js Uploader",
           Accept: "application/vnd.github.v3+json",
         },
       }
     );
+
+    if (response.data.content && response.data.content.download_url) {
+      return res.json({
+        success: true,
+        url: `https://cloud.alvianuxio.my.id/${fileName}`,
+      });
+    } else {
+      throw new Error("Upload failed");
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.response?.data?.message || "Upload failed",
+    });
+  }
+});
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
