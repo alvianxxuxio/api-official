@@ -5061,7 +5061,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       }
     );
 
-    res.json({ success: true, url: `https://cloud.alvianuxio.my.id/${fileName}` });
+    res.status(200).json({ success: true, url: `https://cloud.alvianuxio.my.id/${fileName}` });
   } catch (error) {
     res.status(500).json({ success: false, message: "Upload failed" });
   }
