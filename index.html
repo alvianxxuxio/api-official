@@ -1408,9 +1408,9 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
     <div class="errors" style='font-size:12px'>ERROR</div>
 </div>
 <div id="dropdown53" class="dropdown-content">
-    <form class="form-group" action="/api/uploader" onsubmit="uploader(event, '/api/uploader')">
+    <form class="form-group" action="/api/upload" onsubmit="uploader(event, '/api/upload')">
         <!-- File Upload Input -->
-        <label for="file53">Upload File:</label>
+<label for="file53">Upload File:</label>
         <input type="file" id="file53" name="file" required>
 
         <!-- API Key Input -->
@@ -2231,6 +2231,29 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
       document.execCommand('copy');
       document.body.removeChild(textarea);
       alert('Copied to clipboard!');
+    }
+    function uploader(event, endpoint) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const button8 = event.target.querySelector('button');
+        const base = "https://api.alvianuxio.my.id";
+        const apiUrl = `${base}${endpoint}`;
+
+        button8.textContent = "Loading...";
+
+        fetch(apiUrl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            showPopup(apiUrl, data);
+            button8.textContent = "Try Now";
+        })
+        .catch(error => {
+            showPopup(apiUrl, { error: error.message });
+            button8.textContent = "Try Now";
+        });
     }
   </script>
 </body>

@@ -17,7 +17,6 @@ const {
 const cheerio = require('cheerio');
 const qs = require('qs');
 const multer = require("multer");
-const upload = multer({ storage: multer.memoryStorage() });
 const https = require('https');
 const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
@@ -5016,40 +5015,46 @@ await trackTotalRequest();
   }
 });
 // uploader api
-const agent = new https.Agent({ rejectUnauthorized: false });
-
-app.post('/upload', upload.array('files', 3), async (req, res) => {
-    if (req.method === 'GET') {
-        return res.status(400).json({ error: 'upload hanya mendukung metode POST' });
-    }
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ error: 'Tidak ada file yang diunggah' });
-    }
-    
-    let formData = new FormData();
-    req.files.forEach(file => {
-        formData.append('files[]', fs.createReadStream(file.path), file.originalname);
-    });
-    
-    if (req.body.expiry_date) {
-        formData.append('expiry_date', req.body.expiry_date);
-    }
-    
-    try {
-        const response = await axios.post('https://cdn.alvianuxio.my.id/File.php', formData, {
-            headers: {
-                ...formData.getHeaders()
-            },
-            httpsAgent: agent
-        });
-        
-        res.json(response.data);
-    } catch (error) {
-        res.status(500).json({ error: 'Gagal mengunggah file', details: error.message });
-    } finally {
-        req.files.forEach(file => fs.unlinkSync(file.path)); // Hapus file setelah diunggah
-    }
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB limit
 });
+
+function generateRandomFileName(extension) {
+  return crypto.randomBytes(2).toString("hex") + "." + extension;
+}
+
+app.get('/upload', async (req, res) => {
+  res.send('Use POST method to upload');
+});
+app.post("/upload", upload.single("file"), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: "No file uploaded" });
+  }
+
+  const originalName = req.file.originalname;
+  const extension = originalName.split(".").pop();
+  const fileName = generateRandomFileName(extension);
+  const fileContent = req.file.buffer.toString("base64");
+
+  const apiUrl = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
+
+  try {
+    const response = await axios.put(
+      apiUrl,
+      {
+        message: `Upload ${fileName}`,
+        content: fileContent,
+      },
+      {
+        headers: {
+          Authorization: `token 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`,
+          "User-Agent": "Node.js Uploader",
+          Accept: "application/vnd.github.v3+json",
+        },
+      }
+    );
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
