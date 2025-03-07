@@ -5046,7 +5046,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/${fileName}`;
 
   try {
-    const response = await axios.put(
+    await axios.put(
       apiUrl,
       {
         message: `Upload ${fileName}`,
@@ -5061,19 +5061,9 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       }
     );
 
-    if (response.data.content && response.data.content.download_url) {
-      return res.json({
-        success: true,
-        url: `https://cloud.alvianuxio.my.id/${fileName}`,
-      });
-    } else {
-      throw new Error("Upload failed");
-    }
+    res.json({ success: true, url: `https://cloud.alvianuxio.my.id/${fileName}` });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.response?.data?.message || "Upload failed",
-    });
+    res.status(500).json({ success: false, message: "Upload failed" });
   }
 });
 // tts
