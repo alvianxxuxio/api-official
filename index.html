@@ -528,7 +528,7 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
   <div class="active" style="font-size: 12px;">ACTIVE</div>
 </div>
 <div id="dropdown58" class="dropdown-content">
-  <form class="form-group" action="/api/play" onsubmit="window.url(event, '/api/play')">
+  <form class="form-group" action="/api/play" onsubmit="window.play(event, '/api/play')">
     <label for="message58">Enter query:</label>
     <input type="text" id="message58" name="query" placeholder="Search here" required>
 
@@ -536,10 +536,7 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
     <select id="format58" name="format" required>
       <option value="" disabled selected>Select Format Audio</option>
       <option value="mp3">MP3</option>
-      <option value="m4a">M4A</option>
-      <option value="wav">WAV</option>
-      <option value="webm">WEBM</option>
-      <option value="opus">OPUS</option>
+            <option value="720">MP4</option>
             <option value="" disabled>Currently, only audio formats are available.</option>
     </select>
 
@@ -2106,6 +2103,36 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
       } catch (error) {
         showPopup(apiUrl, { error: error.message });
         button3.textContent = "Try Now";
+      }
+    };
+    window.play = function(event, endpoint) {
+      event.preventDefault();
+      const button7 = event.target.querySelector('button');
+      const message = event.target.querySelector('input[name="query"]').value;
+      const apiKey = event.target.querySelector('input[name="apikey"]').value;
+      const prompt = event.target.querySelector('input[name="format"]').value;
+      const base = "https://api.alvianuxio.my.id";
+
+      const apiUrl = `${base}${endpoint}?text=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}&prompt=${encodeURIComponent(prompt)}`;
+
+      try {
+       button3.textContent = "Loading...";
+        fetch(apiUrl, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+        .then(data => {
+          showPopup(apiUrl, data);
+          button7.textContent = "Try Now";
+        })
+        .catch(error => {
+          showPopup(apiUrl, { error: error.message });
+          button7.textContent = "Try Now";
+        });
+      } catch (error) {
+        showPopup(apiUrl, { error: error.message });
+        button7.textContent = "Try Now";
       }
     };
    window.check = function(event, endpoint) {
