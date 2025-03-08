@@ -17,6 +17,7 @@ const {
 const cheerio = require('cheerio');
 const qs = require('qs');
 const multer = require("multer");
+const fs = require("fs");
 const https = require('https');
 const fetch = require('node-fetch')
 const uploadFile = require('./lib/uploadFile.js')
@@ -5015,61 +5016,40 @@ await trackTotalRequest();
   }
 });
 // uploader api
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // Batas 100MB
-});
-
-function generateRandomFileName(extension) {
-  return crypto.randomBytes(4).toString("hex") + "." + extension;
-}
-
-app.get("/upload", async (req, res) => {
-  res.send("Use POST method to upload");
-});
+const upload = multer({ dest: "uploads/" });
 
 app.post("/upload", upload.single("file"), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ success: false, message: "No file uploaded" });
-  }
-
-  const originalName = req.file.originalname;
-  const extension = originalName.split(".").pop();
-  const fileName = `uploads/${generateRandomFileName(extension)}`; // Menambahkan folder uploads
-  const fileContent = req.file.buffer.toString("base64").replace(/\n/g, "");
-
-  const apiUrl = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
-
-  try {
-    const response = await axios.put(
-      apiUrl,
-      {
-        message: `Upload ${fileName}`,
-        content: fileContent,
-      },
-      {
-        headers: {
-          Authorization: `token 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`, // Ganti dengan token yang valid
-          "User -Agent": "Node.js Uploader",
-          Accept: "application/vnd.github.v3+json",
-        },
-      }
-    );
-
-    if (response.data && response.data.content && response.data.content.download_url) {
-      return res.json({
-        success: true,
-        url: `https://cloud.alvianuxio.my.id/${fileName}`,
-      });
-    } else {
-      console.error("GitHub API Error:", response.data);
-      return res.status(500).json({ success: false, message: "Upload failed" });
+    if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
     }
-  } catch (error) {
-    console.error("Upload Error:", error.response ? error.response.data : error.message);
-    return res.status(500).json({ success: false, message: "Upload failed" });
-  }
+
+    const filePath = path.resolve(req.file.path);
+    
+    try {
+        const catboxUrl = await uploader.catbox(filePath);
+        const litterboxUrl = await uploader.litterbox(filePath);
+        const ucarecdnUrl = await uploader.ucarecdn(filePath);
+
+        // Hapus file setelah upload selesai
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error("Error deleting file:", err);
+            }
+        });
+
+        res.json({
+            catbox: catboxUrl,
+            litterbox: litterboxUrl,
+            ucarecdn: ucarecdnUrl
+        });
+    } catch (error) {
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error("Error deleting file after failure:", err);
+            }
+        });
+        res.status(500).json({ error: error.message });
+    }
 });
 // tts
 app.get("/api/tts", async (req, res) => { 
