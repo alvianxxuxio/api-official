@@ -1127,7 +1127,7 @@ async function play(query, format) {
 
       // Add download data to videoInfo
       videoInfo.image = downloadData.image;
-      videoInfo.downloadUrl = downloadData.downloadUrl;
+      videoInfo.downloadUrl = downloadData.downloadURL;
 
       return videoInfo;
     } else {
