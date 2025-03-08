@@ -5026,9 +5026,9 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     const filePath = path.resolve(req.file.path);
     
     try {
-        const catboxUrl = await uploader.catbox(filePath);
-        const litterboxUrl = await uploader.litterbox(filePath);
-        const ucarecdnUrl = await uploader.ucarecdn(filePath);
+        const catboxUrl = await Uploader.catbox(filePath);
+        const litterboxUrl = await Uploader.litterbox(filePath);
+        const ucarecdnUrl = await Uploader.ucarecdn(filePath);
 
         // Hapus file setelah upload selesai
         fs.unlink(filePath, (err) => {
