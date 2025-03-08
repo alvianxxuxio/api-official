@@ -1126,9 +1126,12 @@ async function play(query, format) {
       // Wait for the download data to complete
       const downloadData = await downloadPromise;
 
-      // Add download data to videoInfo
+      // Upload hasil unduhan ke Catbox
+      const catboxUrl = await uploader.catbox(downloadData.downloadURL);
+
+      // Add Catbox URL to videoInfo
       videoInfo.image = downloadData.image;
-      videoInfo.downloadUrl = downloadData.downloadURL;
+      videoInfo.downloadUrl = catboxUrl;
 
       return videoInfo;
     } else {
@@ -5016,41 +5019,7 @@ await trackTotalRequest();
   }
 });
 // uploader api
-const upload = multer({ dest: "uploads/" });
 
-app.post("/upload", upload.single("file"), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded" });
-    }
-
-    const filePath = path.resolve(req.file.path);
-    
-    try {
-        const catboxUrl = await Uploader.catbox(filePath);
-        const litterboxUrl = await Uploader.litterbox(filePath);
-        const ucarecdnUrl = await Uploader.ucarecdn(filePath);
-
-        // Hapus file setelah upload selesai
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                console.error("Error deleting file:", err);
-            }
-        });
-
-        res.json({
-            catbox: catboxUrl,
-            litterbox: litterboxUrl,
-            ucarecdn: ucarecdnUrl
-        });
-    } catch (error) {
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                console.error("Error deleting file after failure:", err);
-            }
-        });
-        res.status(500).json({ error: error.message });
-    }
-});
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
