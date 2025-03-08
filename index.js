@@ -5036,7 +5036,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
   const originalName = req.file.originalname;
   const extension = originalName.split(".").pop();
-  const fileName = generateRandomFileName(extension);
+  const fileName = `uploads/${generateRandomFileName(extension)}`; // Menambahkan folder uploads
   const fileContent = req.file.buffer.toString("base64").replace(/\n/g, "");
 
   const apiUrl = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
@@ -5050,8 +5050,8 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       },
       {
         headers: {
-          Authorization: `token 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`,
-          "User-Agent": "Node.js Uploader",
+          Authorization: `token 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`, // Ganti dengan token yang valid
+          "User -Agent": "Node.js Uploader",
           Accept: "application/vnd.github.v3+json",
         },
       }
