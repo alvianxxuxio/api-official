@@ -1127,7 +1127,7 @@ async function play(query, format) {
       const downloadData = await downloadPromise;
 
       // Upload hasil unduhan ke Catbox
-      const catboxUrl = await uploader.catbox(downloadData.downloadURL);
+      const catboxUrl = await Uploader.catbox(downloadData.downloadURL);
 
       // Add Catbox URL to videoInfo
       videoInfo.image = downloadData.image;
