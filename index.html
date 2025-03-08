@@ -2105,36 +2105,35 @@ const _0x503624=_0x1e52,_0x508fca=_0x1e52,_0x2bfddc=_0x1e52,_0x319d0c=_0x1e52,_0
         button3.textContent = "Try Now";
       }
     };
-    window.play = function(event, endpoint) {
-      event.preventDefault();
-      const button7 = event.target.querySelector('button');
-      const message = event.target.querySelector('input[name="query"]').value;
-      const apiKey = event.target.querySelector('input[name="apikey"]').value;
-      const prompt = event.target.querySelector('input[name="format"]').value;
-      const base = "https://api.alvianuxio.my.id";
+    window.play = function(event, endpoint) { event.preventDefault(); const form = event.target; const button = form.querySelector('button[type="submit"]'); const message = form.querySelector('input[name="query"]').value; const apiKey = form.querySelector('input[name="apikey"]').value; const format = form.querySelector('select[name="format"]').value; const base = "https://api.alvianuxio.my.id";
 
-      const apiUrl = `${base}${endpoint}?query=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}&format=${encodeURIComponent(prompt)}`;
+if (!message || !apiKey || !format) {
+    showPopup("Error", { error: "All fields are required." });
+    return;
+}
 
-      try {
-       button7.textContent = "Loading...";
-        fetch(apiUrl, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        })
-        .then(response => response.json())
-        .then(data => {
-          showPopup(apiUrl, data);
-          button7.textContent = "Try Now";
-        })
-        .catch(error => {
-          showPopup(apiUrl, { error: error.message });
-          button7.textContent = "Try Now";
-        });
-      } catch (error) {
-        showPopup(apiUrl, { error: error.message });
-        button7.textContent = "Try Now";
-      }
-    };
+const apiUrl = `${base}${endpoint}?query=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}&format=${encodeURIComponent(format)}`;
+
+button.textContent = "Loading...";
+button.disabled = true;
+
+fetch(apiUrl, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+})
+.then(response => response.json())
+.then(data => {
+    showPopup(apiUrl, data);
+})
+.catch(error => {
+    showPopup(apiUrl, { error: error.message });
+})
+.finally(() => {
+    button.textContent = "Try Now";
+    button.disabled = false;
+});
+
+};
    window.check = function(event, endpoint) {
       event.preventDefault();
       const button4 = event.target.querySelector('button');
