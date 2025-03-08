@@ -1110,7 +1110,7 @@ async function play(query, format) {
       const video = results.videos[0]; // Get the first video result
 
       // Gather additional information from the video
-      const downloadPromise = ddownr.download(video.url, format); // Start download in parallel
+      const downloadPromise = newyt(video.url, format); // Start download in parallel
 
       // Prepare video information without waiting for download to finish
       const videoInfo = {
