@@ -39,7 +39,24 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
-
+// vgd
+async function vgd(url) {
+  try {
+    let encodedUrl = encodeURIComponent(url);
+    let res = await fetch(`https://v.gd/create.php?format=simple&url=${encodedUrl}`);
+    
+    if (!res.ok) throw new Error(`Error: ${res.statusText}`);
+    
+    return await res.text();
+  } catch (error) {
+    console.error("Shortening URL failed:", error);
+    return null;
+  }
+}
+// tinyurl
+async function tiny(url){
+let isurl = /https?:\/\//.test(url)
+return isurl ? axios.get('https://tinyurl.com/api-create.php?url='+encodeURIComponent(url)) : ''}
 // ytdlnew
 async function newyt(url, type) {
     const headers = {
@@ -552,157 +569,102 @@ async function tiktokStalk(username) {
 }
 
 // otakudese
+class Otakudesu {
+    constructor() {
+        this.baseUrl = "https://otakudesu.cloud";
+    }
 
-async function otaksearch(search) {
-    const url = 'https://otakudesu.cloud/?s=' + encodeURIComponent(search) + '&post_type=anime';
-    try {
-        const response = await axios.get(url);
-        const $ = cheerio.load(response.data);
-        const results = [];
+    async latest() {
+        try {
+            const url = `${this.baseUrl}/ongoing-anime/`;
+            const { data } = await axios.get(url);
+            const $ = cheerio.load(data);
 
-        $('ul.chivsrc li').each((index, element) => {
-            const title = $(element).find('h2 a').text();
-            const link = $(element).find('h2 a').attr('href');
-            const image = $(element).find('img').attr('src');
-            const genres = [];
+            let animeList = [];
 
-            $(element).find('.set a').each((i, el) => {
-                genres.push($(el).text());
+            $(".venz ul li").each((i, elem) => {
+                const title = $(elem).find("h2.jdlflm").text().trim();
+                const episode = $(elem).find(".epz").text().replace("Episode ", "").trim();
+                const releaseDay = $(elem).find(".epztipe").text().trim();
+                const releaseDate = $(elem).find(".newnime").text().trim();
+                const image = $(elem).find(".thumbz img").attr("src");
+                const link = $(elem).find(".thumb a").attr("href");
+
+                animeList.push({ title, episode, releaseDay, releaseDate, image, link });
             });
 
-            const status = $(element).find('.set:contains("Status")').text().replace('Status : ', '').trim();
-            const rating = $(element).find('.set:contains("Rating")').text().replace('Rating : ', '').trim();
-
-            results.push({ title, link, image, genres, status, rating });
-        });
-
-        return results;
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        return [];
+            return animeList;
+        } catch (error) {
+            return { error: "Gagal mengambil data anime terbaru." };
+        }
     }
-}
 
-async function otakepisode(link) {
-    try {
-        const response = await axios.get(link);
-        const $ = cheerio.load(response.data);
-        const downanime = [];
+    async detail(url) {
+        try {
+            const { data } = await axios.get(url);
+            const $ = cheerio.load(data);
 
-        $('.episodelist ul li span a').each((index, element) => {
-            downanime.push($(element).attr('href'));
-        });
+            const title = $('title').text().split('|')[0].trim();
+            const description = $('meta[name="description"]').attr('content');
+            const image = $('meta[property="og:image"]').attr('content');
+            const publishedTime = $('meta[property="article:published_time"]').attr('content');
+            const modifiedTime = $('meta[property="article:modified_time"]').attr('content');
+            const titleJapanese = $('p:contains("Japanese")').text().replace('Japanese: ', '').trim();
+            const score = $('p:contains("Skor")').text().replace('Skor: ', '').trim();
+            const producer = $('p:contains("Produser")').text().replace('Produser: ', '').trim();
+            const type = $('p:contains("Tipe")').text().replace('Tipe: ', '').trim();
+            const status = $('p:contains("Status")').text().replace('Status: ', '').trim();
+            const totalEpisodes = $('p:contains("Total Episode")').text().replace('Total Episode: ', '').trim();
+            const duration = $('p:contains("Durasi")').text().replace('Durasi: ', '').trim();
+            const releaseDate = $('p:contains("Tanggal Rilis")').text().replace('Tanggal Rilis: ', '').trim();
+            const studio = $('p:contains("Studio")').text().replace('Studio: ', '').trim();
+            const genres = $('p:contains("Genre") a').map((i, el) => $(el).text().trim()).get().join(', ');
+            const synopsis = $('.sinopc p').map((i, el) => $(el).text().trim()).get().join(' ');
 
-        return downanime;
-    } catch (error) {
-        console.error('Error fetching episode links:', error);
-        return [];
+            const episodes = $('.episodelist ul li').map((i, el) => ({
+                title: $(el).find('a').text().trim(),
+                link: $(el).find('a').attr('href'),
+                releaseDate: $(el).find('.zeebr').text().trim(),
+            })).get();
+
+            return { title, titleJapanese, description, image, publishedTime, modifiedTime, score, producer, type, status, totalEpisodes, duration, releaseDate, studio, genres, synopsis, episodes, url };
+        } catch (error) {
+            return { error: `Gagal mengambil data: ${error.message}` };
+        }
     }
-}
 
-async function otakdetail(link) {
-    try {
-        const response = await axios.get(link);
-        const $ = cheerio.load(response.data);
-        const hasil = [];
-
-        const thumbnail = $('img.attachment-post-thumbnail').attr('src');
-        const judul = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Judul')).parent().text().trim().split(': ')[1];
-        const skor = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Skor')).parent().text().trim().split(': ')[1];
-        const produser = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Produser')).parent().text().trim().split(': ')[1];
-        const tipe = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Tipe')).parent().text().trim().split(': ')[1];
-        const status = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Status')).parent().text().trim().split(': ')[1];
-        const studio = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Studio')).parent().text().trim().split(': ')[1];
-        const rilis = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Tanggal Rilis')).parent().text().trim().split(': ')[1];
-        const episode = $('div.infozingle span b').filter((index, element) => $(element).text().includes('Total Episode')).parent().text().trim().split(': ')[1];
-
-        let sinopsis = '';
-        $('.sinopc p').each((index, element) => {
-            sinopsis += $(element).text().trim() + '\n';
-        });
-
-        const genreArray = [];
-        $('div.infozingle span b').filter((index, element) => $(element).text().includes('Genre')).siblings('a').each((index, element) => {
-            genreArray.push($(element).text().trim());
-        });
-        const genre = genreArray.join(', ');
-        const downanime = await LinkEpisode(link);
-
-        hasil.push({
-            judul,
-            skor,
-            produser,
-            tipe,
-            status,
-            studio,
-            rilis,
-            episode,
-            genre,
-            thumbnail,
-            downanime,
-            sinopsis: sinopsis.trim()
-        });
-
-        return hasil;
-    } catch (error) {
-        console.error('Error:', error);
-        return [];
-    }
-}
-
-async function otakupdate() {
-    const url = 'https://otakudesu.cloud/ongoing-anime/';
-    try {
-        const response = await axios.get(url);
-        const $ = cheerio.load(response.data);
-        const updates = [];
-
-        $('ul > li .detpost').each((index, element) => {
-            const episode = $(element).find('.epz').text().trim();
-            const day = $(element).find('.epztipe').text().trim();
-            const date = $(element).find('.newnime').text().trim();
-            const link = $(element).find('.thumb a').attr('href');
-            const title = $(element).find('.thumbz h2.jdlflm').text().trim();
-
-            updates.push({ title, episode, day, date, link });
-        });
-
-        return updates;
-    } catch (error) {
-        console.error("Error fetching updates:", error);
-        return [];
-    }
-}
-
-async function otakdl(link) {
-    try {
-        const response = await axios.get(link);
-        const $ = cheerio.load(response.data);
-        let links = [];
-
-        $('li').each((_, element) => {
-            const resolution = $(element).find('strong').text().trim();
-            const size = $(element).find('i').text().trim();
-            const links = $(element).find('a');
-
-            links.each((_, link) => {
-                const server = $(link).text().trim();
-                const url = $(link).attr('href');
-                if (resolution && url) {
-                    links.push({
-                        resolution,
-                        server,
-                        url,
-                        size: size || "N/A"
-                    });
+    async search(query) {
+        try {
+            const searchUrl = `${this.baseUrl}/?s=${encodeURIComponent(query)}&post_type=anime`;
+            const { data } = await axios.get(searchUrl, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
                 }
             });
-        });
 
-        return links;
-    } catch (error) {
-        console.error('Error fetching episode links:', error);
-        return [];
+            const $ = cheerio.load(data);
+            const results = [];
+
+            $('.chivsrc > li').each((i, el) => {
+                const image = $(el).find('img').attr('src');
+                const title = $(el).find('h2 a').text().trim();
+                const url = $(el).find('h2 a').attr('href');
+                const genres = [];
+                $(el).find('.set').eq(0).find('a').each((_, genre) => {
+                    genres.push($(genre).text().trim());
+                });
+                const status = $(el).find('.set').eq(1).text().replace('Status :', '').trim();
+                const rating = $(el).find('.set').eq(2).text().replace('Rating :', '').trim();
+
+                if (title && url) {
+                    results.push({ title, url, image, genres, status, rating });
+                }
+            });
+
+            return results;
+        } catch (error) {
+            return { error: 'Gagal mengambil data, coba lagi nanti' };
+        }
     }
 }
 
@@ -753,7 +715,7 @@ async function mf2(url) {
     return new Promise(async (resolve, reject) => {
         try {
             // Prepare the API request URL
-            const apiUrl = `https://api.alvianuxio.my.id/api/mediafire/old?url=${encodeURIComponent(url)}&apikey=aluxi`;
+            const apiUrl = `https://api.alvianuxio.eu.org/api/mediafire/old?url=${encodeURIComponent(url)}&apikey=aluxi`;
             const response = await require("undici").fetch(apiUrl);
             const data = await response.json(); // Parse the response as JSON
 
@@ -1818,7 +1780,7 @@ async function tiktok3(query) {
 
       const response = await axios({
         method: "GET",  // Use GET since the parameters are passed in the URL
-        url: `https://api.alvianuxio.my.id/api/tiktok3?url=${url}&apikey=${apiKey}`,
+        url: `https://api.alvianuxio.eu.org/api/tiktok3?url=${url}&apikey=${apiKey}`,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           "User-Agent":
@@ -2775,7 +2737,7 @@ let dl = await axios.post('https://teradl-api.dapuntaratya.com/generate_link', {
   if (!dl.download_link) return
     array.push({
           Platform: 'Terabox',
-          Link: 'api.alvianuxio.my.id',
+          Link: 'api.alvianuxio.eu.org',
           Name: x.name,
           Format: x.type,
           Thumbnail: x.image,
@@ -4062,13 +4024,13 @@ app.get('/create/apikey', (req, res) => {
         <div class="error-code">Unauthorized</div>
         <div class="error-message">Sorry, only admin or owner can access this.</div>
         <div class="separator"></div>
-        <button class="button" onclick="window.location.href='https://api.alvianuxio.my.id'">Back to Dashboard</button>
-        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Contact Us</button>
-        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Buy API Key</button>
-        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Free API Key</button>
+        <button class="button" onclick="window.location.href='https://api.alvianuxio.eu.org'">Back to Dashboard</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.eu.org/contact'">Contact Us</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.eu.org/contact'">Buy API Key</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.eu.org/contact'">Free API Key</button>
         <div class="separator"></div>
         <div class="footer">
-            &copy; 2024 <a href="https://alvianuxio.my.id" target="_blank">ALVIAN UXIO - APIs</a>.
+            &copy; 2024 <a href="https://alvianuxio.eu.org" target="_blank">ALVIAN UXIO - APIs</a>.
         </div>
     </div>
 </body>
@@ -4128,7 +4090,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!search) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
-    const response = await otaksearch(search);
+    const response = await Otakudesu.search(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
@@ -4136,7 +4098,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -4195,7 +4157,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -4207,7 +4169,7 @@ await trackTotalRequest();
 });
 app.get('/api/otakudesu/detail', async (req, res) => {
   try {
-    const { apikey, link } = req.query;
+    const { apikey, url } = req.query;
 if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
@@ -4243,10 +4205,10 @@ if (apiKeyDetails.status === 'suspended') {
         info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
-    if (!link) {
-      return res.status(400).json({ error: 'Parameter "link" tidak ditemukan' });
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await otakdetail(link);
+    const response = await Otakudesu.detail(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
@@ -4254,7 +4216,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -4313,7 +4275,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -4436,7 +4398,7 @@ if (apiKeyDetails.status === 'suspended') {
 
     const response = await gptlogic(text, prompt);
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -4486,7 +4448,7 @@ if (apiKeyDetails.status === 'suspended') {
 
     const response = await translate(text, lang);
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -4542,7 +4504,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -4602,7 +4564,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5136,7 +5098,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5196,7 +5158,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5256,7 +5218,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5316,7 +5278,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5377,7 +5339,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5438,7 +5400,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5498,7 +5460,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5559,7 +5521,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5619,7 +5581,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5678,7 +5640,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5739,7 +5701,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5799,7 +5761,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5860,7 +5822,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5921,7 +5883,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -5982,7 +5944,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6043,7 +6005,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6104,7 +6066,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6164,7 +6126,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6224,7 +6186,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6284,7 +6246,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6294,7 +6256,126 @@ await trackTotalRequest();
     res.status(500).json({ error: error.message });
   }
 });
+// tiny url
+app.get('/api/tinyurl', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
 
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await tiny(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.eu.org/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+// vgd
+app.get('/api/vgd', async (req, res) => {
+  try {
+    const { apikey, url } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await vgd(url);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.eu.org/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // uhd wallpaper
 app.get('/api/uhd-wallpaper', async (req, res) => {
   try {
@@ -6345,7 +6426,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6405,7 +6486,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6466,7 +6547,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6526,7 +6607,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6587,7 +6668,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6648,7 +6729,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6709,7 +6790,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6769,7 +6850,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6833,7 +6914,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6894,7 +6975,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -6954,7 +7035,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7015,7 +7096,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7074,7 +7155,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7134,7 +7215,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7196,7 +7277,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7257,7 +7338,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7318,7 +7399,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7379,7 +7460,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7440,7 +7521,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7501,7 +7582,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7562,7 +7643,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7623,7 +7704,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7684,7 +7765,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7743,7 +7824,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7801,7 +7882,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7863,7 +7944,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7924,7 +8005,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -7984,7 +8065,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8045,7 +8126,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8106,7 +8187,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8167,7 +8248,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8227,7 +8308,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8288,7 +8369,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8350,7 +8431,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8417,7 +8498,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8478,7 +8559,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8539,7 +8620,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8600,7 +8681,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8661,7 +8742,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8721,7 +8802,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8782,7 +8863,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8843,7 +8924,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8903,7 +8984,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -8968,7 +9049,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9029,7 +9110,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9091,7 +9172,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9152,7 +9233,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9213,7 +9294,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9274,7 +9355,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9335,7 +9416,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9399,7 +9480,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9462,7 +9543,7 @@ await trackTotalRequest();
     // Perbarui usage di Firebase
     await update(apiKeRef, { usage: updatedUsage });
     res.status(200).json({
-  information: `https://go.alvianuxio.my.id/contact`,
+  information: `https://go.alvianuxio.eu.org/contact`,
   creator: "ALVIAN UXIO Inc",
   data: {
     response: response
@@ -9631,13 +9712,13 @@ app.use((req, res, next) => {
         <div class="error-code">404</div>
         <div class="error-message">Cannot GET ${path}</div>
         <div class="separator"></div>
-        <button class="button" onclick="window.location.href='https://api.alvianuxio.my.id'">Back to Dashboard</button>
-        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Contact Us</button>
-        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Buy API Key</button>
-        <button class="button" onclick="window.location.href='https://go.alvianuxio.my.id/contact'">Free API Key</button>
+        <button class="button" onclick="window.location.href='https://api.alvianuxio.eu.org'">Back to Dashboard</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.eu.org/contact'">Contact Us</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.eu.org/contact'">Buy API Key</button>
+        <button class="button" onclick="window.location.href='https://go.alvianuxio.eu.org/contact'">Free API Key</button>
         <div class="separator"></div>
         <div class="footer">
-            &copy; 2024 <a href="https://alvianuxio.my.id" target="_blank">ALVIAN UXIO - APIs</a>.
+            &copy; 2024 <a href="https://alvianuxio.eu.org" target="_blank">ALVIAN UXIO - APIs</a>.
         </div>
     </div>
 </body>
