@@ -667,7 +667,7 @@ class Otakudesu {
         }
     }
 }
-
+const otaku = new Otakudesu();
 // pin 2
 async function pin2(url) {
   try {
@@ -4090,7 +4090,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!search) {
       return res.status(400).json({ error: 'Parameter "search" tidak ditemukan' });
     }
-    const response = await Otakudesu.search(search);
+    const response = await otaku.search(search);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
@@ -4208,7 +4208,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await Otakudesu.detail(url);
+    const response = await otaku.detail(url);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
