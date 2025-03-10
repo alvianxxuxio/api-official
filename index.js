@@ -19,7 +19,8 @@ const qs = require('qs');
 const multer = require("multer");
 const fs = require("fs");
 const https = require('https');
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
+const unfe = require("undici");
 const uploadFile = require('./lib/uploadFile.js')
 const undici = require('undici')
 const { lookup } = require("mime-types");
@@ -38,7 +39,34 @@ app.set("json spaces", 2);
 
 // Middleware untuk CORS
 app.use(cors());
+// llama stream
+async function llama(text) {
+    const url = `https://fastrestapis.fasturl.cloud/aistream/llama?ask=${encodeURIComponent(text)}&style=Friendly&model=meta-llama%2FMeta-Llama-3.1-405B-Instruct&sessionId=12345abcde`;
 
+    const response = await unfe(url, {
+        method: "GET",
+        headers: {
+            "Accept": "text/event-stream"
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    return {
+        async *[Symbol.asyncIterator]() {
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                yield decoder.decode(value);
+            }
+        }
+    };
+}
 // super qween
 async function qwen(text, model = "qwen-max-latest", mode = "search") {
     try {
@@ -5112,14 +5140,14 @@ await trackTotalRequest();
   }
 });
 // stream qwen
-app.get('/api/stream/super-qwen', async (req, res) => {
+app.get('/api/stream/llama', async (req, res) => {
   try {
-    const { apikey, model, mode, text } = req.query;
-    if (!text || !model || !apikey) {
-      return res.status(400).json({ error: 'Parameters "text", "model", or "apikey" not found' });
+    const { apikey, text } = req.query;
+    if (!text || !apikey) {
+      return res.status(400).json({ error: 'Parameters "text" or "apikey" not found' });
     }
 
-    // Referensi ke API key di Firebase
+    // **Validasi API key dari Firebase**
     const apiKeRef = ref(database, `apiKeys/${apikey}`);
     const dbRef = ref(database);
     const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
@@ -5136,27 +5164,28 @@ app.get('/api/stream/super-qwen', async (req, res) => {
       return res.status(403).json({ error: 'API key has been suspended.' });
     }
 
-    // **Ubah ke mode streaming**
+    // **Set headers untuk streaming**
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders(); // Pastikan header dikirim sebelum data stream
 
-    res.write(`data: ${JSON.stringify({ information: 'https://go.alvianuxio.eu.org/contact', creator: 'ALVIAN UXIO Inc' })}\n\n`);
-
-    const responseStream = await qwen(text, model, mode, true); // Pastikan fungsi ini mendukung streaming
+    // **Streaming data langsung ke klien**
+    const responseStream = await llama(text);
 
     for await (const chunk of responseStream) {
-      res.write(`data: ${JSON.stringify({ response: chunk })}\n\n`);
+      res.write(`${chunk}`);
     }
 
-    res.write(`data: [DONE]\n\n`);
+    // **Tutup stream setelah selesai**
     res.end();
 
-    // Perbarui penggunaan API di Firebase
+    // **Perbarui penggunaan API di Firebase**
     await trackTotalRequest();
     await update(apiKeRef, { usage: (apiKeyDetails.usage || 0) + 1 });
+
   } catch (error) {
-    res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
+    res.write(`Error: ${error.message}`);
     res.end();
   }
 });
