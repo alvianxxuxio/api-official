@@ -807,6 +807,59 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
       <span class="qwr">18 Endpoints</span>
     </div>
     <div class="content-container">   
+                             <div class="btn" onclick="toggleDropdown('dropdown85')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>Super Qwen<div style='font-size: 10px; color: gray;'>Talk with Super qwen</div></div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown85" class="dropdown-content">
+          <form class="form-group" action="/api/super-qwen" onsubmit="window.modse(event, '/api/super-qwen')">
+            <label for="message85">Enter Message:</label>
+            <input type="text" id="message85" name="text" placeholder="your text here" required>
+    <label for="model85">Select Format:</label>
+    <select id="model85" name="model" required>
+      <option value="" disabled selected>Select model</option>
+      <option value="qwen-max-latest">qwen-max-latest</option>
+            <option value="qwen-plus-latest">qwen-plus-latest</option>
+            <option value="qwen-plus-latest">qwen-plus-latest</option>
+            <option value="qwen2.5-vl-72b-instruct">qwen2.5-vl-72b-instruct</option>
+            <option value="qwen2.5-14b-instruct-1m">qwen2.5-14b-instruct-1m</option>
+            <option value="qvq-72b-preview">qvq-72b-preview</option>
+            <option value="qwq-32b-preview">qwq-32b-preview</option>
+            <option value="qwen2.5-coder-32b-instruct">qwen2.5-coder-32b-instruct</option>
+            <option value="qwen-turbo-latest">qwen-turbo-latest</option>
+            <option value="qwen2.5-72b-instruct">qwen2.5-72b-instruct</option>
+            <option value="" disabled>Select One Model</option>           
+    </select>
+            <label for="apikey15">Enter API Key:</label>
+        <input type="text" id="apikey85" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+      </div>
+              <div class="btn" onclick="toggleDropdown('dropdown86')">
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>Meta<div style='font-size: 10px; color: gray;'>Talk with Meta ai</div></div>
+<div class="active" style='font-size:12px'>ACTIVE</div>
+        </div>
+        <div id="dropdown86" class="dropdown-content">
+          <form class="form-group" action="/api/meta" onsubmit="window.ai(event, '/api/meta')">
+            <label for="message86">Enter Message:</label>
+            <input type="text" id="message86" name="text" placeholder="your text here" required>
+            <label for="apikey15">Enter API Key:</label>
+        <input type="text" id="apikey86" name="apikey" placeholder="Enter Your ApiKeys" required>
+            <button type="submit">Try Now</button>
+            <div class="info-row">
+            <span><h5 style='padding:0px;margin:0px;animation: fadeInUp 1s ease-in-out;'>Code</h5></span><span><h5 style='padding:0px;margin:0px;animation: fadeIn 0.5s ease-in-out;'>Description</h5></span></div>             <div class="info-row"><span>200</span><span>Success</span></div>            <div class="info-row"><span>404</span><span>Not Found</span></div>
+            <div class="info-row"><span>400</span><span>Bad Request</span></div>
+<div class="info-row"><span>403</span><span>Unauthorized apikey invalid</span></div>
+            <div class="info-row"><span>500</span><span>Internal server error</span></div>
+<div class="info-row"><span>504</span><span>Gateway Timeout</span></div>
+          </form>
+      </div>
             <div class="btn" onclick="toggleDropdown('dropdown80')">
           <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>Lumin ai
           <div style='font-size: 10px; color: gray;'>Talk with lumin ai</div></div>
@@ -1178,11 +1231,11 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
     <div id="result16" class="result" style="display:none;"></div>
 </div>
     <div class="btn" onclick="toggleDropdown('dropdown34')">
-          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>Groq-ai<div style='font-size: 10px; color: gray;'>Talk with groq ai</div></div>
-<div class="errors" style='font-size:12px'>ERROR</div>
+          <div class='sdfg'>GET</div><div style='flex-grow: 1; text-align: left; padding-left: 5px;'>Groq<div style='font-size: 10px; color: gray;'>Talk with groq ai</div></div>
+<div class="active" style='font-size:12px'>ERROR</div>
         </div>
         <div id="dropdown34" class="dropdown-content">
-          <form class="form-group" action="/api/groq-ai" onsubmit="executeApi(event, '/api/groq-ai')">
+          <form class="form-group" action="/api/groq" onsubmit="executeApi(event, '/api/groq')">
             <label for="message34">Enter Message:</label>
             <input type="text" id="message34" name="message" required>
 
@@ -2289,6 +2342,36 @@ fetch(apiUrl, {
             button8.textContent = "Try Now";
         });
     }
+    window.modse = function(event, endpoint) {
+      event.preventDefault();
+      const button9 = event.target.querySelector('button');
+      const message = event.target.querySelector('input[name="text"]').value; 
+      const apiKey = event.target.querySelector('input[name="apikey"]').value;
+      const prompt = event.target.querySelector('select[name="model"]').value;
+      const base = "https://api.alvianuxio.eu.org";
+
+      const apiUrl = `${base}${endpoint}?text=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}&model=${encodeURIComponent(prompt)}`;
+
+      try {
+      button9.textContent = "Loading...";
+        fetch(apiUrl, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+        .then(data => {
+          showPopup(apiUrl, data);
+          button9.textContent = "Try Now";
+        })
+        .catch(error => {
+          showPopup(apiUrl, { error: error.message });
+          button9.textContent = "Try Now";
+        });
+      } catch (error) {
+        showPopup(apiUrl, { error: error.message });
+        button9.textContent = "Try Now";
+      }
+    };
     function copyToClipboard(id) {
       const content = document.getElementById(id).textContent;
       const textarea = document.createElement('textarea');

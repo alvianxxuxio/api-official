@@ -39,6 +39,44 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+// super qween
+async function qwen(text, model = "qwen-max-latest") {
+    try {
+        const url = `https://fastrestapis.fasturl.cloud/aillm/superqwen?ask=${encodeURIComponent(text)}&model=${encodeURIComponent(model)}&style=${encodeURIComponent("Provide a detailed explanation")}&sessionid=123abcd&mode=search`;
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.result;
+    } catch (error) {
+        return { status: 500, content: "Error", result: error.message };
+    }
+}
+
+// meta
+async function meta(text) {
+    try {
+        const response = await fetch(`https://fastrestapis.fasturl.cloud/aillm/meta?ask=${encodeURIComponent(text)}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.result.message;
+    } catch (error) {
+        return { status: 500, content: "Error", result: error.message };
+    }
+}
 // vgd
 async function vgd(url) {
   try {
@@ -1307,27 +1345,18 @@ const chatbot = async (question, model) => {
     }  
 };
 //gemini
-async function gemini(query) {
-    const apiUrl = `https://restapi.apibotwa.biz.id/api/bard?message=${encodeURIComponent(query)}`;
+async function gemini(text, imageUrl, style = "Answer as a friendly assistant", model = "google/gemini-2.0-flash-001", sessionId = "session_123456789") {
     try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-            }
-        });
+        const response = await fetch(`https://fastrestapis.fasturl.cloud/aillm/gemini?ask=${encodeURIComponent(text)}&style=${encodeURIComponent(style)}&imageUrl=${encodeURIComponent(imageUrl)}&model=${encodeURIComponent(model)}&sessionId=${encodeURIComponent(sessionId)}`);
+        
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const responseJson = await response.json();
-        if (responseJson && responseJson.result) {
-            return responseJson.result;
-        } else {
-            return "Tidak ada pesan dalam response.";
-        }
+        
+        const data = await response.json();
+        return data.result.choices[0].message.content;
     } catch (error) {
-        console.error("Terjadi kesalahan:", error.message);
-        return "Gagal mendapatkan respons dari server.";
+        return { status: 500, content: "Error", result: error.message };
     }
 }
 //bingsearch
@@ -1913,31 +1942,21 @@ async function llama(query) {
 }
 
 //gpt4o
-async function gpt4o(query) {
-    const apiUrl = `https://restapi.apibotwa.biz.id/api/gpt4o?text=${encodeURIComponent(query)}`;
-
+async function gpt4o(text) {
     try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-            }
-        });
+        const response = await fetch(`https://fastrestapis.fasturl.cloud/aillm/gpt-4o?ask=${encodeURIComponent(text)}`);
+        
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
-        const responseJson = await response.json();
-         if (responseJson && responseJson.data.response) {
-            return responseJson.data.response;
-        } else {
-            return "Tidak ada pesan dalam response.";
-        }
+        
+        const data = await response.json();
+        return data.result;
     } catch (error) {
-        console.error("Terjadi kesalahan:", error.message);
-        return "Gagal mendapatkan respons dari server.";
+        return { status: 500, content: "Error", result: error.message };
     }
 }
+
 
 // steam search
 async function Steam(query) {
@@ -2289,35 +2308,21 @@ async function anime(query) {
 }
 
 //groq ai
-async function callGroqAPI(text, prompt) {
-  try {
-    const aikey = `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`;
-    const response = await axios({
-      method: 'post',
-      url: 'https://api.groq.com/openai/v1/chat/completions',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${aikey}`
-      },
-      data: {
-        messages: [
-          { role: 'system', content: prompt },
-          { role: 'user', content: text }
-        ],
-        model: 'llama-3.2-90b-vision-preview',
-        temperature: 1,
-        max_tokens: 1000, // Reduced token limit
-        top_p: 1,
-        stream: false,
-        response_format: 'text'
-      }
-    });
-    return JSON.stringify(response.data.choices[0].message.content, null, 2);
-  } catch (error) {
-    console.error('Error:', error.response?.data || error.message);
-    throw error;
-  }
+async function groq(text) {
+    try {
+        const response = await fetch(`https://fastrestapis.fasturl.cloud/aillm/grok?ask=${encodeURIComponent(text)}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.result;
+    } catch (error) {
+        return { status: 500, content: "Error", result: error.message };
+    }
 }
+
 
 //openai
 
@@ -4514,6 +4519,8 @@ await trackTotalRequest();
     res.status(500).json({ error: error.message });
   }
 });
+
+
 //Rusdi
 app.get('/api/Rusdi', async (req, res) => {
   try {
@@ -5048,6 +5055,62 @@ app.get("/api/tts", async (req, res) => {
     res.status(500).json({ status: false, error: error.message });
   }
 });
+
+// super qwen
+app.get('/api/super-qwen', async (req, res) => {
+  try {
+    const { apikey, model, text } = req.query;
+
+    if (!text || !model || !apikey) {
+      return res.status(400).json({ error: 'Parameters "text" or "model" or "apikey" not found' });
+    }
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+
+    const response = await qwen(text, model);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.eu.org/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //gemini
 app.get('/api/gemini', async (req, res) => {
   try {
@@ -5091,6 +5154,126 @@ if (apiKeyDetails.status === 'suspended') {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
     const response = await gemini(text);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.eu.org/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// meta ai
+app.get('/api/meta', async (req, res) => {
+  try {
+    const { apikey, text } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
+    }
+    const response = await meta(text);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.eu.org/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/groq', async (req, res) => {
+  try {
+    const { apikey, text } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
+    }
+    const response = await groq(text);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
