@@ -40,9 +40,9 @@ app.set("json spaces", 2);
 app.use(cors());
 
 // super qween
-async function qwen(text, model = "qwen-max-latest") {
+async function qwen(text, model = "qwen-max-latest", mode = "search") {
     try {
-        const url = `https://fastrestapis.fasturl.cloud/aillm/superqwen?ask=${encodeURIComponent(text)}&model=${encodeURIComponent(model)}&style=${encodeURIComponent("Provide a detailed explanation")}&sessionid=123abcd&mode=search`;
+        const url = `https://fastrestapis.fasturl.cloud/aillm/superqwen?ask=${encodeURIComponent(text)}&model=${encodeURIComponent(model)}&style=${encodeURIComponent("Provide a detailed explanation")}&sessionid=123abcd&mode=${encodeURIComponent(mode)}`;
 
         const response = await fetch(url, {
             method: "GET",
@@ -5059,7 +5059,7 @@ app.get("/api/tts", async (req, res) => {
 // super qwen
 app.get('/api/super-qwen', async (req, res) => {
   try {
-    const { apikey, model, text } = req.query;
+    const { apikey, model, mode, text } = req.query;
 
     if (!text || !model || !apikey) {
       return res.status(400).json({ error: 'Parameters "text" or "model" or "apikey" not found' });
@@ -5093,7 +5093,7 @@ if (apiKeyDetails.status === 'suspended') {
       });
     }
 
-    const response = await qwen(text, model);
+    const response = await qwen(text, model, mode);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
