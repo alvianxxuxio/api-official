@@ -5111,6 +5111,55 @@ await trackTotalRequest();
     res.status(500).json({ error: error.message });
   }
 });
+// stream qwen
+app.get('/api/stream/super-qwen', async (req, res) => {
+  try {
+    const { apikey, model, mode, text } = req.query;
+    if (!text || !model || !apikey) {
+      return res.status(400).json({ error: 'Parameters "text", "model", or "apikey" not found' });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+    const dbRef = ref(database);
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    if (!snapshot.exists()) {
+      return res.status(403).json({ error: 'Apikey tidak valid atau tidak ditemukan' });
+    }
+
+    const apiKeyDetails = snapshot.val();
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ error: 'API usage limit has been reached' });
+    }
+    if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({ error: 'API key has been suspended.' });
+    }
+
+    // **Ubah ke mode streaming**
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    res.write(`data: ${JSON.stringify({ information: 'https://go.alvianuxio.eu.org/contact', creator: 'ALVIAN UXIO Inc' })}\n\n`);
+
+    const responseStream = await qwen(text, model, mode, true); // Pastikan fungsi ini mendukung streaming
+
+    for await (const chunk of responseStream) {
+      res.write(`data: ${JSON.stringify({ response: chunk })}\n\n`);
+    }
+
+    res.write(`data: [DONE]\n\n`);
+    res.end();
+
+    // Perbarui penggunaan API di Firebase
+    await trackTotalRequest();
+    await update(apiKeRef, { usage: (apiKeyDetails.usage || 0) + 1 });
+  } catch (error) {
+    res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
+    res.end();
+  }
+});
 //gemini
 app.get('/api/gemini', async (req, res) => {
   try {
