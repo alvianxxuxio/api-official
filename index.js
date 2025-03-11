@@ -5028,7 +5028,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     const fileContent = Buffer.from(req.file.buffer).toString('base64');
 
     const url = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
-    const token = "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"; // **Gunakan ENV agar token aman**
+    const token = "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"; // **Gunakan ENV agar token aman**
 
     const data = {
     message: `Upload file ${fileName}`,
