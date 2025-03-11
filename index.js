@@ -5028,13 +5028,13 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     const fileContent = Buffer.from(req.file.buffer).toString('base64');
 
     const url = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
-    const token = "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"; // **Gunakan ENV agar token aman**
+    const token = process.env.GITHUB_TOKEN; // Menggunakan ENV untuk token
 
     const data = {
-    message: `Upload file ${fileName}`,
-    content: fileContent,
-    branch: "main" // Pastikan branch sudah benar (bisa diganti ke 'master' jika perlu)
-};
+        message: `Upload file ${fileName}`,
+        content: fileContent,
+        branch: "main" // Pastikan branch sudah benar
+    };
 
     try {
         const response = await axios.put(url, data, {
