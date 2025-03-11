@@ -5028,7 +5028,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     const fileContent = Buffer.from(req.file.buffer).toString('base64');
 
     const url = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
-    const token = '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'; // Token langsung
+    const token = "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"; // **Gunakan ENV agar token aman**
 
     const data = {
         message: `Upload file ${fileName}`,
@@ -5046,7 +5046,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         res.json({
             filename: fileName,
             size: fileSize,
-            url: `https://cloud.alvianuxio.my.id/${fileName}`
+            url: `https://cloud.alvianuxio.eu.org/${fileName}`
         });
     } catch (error) {
         console.error(error.response ? error.response.data : error.message);
