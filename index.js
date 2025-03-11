@@ -5031,9 +5031,10 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     const token = "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"; // **Gunakan ENV agar token aman**
 
     const data = {
-        message: `Upload file ${fileName}`,
-        content: fileContent
-    };
+    message: `Upload file ${fileName}`,
+    content: fileContent,
+    branch: "main" // Pastikan branch sudah benar (bisa diganti ke 'master' jika perlu)
+};
 
     try {
         const response = await axios.put(url, data, {
