@@ -4671,6 +4671,8 @@ res.status(200).json({
 
 } catch (error) { console.error('Error resetting usage:', error); res.status(500).json({ error: error.message }); } });
 
+
+
 // change apikey
 app.get('/admin/change', async (req, res) => {
   res.send('Use POST method to change API keys.');
@@ -5013,7 +5015,39 @@ await trackTotalRequest();
   }
 });
 // uploader api
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+// Endpoint untuk meng-upload file
+app.post('/upload', upload.single('file'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
 
+    const fileName = req.file.originalname;
+    const fileContent = req.file.buffer.toString('base64');
+
+    const url = `https://api.github.com/repos/alvianxxuxio/cloud/contents/${fileName}`;
+    const token = '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'; // Ganti dengan token Anda
+
+    const data = {
+        message: `Upload file ${fileName}`,
+        content: fileContent,
+    };
+
+    try {
+        const response = await axios.put(url, data, {
+            headers: {
+    'Authorization': `Bearer ${token}`,
+    'Accept': 'application/vnd.github.v3+json'
+},
+        });
+
+        res.status(200).send(`File uploaded successfully: cloud.alvianxxuxio.eu.org/${fileName}`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error uploading file to GitHub.');
+    }
+});
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
