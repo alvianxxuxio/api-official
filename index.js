@@ -1252,7 +1252,7 @@ async function play(query, format) {
 
       // Add download data to videoInfo
       videoInfo.image = downloadData.image;
-      videoInfo.download = downloadData.dwn_url;
+      videoInfo.download = downloadData;
 
       return videoInfo;
     } else {
