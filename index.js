@@ -1310,7 +1310,7 @@ function pickRandom(keys) {
     return keys[Math.floor(Math.random() * keys.length)];
 }
 async function ssweb(url) {
-    const keys = ["f4fd50", "f57572", "f45b80", "a8a45d", "0060ec", "b085e3"];
+    const keys = ["530076", "0eb795", "a4a3c6", "bc3c6a", "94cfc7", "e7d0c8"];
     const key = pickRandom(keys);
 
     const apiUrl = `https://api.screenshotmachine.com/?key=${key}&url=${encodeURIComponent(url)}&device=desktop&dimension=1280x720&format=png&cacheLimit=0&delay=200`;
