@@ -4084,12 +4084,11 @@ app.get('/pricing', (req, res) => {
 // otakudesu all
 app.get('/api/otakudesu/search', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -4145,11 +4144,10 @@ await trackTotalRequest();
 app.get('/api/otakudesu/episode', async (req, res) => {
   try {
     const { apikey, link } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -4204,12 +4202,11 @@ await trackTotalRequest();
 });
 app.get('/api/otakudesu/detail', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -4265,11 +4262,10 @@ await trackTotalRequest();
 app.get('/api/otakudesu/dl', async (req, res) => {
   try {
     const { apikey, link } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -4556,12 +4552,11 @@ await trackTotalRequest();
 //Rusdi
 app.get('/api/Rusdi', async (req, res) => {
   try {
-    const { message } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, message } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -4901,12 +4896,11 @@ app.get('/apikey/check', async (req, res) => {
 // brat
 app.get("/api/brat", async (req, res) => { 
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -4960,11 +4954,10 @@ await trackTotalRequest();
 app.get("/api/stalk/tiktok", async (req, res) => {
   try {
     const { apikey, username } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5025,13 +5018,12 @@ await trackTotalRequest();
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
-    const { text } = req.query;
+    const { apikey, text } = req.query;
 
-    const apikey = req.headers['x-api-key'] || req.query.apikey;
     if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5096,7 +5088,7 @@ app.get("/api/tts", async (req, res) => {
 // super qwen
 app.get('/api/super-qwen', async (req, res) => {
   try {
-    const { model, mode, text } = req.query;
+    const { apikey, model, mode, text } = req.query;
 
     if (!text || !model || !apikey) {
       return res.status(400).json({ error: 'Parameters "text" or "model" or "apikey" not found' });
@@ -5151,7 +5143,7 @@ await trackTotalRequest();
 // stream qwen
 app.get('/api/stream/llama', async (req, res) => {
   try {
-    const { text } = req.query;
+    const { apikey, text } = req.query;
     if (!text || !apikey) {
       return res.status(400).json({ error: 'Parameters "text" or "apikey" not found' });
     }
@@ -5201,12 +5193,11 @@ app.get('/api/stream/llama', async (req, res) => {
 //gemini
 app.get('/api/gemini', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5263,12 +5254,11 @@ await trackTotalRequest();
 // meta ai
 app.get('/api/meta', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5323,12 +5313,11 @@ await trackTotalRequest();
 });
 app.get('/api/groq', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5384,12 +5373,11 @@ await trackTotalRequest();
 // mistral
 app.get('/api/mistral', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5445,12 +5433,11 @@ await trackTotalRequest();
 // deepseek
 app.get('/api/deepseek', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5506,12 +5493,11 @@ await trackTotalRequest();
 // flux
 app.get('/api/flux', async (req, res) => {
   try {
-    const { prompt } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, prompt } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5568,12 +5554,11 @@ await trackTotalRequest();
 //Brat 
 app.get('/api/Brat', async (req, res) => {
   try {
-    const { message } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, message } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5630,12 +5615,11 @@ await trackTotalRequest();
 //halodoc
 app.get('/api/halodoc', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5691,12 +5675,11 @@ await trackTotalRequest();
 // yahoo
 app.get('/api/yahoo', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5753,12 +5736,11 @@ await trackTotalRequest();
 // jadwal tv
 app.get('/api/jadwal-tv', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5814,12 +5796,11 @@ await trackTotalRequest();
 //bingsearch
 app.get('/api/bing/search', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5874,12 +5855,11 @@ await trackTotalRequest();
 });
 app.get('/api/bing/image', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5936,12 +5916,11 @@ await trackTotalRequest();
 // bing vid
 app.get('/api/bing/video', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -5997,12 +5976,11 @@ await trackTotalRequest();
 //gptpic
 app.get('/api/gptpic', async (req, res) => {
   try {
-    const { message } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, message } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6059,12 +6037,11 @@ await trackTotalRequest();
 //prodia
 app.get('/api/prodia', async (req, res) => {
   try {
-    const { message } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, message } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6122,11 +6099,10 @@ await trackTotalRequest();
 app.get('/api/txt2img', async (req, res) => {
   try {
     const { apikey, prompt } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6184,11 +6160,10 @@ await trackTotalRequest();
 app.get('/api/txt2img/v2', async (req, res) => {
   try {
     const { apikey, prompt } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6245,12 +6220,11 @@ await trackTotalRequest();
 //pinterest
 app.get('/api/pinterest', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6307,12 +6281,11 @@ await trackTotalRequest();
 // sound cloud
 app.get('/api/soundcloud', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6368,12 +6341,11 @@ await trackTotalRequest();
 // wikipedia
 app.get('/api/wikipedia', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6429,12 +6401,11 @@ await trackTotalRequest();
 // Dafont
 app.get('/api/dafont', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6490,12 +6461,11 @@ await trackTotalRequest();
 // pinterest 2
 app.get('/api/pinterest/v2', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6551,12 +6521,11 @@ await trackTotalRequest();
 // tiny url
 app.get('/api/tinyurl', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6612,12 +6581,11 @@ await trackTotalRequest();
 // vgd
 app.get('/api/vgd', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6673,12 +6641,11 @@ await trackTotalRequest();
 // uhd wallpaper
 app.get('/api/uhd-wallpaper', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6734,12 +6701,11 @@ await trackTotalRequest();
 // bukalapak
 app.get('/api/bukalapak', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6796,12 +6762,11 @@ await trackTotalRequest();
 // steam search
 app.get('/api/steam-search', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6857,12 +6822,11 @@ await trackTotalRequest();
 //gsmarena
 app.get('/api/gsmarena', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6919,12 +6883,11 @@ await trackTotalRequest();
 //igdl
 app.get('/api/instagram', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -6981,12 +6944,11 @@ await trackTotalRequest();
 // stickerly
 app.get('/api/stickerly', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7043,12 +7005,11 @@ await trackTotalRequest();
 // tinyurl
 app.get('/api/tinyurl', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7105,11 +7066,10 @@ await trackTotalRequest();
 app.get('/api/yt-search', async (req, res) => {
   try {
     const { apikey, query } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7166,12 +7126,11 @@ await trackTotalRequest();
 // play
 app.get('/api/play', async (req, res) => {
   try {
-    const { query, format } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, query, format } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7231,12 +7190,11 @@ await trackTotalRequest();
 //instagram 2
 app.get('/api/instagram/v2', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7292,12 +7250,11 @@ await trackTotalRequest();
 //remini
 app.get('/api/remini', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7354,12 +7311,11 @@ await trackTotalRequest();
 //hdimg
 app.get('/api/hdr', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7414,12 +7370,11 @@ await trackTotalRequest();
 });
 app.get('/api/removebg', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7475,12 +7430,11 @@ await trackTotalRequest();
 // spotify
 app.get('/api/spotify', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7538,12 +7492,11 @@ await trackTotalRequest();
 // spotify
 app.get('/api/idntimes', async (req, res) => {
   try {
-    const { message } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, message } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7600,12 +7553,11 @@ await trackTotalRequest();
 // capcut
 app.get('/api/capcut', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7662,12 +7614,11 @@ await trackTotalRequest();
 // mediafire
 app.get('/api/mediafire/old', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7724,12 +7675,11 @@ await trackTotalRequest();
 // mf 2
 app.get('/api/mediafire', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7786,12 +7736,11 @@ await trackTotalRequest();
 // krakenfiles
 app.get('/api/krakenfiles', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7848,12 +7797,11 @@ await trackTotalRequest();
 // facebook
 app.get('/api/facebook', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7910,12 +7858,11 @@ await trackTotalRequest();
 // terabox
 app.get('/api/terabox', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -7972,12 +7919,11 @@ await trackTotalRequest();
 // terabox v2
 app.get('/api/terabox/v2', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8034,12 +7980,11 @@ await trackTotalRequest();
 // ssweb
 app.get('/api/ssweb', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8097,11 +8042,10 @@ await trackTotalRequest();
 app.get('/api/check-ip', async (req, res) => {
   try {
     const { apikey } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8156,11 +8100,10 @@ await trackTotalRequest();
 app.get('/api/quotes', async (req, res) => {
   try {
     const { apikey } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8216,11 +8159,10 @@ await trackTotalRequest();
 app.get('/api/track-ip', async (req, res) => {
   try {
     const { apikey, ip } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8278,12 +8220,11 @@ await trackTotalRequest();
 // tiktok
 app.get('/api/tiktok', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8339,12 +8280,11 @@ await trackTotalRequest();
 //tiktok 3
 app.get('/api/tiktok3', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8401,12 +8341,11 @@ await trackTotalRequest();
 // tiktok2
 app.get('/api/tiktok/v2', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8463,12 +8402,11 @@ await trackTotalRequest();
 // tt stalk
 app.get('/api/tiktok/stalk', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8525,12 +8463,11 @@ await trackTotalRequest();
 // twitter
 app.get('/api/twitter', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8586,12 +8523,11 @@ await trackTotalRequest();
 //gpt4o
 app.get('/api/gpt4o', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8648,12 +8584,11 @@ await trackTotalRequest();
 //llama
 app.get('/api/llama3', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8711,12 +8646,11 @@ await trackTotalRequest();
 //openai
 app.get('/api/openai', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8773,12 +8707,11 @@ await trackTotalRequest();
 // videy
 app.get('/api/videy', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8841,12 +8774,11 @@ await trackTotalRequest();
 // gdrive
 app.get('/api/gdrive', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8903,12 +8835,11 @@ await trackTotalRequest();
 // igstalk
 app.get('/api/igstalk', async (req, res) => {
   try {
-    const { search } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, search } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -8965,12 +8896,11 @@ await trackTotalRequest();
 //aio
 app.get('/api/aio', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9027,12 +8957,11 @@ await trackTotalRequest();
 // aio v2
 app.get('/api/aio/v2', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9088,12 +9017,11 @@ await trackTotalRequest();
 // youtube
 app.get('/api/ytdl', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9150,12 +9078,11 @@ await trackTotalRequest();
 //ytmp3
 app.get('/api/ytmp3', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9212,12 +9139,11 @@ await trackTotalRequest();
 //ytmp4
 app.get('/api/ytmp4', async (req, res) => {
   try {
-    const { url } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, url } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9273,12 +9199,11 @@ await trackTotalRequest();
 //letmeGPT
 app.get('/api/letmegpt', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9333,12 +9258,11 @@ await trackTotalRequest();
 });
 app.get('/api/gpt-turbo', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9402,11 +9326,10 @@ await trackTotalRequest();
 app.get('/api/simi', async (req, res) => {
   try {
     const { apikey, text }= req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9464,12 +9387,11 @@ await trackTotalRequest();
 // Endpoint untuk ragBot
 app.get('/api/ragbot', async (req, res) => {
   try {
-    const { message } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, message } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9527,11 +9449,10 @@ await trackTotalRequest();
 app.get('/api/degreeguru', async (req, res) => {
   try {
     const { apikey, text }= req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9588,12 +9509,11 @@ await trackTotalRequest();
 // Endpoint untuk Renvy AI
 app.get('/api/Renvy', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9651,11 +9571,10 @@ await trackTotalRequest();
 app.get('/api/aluxi', async (req, res) => {
   try {
     const { apikey, message }= req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9712,12 +9631,11 @@ await trackTotalRequest();
 // Endpoint untuk smartContract
 app.get('/api/smartcontract', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9775,11 +9693,10 @@ await trackTotalRequest();
 app.get('/api/luminai', async (req, res) => {
   try {
     const { apikey, text, prompt } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
@@ -9838,12 +9755,11 @@ await trackTotalRequest();
 // Endpoint untuk blackboxAIChat
 app.get('/api/blackbox', async (req, res) => {
   try {
-    const { text } = req.query;
-const apikey = req.headers['x-api-key'] || req.query.apikey;
-    if (!apikey) {
+    const { apikey, text } = req.query;
+if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda melalui query parameter atau header "X-API-Key".' 
+        info: 'Sertakan API key dalam permintaan Anda' 
       });
     }
 
