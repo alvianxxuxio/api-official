@@ -39,6 +39,102 @@ app.set("json spaces", 2);
 
 // Middleware untuk CORS
 app.use(cors());
+
+// new yt dl
+function extractVideoId(url) {
+    const regex = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
+
+async function convertYouTube(link, vtype = 'mp4', vqual = 720, aqual = 128) {
+    try {
+        vtype = vtype === 'mp4' ? 'mp4' : 'mp3';
+
+        const videoId = extractVideoId(link);
+        if (!videoId) {
+            throw new Error('URL YouTube tidak valid, gagal mendapatkan video ID.');
+        }
+
+        const quality = {
+            videoQualities: ['1080', '720', '360', '240', '144'],
+            audioQualities: ['320', '128']
+        };
+
+        if (!quality.audioQualities.includes(String(aqual))) {
+            throw new Error(`Audio quality '${aqual}' tidak tersedia. Pilihan: ${quality.audioQualities.join(', ')}`);
+        }
+
+        if (vtype === 'mp4' && !quality.videoQualities.includes(String(vqual))) {
+            throw new Error(`Video quality '${vqual}' tidak tersedia. Pilihan: ${quality.videoQualities.join(', ')}`);
+        }
+
+        const keyResponse = await axios.get('https://api.mp3youtube.cc/v2/sanity/key', {
+            headers: {
+                'Accept': '*/*',
+                'Accept-Encoding': 'gzip, deflate, br, zstd',
+                'Accept-Language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+                'Content-Type': 'application/json',
+                'DNT': '1',
+                'Origin': 'https://iframe.y2meta-uk.com',
+                'Referer': 'https://iframe.y2meta-uk.com/',
+                'Sec-Ch-Ua': '"Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"',
+                'Sec-Ch-Ua-Mobile': '?0',
+                'Sec-Ch-Ua-Platform': '"Windows"',
+                'Sec-Fetch-Dest': 'empty',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Site': 'cross-site',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'
+            }
+        });
+
+        const validateKey = keyResponse.data.key;
+
+        const convertResponse = await axios.post(
+            'https://api.mp3youtube.cc/v2/converter',
+            new URLSearchParams({
+                link: `https://youtu.be/${videoId}`,
+                format: vtype,
+                audioBitrate: aqual,
+                videoQuality: vqual,
+                vCodec: 'h264'
+            }).toString(),
+            {
+                headers: {
+                    'Accept': '*/*',
+                    'Accept-Encoding': 'gzip, deflate, br, zstd',
+                    'Accept-Language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'DNT': '1',
+                    'Origin': 'https://iframe.y2meta-uk.com',
+                    'Referer': 'https://iframe.y2meta-uk.com/',
+                    'Sec-Ch-Ua': '"Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"',
+                    'Sec-Ch-Ua-Mobile': '?0',
+                    'Sec-Ch-Ua-Platform': '"Windows"',
+                    'Sec-Fetch-Dest': 'empty',
+                    'Sec-Fetch-Mode': 'cors',
+                    'Sec-Fetch-Site': 'cross-site',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+                    key: validateKey
+                }
+            }
+        );
+
+        const obj = convertResponse.data;
+        let dwn_url;
+
+        if (obj && obj.url) {
+            dwn_url = obj.url;
+        } else {
+            dwn_url = `https://conv.mp3youtube.cc/download/${videoId}`;
+        }
+
+        return dwn_url;
+    } catch (error) {
+        console.error(error.message);
+        throw error;
+    }
+}
 // llama stream
 async function llama(text) {
     const url = `https://fastrestapis.fasturl.cloud/aistream/llama?ask=${encodeURIComponent(text)}&style=Friendly&model=meta-llama%2FMeta-Llama-3.1-405B-Instruct&sessionId=12345abcde`;
@@ -1139,7 +1235,7 @@ async function play(query, format) {
       const video = results.videos[0]; // Get the first video result
 
       // Gather additional information from the video
-      const downloadPromise = newyt(video.url, format); // Start download in parallel
+      const downloadPromise = convertYouTube(video.url, format); // Start download in parallel
 
       // Prepare video information without waiting for download to finish
       const videoInfo = {
@@ -1156,7 +1252,7 @@ async function play(query, format) {
 
       // Add download data to videoInfo
       videoInfo.image = downloadData.image;
-      videoInfo.download = downloadData.downloadURL;
+      videoInfo.download = downloadData.dwn_url;
 
       return videoInfo;
     } else {
@@ -9117,7 +9213,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await newyt(url, "mp3");
+    const response = await convertYouTube(url, "mp3");
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
@@ -9178,7 +9274,7 @@ if (apiKeyDetails.status === 'suspended') {
     if (!url) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    const response = await newyt(url, "mp4");
+    const response = await convertYouTube(url, "mp4");
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
