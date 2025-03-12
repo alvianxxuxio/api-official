@@ -154,22 +154,27 @@
   </div>
   <div class="content" style='padding:15px;'>
      <div id="overlay"></div>
-  <div class="popupres" id="customPopup">
-    <!-- Request URL Container -->
-    <h3>Request URL:</h3>
-    <div class="info-row">
-      <pre id="requestUrl"></pre>
-    </div>
-    <button class="copy-button" onclick="copyToClipboard('requestUrl')">Copy URL</button><br><br>
-    <!-- Response JSON Container -->
-    <h3>Response JSON:</h3>
-    <div class="info-row">
-      <pre id="responseContent"></pre>
-    </div>
-    <button class="copy-button" onclick="copyToClipboard('responseContent')">Copy Response</button>
+<div class="popupres" id="customPopup">
+  <h3>Request URL:</h3>
+  <div class="info-row">
+    <pre id="requestUrl"></pre>
+  </div>
+  <button class="copy-button" onclick="copyToClipboard('requestUrl')">Copy URL</button><br><br>
 
-    <button onclick="closePopup()">Close</button>
-  </div> 
+  <h3>Curl Command:</h3>
+  <div class="info-row">
+    <pre id="curlCommand"></pre>
+  </div>
+  <button class="copy-button" onclick="copyToClipboard('curlCommand')">Copy cURL</button><br><br>
+
+  <h3>Response JSON:</h3>
+  <div class="info-row">
+    <pre id="responseContent"></pre>
+  </div>
+  <button class="copy-button" onclick="copyToClipboard('responseContent')">Copy Response</button>
+
+  <button onclick="closePopup()">Close</button>
+</div>
       <div class="dashboard-bos">
       This API is free and not for sale! Except if you purchase an API key.
     </div>
@@ -2084,16 +2089,21 @@ function _0x337f(_0x3ed695,_0xfd5144){const _0x7efbe1=_0x44ad();return _0x337f=f
   </script>
       <script>
     function showPopup(url, response) {
-      document.getElementById('requestUrl').textContent = url;
-      document.getElementById('responseContent').textContent = JSON.stringify(response, null, 2);
-      document.getElementById('overlay').style.display = 'block';
-      document.getElementById('customPopup').style.display = 'block';
-    }
+  document.getElementById('requestUrl').textContent = url;
+  document.getElementById('responseContent').textContent = JSON.stringify(response, null, 2);
 
-    function closePopup() {
-      document.getElementById('overlay').style.display = 'none';
-      document.getElementById('customPopup').style.display = 'none';
-    }
+  // Generate perintah curl
+  const curlCommand = `curl -X 'GET' \\\n  '${url}' \\\n  -H 'accept: application/json'`;
+  document.getElementById('curlCommand').textContent = curlCommand;
+
+  document.getElementById('overlay').style.display = 'block';
+  document.getElementById('customPopup').style.display = 'block';
+}
+
+function closePopup() {
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('customPopup').style.display = 'none';
+}
 
     window.ai = function(event, endpoint) {
       event.preventDefault();
