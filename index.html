@@ -1791,9 +1791,16 @@ Whether you’re looking to retrieve data, integrate with our platform, or enhan
 <div class="active" style='font-size:12px'>ACTIVE</div>
         </div>
         <div id="dropdown36" class="dropdown-content">
-          <form class="form-group" action="/api/brat" onsubmit=".ai(event, '/api/brat')">
+          <form class="form-group" action="/api/brat" onsubmit="window.type(event, '/api/brat')">
             <label for="message36">Enter text:</label>
             <input type="text" id="message36" name="text" placeholder="your text here" required>
+                <label for="type36">Select Type:</label>
+    <select id="type36" name="type" required>
+      <option value="" disabled selected>Select Tyle</option>
+      <option value="image">Default</option>
+            <option value="video">Video</option>
+            <option value="" disabled>Select brat type video or image.</option>
+    </select>
 
         <label for="apikey36">Enter API Key:</label>
         <input type="text" id="apikey36" name="apikey" placeholder="Enter Your ApiKeys" required>
@@ -2310,6 +2317,36 @@ fetch(apiUrl, {
         button5.textContent = "Try Now";
       }
     }; 
+    window.type = function(event, endpoint) {
+      event.preventDefault();
+      const button10 = event.target.querySelector('button');
+      const message = event.target.querySelector('input[name="text"]').value; 
+      const apiKey = event.target.querySelector('input[name="apikey"]').value;
+      const prompt = event.target.querySelector('select[name="type"]').value;
+      const base = "https://api.alvianuxio.eu.org";
+
+      const apiUrl = `${base}${endpoint}?text=${encodeURIComponent(message)}&apikey=${encodeURIComponent(apiKey)}&type=${encodeURIComponent(prompt)}`;
+
+      try {
+      button10.textContent = "Loading...";
+        fetch(apiUrl, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+        .then(data => {
+          showPopup(apiUrl, data);
+          button10.textContent = "Try Now";
+        })
+        .catch(error => {
+          showPopup(apiUrl, { error: error.message });
+          button10.textContent = "Try Now";
+        });
+      } catch (error) {
+        showPopup(apiUrl, { error: error.message });
+        button10.textContent = "Try Now";
+      }
+    };
     window.model = function(event, endpoint) {
       event.preventDefault();
       const button6 = event.target.querySelector('button');

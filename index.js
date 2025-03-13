@@ -40,6 +40,26 @@ app.set("json spaces", 2);
 // Middleware untuk CORS
 app.use(cors());
 
+
+// brat fix
+async function Brat(text, type = "image") {
+    try {
+        const isVideo = type === "video" ? "true" : "false";
+        const url = `https://api.siputzx.my.id/api/m/brat?text=${encodeURIComponent(text)}&isVideo=${isVideo}&delay=500`;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+        const buffer = await response.buffer();
+
+        // Upload ke Catbox
+        const catboxUrl = await Uploader.catbox(buffer);
+        return catboxUrl;
+    } catch (error) {
+        console.error("Error processing BRAT API:", error);
+        throw error;
+    }
+}
 // new yt dl
 function extractVideoId(url) {
     const regex = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/;
@@ -4989,61 +5009,6 @@ app.get('/apikey/check', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-// brat
-app.get("/api/brat", async (req, res) => { 
-  try {
-    const { apikey, text } = req.query;
-if (!apikey) {
-      return res.status(400).json({ 
-        error: 'Parameter "apikey" tidak ditemukan', 
-        info: 'Sertakan API key dalam permintaan Anda' 
-      });
-    }
-
-    // Referensi ke API key di Firebase
-    const apiKeRef = ref(database, `apiKeys/${apikey}`);
-const dbRef = ref(database);// `database` adalah instance Firebase Database
-    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
-
-    // Jika API key tidak ditemukan
-    if (!snapshot.exists()) {
-      return res.status(403).json({ 
-        error: 'Apikey tidak valid atau tidak ditemukan', 
-        info: 'Pastikan API key Anda benar atau aktif' 
-      });
-    }
-
-    const apiKeyDetails = snapshot.val();
-
-    // Validasi batas penggunaan
-    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
-      return res.status(403).json({ 
-        error: 'API usage limit has been reached', 
-        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
-      });
-    }
-if (apiKeyDetails.status === 'suspended') {
-      return res.status(403).json({
-        error: 'API key has been suspended.',
-        info: 'The API key you are using has been suspended and cannot be used.'
-      });
-    }
-    if (!text) {
-      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
-    }
-    const response = await axios.get(`https://api.siputzx.my.id/api/m/brat?text=${encodeURIComponent(text)}`, { responseType: 'arraybuffer' });
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
-    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
-    const updatedUsage = currentUsage + 1;
-await trackTotalRequest();
-
-    // Perbarui usage di Firebase
-    await update(apiKeRef, { usage: updatedUsage });
-  } catch (error) {
-    res.status(500).json({ status: false, error: error.message })
-  }
-})
 
 
 // tt stalk
@@ -5648,9 +5613,9 @@ await trackTotalRequest();
 });
 
 //Brat 
-app.get('/api/Brat', async (req, res) => {
+app.get('/api/brat', async (req, res) => {
   try {
-    const { apikey, message } = req.query;
+    const { apikey, text, type } = req.query;
 if (!apikey) {
       return res.status(400).json({ 
         error: 'Parameter "apikey" tidak ditemukan', 
@@ -5686,10 +5651,10 @@ if (apiKeyDetails.status === 'suspended') {
         info: 'The API key you are using has been suspended and cannot be used.'
       });
     }
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await Brat(message);
+    const response = await Brat(text, type);
     const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
     const updatedUsage = currentUsage + 1;
 await trackTotalRequest();
