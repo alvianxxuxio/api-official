@@ -5103,9 +5103,10 @@ await trackTotalRequest();
 });
 // uploader api
 const upload = multer({
-  storage: multer.memoryStorage(), // Simpan di memory sebelum diupload ke GitHub
+  storage: multer.memoryStorage(),
   limits: { fileSize: 100 * 1024 * 1024 }, // Maks 100MB
 });
+
 // Fungsi untuk membuat nama file acak
 function generateRandomName(originalName) {
   const ext = originalName.split(".").pop();
@@ -5113,15 +5114,33 @@ function generateRandomName(originalName) {
   return `${randomString}.${ext}`;
 }
 
-// Endpoint untuk upload file
+// Fungsi untuk memproses input expired time
+function parseExpirationTime(expires_in) {
+  if (!expires_in || expires_in.toLowerCase() === "permanent") return null;
+
+  const match = expires_in.match(/^(\d+)\s*hours?$/i);
+  if (!match) return "invalid";
+
+  const hours = parseInt(match[1], 10);
+  return Date.now() + hours * 60 * 60 * 1000; // Konversi ke timestamp
+}
+
+// **UPLOAD FILE**
 app.post("/cdn-upload", upload.single("file"), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "File tidak ditemukan" });
 
   const { originalname, buffer } = req.file;
+  const { expires_in } = req.body; // "24 hours", "30 hours", "permanent"
   const fileName = generateRandomName(originalname);
   const filePath = `files/${fileName}`;
 
+  const expiredAt = parseExpirationTime(expires_in);
+  if (expiredAt === "invalid") {
+    return res.status(400).json({ error: "Format expires_in tidak valid. Gunakan '24 hours', '30 hours', atau 'permanent'." });
+  }
+
   try {
+    // Upload file ke GitHub
     await axios.put(
       `https://api.github.com/repos/${process.env.GH_USERNAME}/${process.env.GH_REPO}/contents/${filePath}`,
       {
@@ -5137,12 +5156,31 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
       }
     );
 
-    // Hapus buffer dari memory setelah upload selesai
-    req.file.buffer = null;
+    // Simpan metadata file (termasuk expiredAt)
+    const metadata = { fileName, expiredAt };
+    await axios.put(
+      `https://api.github.com/repos/${process.env.GH_USERNAME}/${process.env.GH_REPO}/contents/metadata/${fileName}.json`,
+      {
+        message: `Metadata for ${fileName}`,
+        content: Buffer.from(JSON.stringify(metadata)).toString("base64"),
+      },
+      {
+        headers: {
+          Authorization: `token ${process.env.GITHUB_TOKEN}`,
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": process.env.GH_USERNAME,
+        },
+      }
+    );
 
-    // Ambil URL file yang diunggah
-    const fileUrl = `https://cloud.alvianuxio.eu.org/${filePath}`;
-    res.json({ success: true, info: "ALVIAN UXIO - CDN UPLOADER", url: fileUrl });
+    req.file.buffer = null; // Hapus buffer dari memory
+
+    res.json({
+      success: true,
+      info: "ALVIAN UXIO - CDN UPLOADER",
+      url: `https://cloud.alvianuxio.eu.org/${filePath}`,
+      expiredAt: expiredAt ? new Date(expiredAt).toISOString() : "permanent",
+    });
   } catch (error) {
     res.status(500).json({
       error: "Gagal upload file",
@@ -5150,6 +5188,78 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
     });
   }
 });
+
+// **CEK DAN HAPUS FILE EXPIRED**
+async function checkAndDeleteExpiredFiles() {
+  try {
+    const repoOwner = process.env.GH_USERNAME;
+    const repoName = process.env.GH_REPO;
+    const headers = {
+      Authorization: `token ${process.env.GITHUB_TOKEN}`,
+      Accept: "application/vnd.github.v3+json",
+      "User-Agent": repoOwner,
+    };
+
+    const metadataRes = await axios.get(
+      `https://api.github.com/repos/${repoOwner}/${repoName}/contents/metadata`,
+      { headers }
+    );
+
+    let deletedFiles = [];
+
+    for (const file of metadataRes.data) {
+      if (!file.name.endsWith(".json")) continue;
+
+      // Ambil metadata file
+      const metaData = await axios.get(file.download_url);
+      const { fileName, expiredAt } = metaData.data;
+
+      if (expiredAt && Date.now() >= expiredAt) {
+        console.log(`Menghapus file: ${fileName}`);
+
+        // Hapus file dari GitHub
+        const fileRes = await axios.get(
+          `https://api.github.com/repos/${repoOwner}/${repoName}/contents/files/${fileName}`,
+          { headers }
+        );
+
+        await axios.delete(
+          `https://api.github.com/repos/${repoOwner}/${repoName}/contents/files/${fileName}`,
+          {
+            headers,
+            data: {
+              message: `Delete expired file ${fileName}`,
+              sha: fileRes.data.sha,
+            },
+          }
+        );
+
+        // Hapus metadata file
+        await axios.delete(
+          `https://api.github.com/repos/${repoOwner}/${repoName}/contents/metadata/${file.name}`,
+          {
+            headers,
+            data: {
+              message: `Delete expired metadata ${file.name}`,
+              sha: file.sha,
+            },
+          }
+        );
+
+        deletedFiles.push(fileName);
+      }
+    }
+
+    if (deletedFiles.length > 0) {
+      console.log(`File expired dihapus: ${deletedFiles.join(", ")}`);
+    }
+  } catch (error) {
+    console.error("Gagal mengecek dan menghapus file expired:", error.message);
+  }
+}
+
+// **Jalankan pengecekan expired setiap 5 menit**
+setInterval(checkAndDeleteExpiredFiles, 5 * 60 * 1000); // 5 menit
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
