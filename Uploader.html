@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Uploader</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f4ff;
+            margin: 0;
+            padding: 20px;
+            overflow-y: auto;
+            text-align: center;
+        }
+        .card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: #333;
+        }
+        .select-field, .button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .select-field {
+            background: #f6f6f6;
+            cursor: pointer;
+        }
+        .button {
+            background: #6200ea;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s, transform 0.2s;
+            border: none;
+        }
+        .button.disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+        .button:hover:not(.disabled) {
+            background: #3700b3;
+            transform: translateY(-2px);
+        }
+        #drop-area {
+            border: 2px dashed #6200ea;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            background: #e8eaf6;
+            color: #6200ea;
+            transition: background 0.3s;
+        }
+        #drop-area:hover {
+            background: #c5cae9;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin-top: 10px;
+        }
+        .file-list li {
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 8px;
+            background: #f6f6f6;
+            border: 1px solid #ccc;
+            margin: 5px 0;
+        }
+        #progress {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+        #progress-bar {
+            height: 100%;
+            width: 0;
+            background: #6200ea;
+            border-radius: 5px;
+        }
+        .contain {
+          padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 8px;
+            background: #f6f6f6;
+            border: 1px solid #ccc;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+      <h2>ALVIAN UXIO - CDN</h2>
+        <h3>File Uploader</h3>
+        <label for="expiry-select">Set Expired:</label>
+        <select id="expiry-select" class="select-field">
+                      <option value="4">60 Minutes</option>
+            <option value="1">24 Hours</option>
+            <option value="2">30 Hours</option>
+            <option value="3">5 Days</option>
+            <option value="0">Permanent</option>
+        </select>
+        <div id="drop-area" onclick="document.getElementById('file-input').click()">
+            <p>Click or Drag & Drop Files Here</p>
+            <input type="file" id="file-input" name="file" multiple accept="*/*" hidden>
+        </div>
+        <ul class="file-list" id="file-list"></ul>
+        <button class="button" id="upload-button" onclick="uploadFiles()">Upload</button>
+        <div id="progress">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="result-container" style="display:none;" class="contain">
+            <small id="result-text"></small>
+            <p id="result-size"></p>
+            <button class="button" onclick="copyLink()">Copy Link</button>
+            <button class="button" id="visit-link" style="display:none;">Visit</button>
+        </div>
+    </div>
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const fileList = document.getElementById('file-list');
+        const uploadButton = document.getElementById('upload-button');
+        const progressContainer = document.getElementById('progress');
+        const progressBar = document.getElementById('progress-bar');
+        let files = [];
+
+        fileInput.addEventListener('change', handleFiles);
+        
+        function handleFiles(event) {
+            files = [...event.target.files];
+            fileList.innerHTML = "";
+            for (let file of files) {
+                const li = document.createElement('li');
+                li.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                fileList.appendChild(li);
+            }
+        }
+
+        function uploadFiles() {
+            if (files.length === 0) {
+                alert("No files selected!");
+                return;
+            }
+
+            const expirySelect = document.getElementById("expiry-select").value;
+            let expiresIn = "permanent";
+
+            switch (expirySelect) {
+                case "1":
+                    expiresIn = "24 hours";
+                    break;
+                case "2":
+                    expiresIn = "30 hours";
+                    break;
+                case "3":
+                    expiresIn = "5 days";
+                    break;
+                    case "4":
+                    expiresIn = "60 minutes";
+                    break;
+            }
+
+            const formData = new FormData();
+            files.forEach(file => formData.append('file', file));
+            formData.append('expires_in', expiresIn);
+
+            uploadButton.disabled = true;
+            uploadButton.classList.add('disabled');
+            progressContainer.style.display = "block";
+
+            fetch('https://api.alvianuxio.eu.org/cdn-upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                uploadButton.disabled = false;
+                uploadButton.classList.remove('disabled');
+                progressContainer.style.display = "none";
+
+                if (data.success) {
+                    document.getElementById("result-text").textContent = `URL: ${data.url}`;
+                    document.getElementById("result-size").textContent = `Size: ${data.size}`;
+                    document.getElementById("result-container").style.display = "block";
+                    document.getElementById("visit-link").style.display = "inline-block";
+                    document.getElementById("visit-link").setAttribute("onclick", `window.open('${data.url}', '_blank')`);
+                } else {
+                    alert("Upload failed: " + data.info);
+                }
+            })
+            .catch(error => {
+                alert("Upload failed! " + error);
+            });
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(document.getElementById("result-text").textContent)
+                .then(() => alert("Link copied to clipboard!"))
+                .catch(err => alert("Failed to copy link: " + err));
+        }
+    </script>
+</body>
+</html>

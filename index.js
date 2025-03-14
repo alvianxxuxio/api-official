@@ -3689,6 +3689,10 @@ async function prodia(text) {
 app.get('/docs', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+// Uploader
+app.get('/uploader', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Uploader.html'));
+});
 
 // action firebase
 if (!firebaseAdmin.apps.length) {
