@@ -5115,14 +5115,28 @@ function generateRandomName(originalName) {
 }
 
 // Fungsi untuk memproses input expired time
+// Fungsi untuk memproses input expired time
 function parseExpirationTime(expires_in) {
   if (!expires_in || expires_in.toLowerCase() === "permanent") return null;
 
-  const match = expires_in.match(/^(\d+)\s*hours?$/i);
+  const match = expires_in.match(/^(\d+)\s*(minutes?|hours?|days?)$/i);
   if (!match) return "invalid";
 
-  const hours = parseInt(match[1], 10);
-  return Date.now() + hours * 60 * 60 * 1000; // Konversi ke timestamp
+  const value = parseInt(match[1], 10);
+  const unit = match[2].toLowerCase();
+
+  let expirationTimestamp;
+  if (unit.startsWith("minute")) {
+    expirationTimestamp = Date.now() + value * 60 * 1000; // Konversi ke milidetik
+  } else if (unit.startsWith("hour")) {
+    expirationTimestamp = Date.now() + value * 60 * 60 * 1000;
+  } else if (unit.startsWith("day")) {
+    expirationTimestamp = Date.now() + value * 24 * 60 * 60 * 1000;
+  } else {
+    return "invalid";
+  }
+
+  return expirationTimestamp;
 }
 
 // **UPLOAD FILE**
