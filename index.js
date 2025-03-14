@@ -5103,9 +5103,9 @@ await trackTotalRequest();
 });
 // uploader api
 const upload = multer({
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
+  storage: multer.memoryStorage(), // Simpan di memory sebelum diupload ke GitHub
+  limits: { fileSize: 100 * 1024 * 1024 }, // Maks 100MB
 });
-
 // Fungsi untuk membuat nama file acak
 function generateRandomName(originalName) {
   const ext = originalName.split(".").pop();
@@ -5122,8 +5122,8 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
   const filePath = `files/${fileName}`;
 
   try {
-    const response = await axios.put(
-      `https://api.github.com/repos/${process.env.GH_REPO}/contents/${filePath}`,
+    await axios.put(
+      `https://api.github.com/repos/${process.env.gh_repo}/contents/${filePath}`,
       {
         message: `Upload ${fileName}`,
         content: buffer.toString("base64"),
@@ -5132,10 +5132,13 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
         headers: {
           Authorization: `token ${process.env.GITHUB_TOKEN}`,
           Accept: "application/vnd.github.v3+json",
-          "User-Agent": process.env.GH_USERNAME,
+          "User-Agent": process.env.gh_username,
         },
       }
     );
+
+    // Hapus buffer dari memory setelah upload selesai
+    req.file.buffer = null;
 
     // Ambil URL file yang diunggah
     const fileUrl = `https://cloud.alvianuxio.eu.org/${filePath}`;
