@@ -5115,7 +5115,6 @@ function generateRandomName(originalName) {
 }
 
 // Fungsi untuk memproses input expired time
-// Fungsi untuk memproses input expired time
 function parseExpirationTime(expires_in) {
   if (!expires_in || expires_in.toLowerCase() === "permanent") return null;
 
@@ -5143,7 +5142,7 @@ function parseExpirationTime(expires_in) {
 app.post("/cdn-upload", upload.single("file"), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "File tidak ditemukan" });
 
-  const { originalname, buffer } = req.file;
+  const { originalname, buffer, size } = req.file;
   const { expires_in } = req.body; // "24 hours", "30 hours", "permanent"
   const fileName = generateRandomName(originalname);
   const filePath = `files/${fileName}`;
@@ -5171,7 +5170,7 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
     );
 
     // Simpan metadata file (termasuk expiredAt)
-    const metadata = { fileName, expiredAt };
+    const metadata = { fileName, expiredAt, size };
     await axios.put(
       `https://api.github.com/repos/${process.env.GH_USERNAME}/${process.env.GH_REPO}/contents/metadata/${fileName}.json`,
       {
@@ -5193,6 +5192,7 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
       success: true,
       info: "ALVIAN UXIO - CDN UPLOADER",
       url: `https://cloud.alvianuxio.eu.org/${filePath}`,
+      size: size, // Menambahkan ukuran file dalam response
       expiredAt: expiredAt ? new Date(expiredAt).toISOString() : "permanent",
     });
   } catch (error) {
