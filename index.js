@@ -67,6 +67,30 @@ app.get("/firebase-config", authMiddleware, (req, res) => {
   });
 });
 
+// flux v2
+async function fluxv2(prompt) {
+    try {
+        const width = 1024;
+        const height = 576;
+        const url = `https://fluxwebui.com/generate/${encodeURIComponent(prompt)}?width=${width}&height=${height}&seed=43&model=flux&nologo=true&nofeed=true`;
+
+        // Ambil gambar dalam bentuk buffer
+        const response = await axios.get(url, { responseType: "arraybuffer" });
+        const base64Image = `data:image/png;base64,${Buffer.from(response.data).toString("base64")}`;
+
+        // Kembalikan dalam bentuk JSON
+        return {
+            title: prompt,
+            width: width,
+            height: height,
+            image: base64Image            
+        };
+    } catch (error) {
+        console.error("Error fetching image:", error);
+        return null;
+    }
+}
+
 // brat fix
 async function Brat(text, type = "image") {
     try {
@@ -5829,6 +5853,66 @@ await trackTotalRequest();
   }
 });
 
+// flux v2
+app.get('/api/flux/v2', async (req, res) => {
+  try {
+    const { apikey, prompt } = req.query;
+if (!apikey) {
+      return res.status(400).json({ 
+        error: 'Parameter "apikey" tidak ditemukan', 
+        info: 'Sertakan API key dalam permintaan Anda' 
+      });
+    }
+
+    // Referensi ke API key di Firebase
+    const apiKeRef = ref(database, `apiKeys/${apikey}`);
+const dbRef = ref(database);// `database` adalah instance Firebase Database
+    const snapshot = await get(child(dbRef, `apiKeys/${apikey}`));
+
+    // Jika API key tidak ditemukan
+    if (!snapshot.exists()) {
+      return res.status(403).json({ 
+        error: 'Apikey tidak valid atau tidak ditemukan', 
+        info: 'Pastikan API key Anda benar atau aktif' 
+      });
+    }
+
+    const apiKeyDetails = snapshot.val();
+
+    // Validasi batas penggunaan
+    if (apiKeyDetails.usage >= apiKeyDetails.limit) {
+      return res.status(403).json({ 
+        error: 'API usage limit has been reached', 
+        info: `Maximum limit: ${apiKeyDetails.limit}, current usage: ${apiKeyDetails.usage}` 
+      });
+    }
+if (apiKeyDetails.status === 'suspended') {
+      return res.status(403).json({
+        error: 'API key has been suspended.',
+        info: 'The API key you are using has been suspended and cannot be used.'
+      });
+    }
+    if (!prompt) {
+      return res.status(400).json({ error: 'Parameter "prompt" tidak ditemukan' });
+    }
+    const response = await fluxv2(prompt);
+    const currentUsage = apiKeyDetails.usage || 0; // Inisialisasi ke 0 jika undefined
+    const updatedUsage = currentUsage + 1;
+await trackTotalRequest();
+
+    // Perbarui usage di Firebase
+    await update(apiKeRef, { usage: updatedUsage });
+    res.status(200).json({
+  information: `https://go.alvianuxio.eu.org/contact`,
+  creator: "ALVIAN UXIO Inc",
+  data: {
+    response: response
+  }
+});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 //Brat 
 app.get('/api/brat', async (req, res) => {
   try {
