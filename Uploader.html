@@ -197,7 +197,7 @@
             uploadButton.classList.add('disabled');
             progressContainer.style.display = "block";
 
-            fetch('https://api.alvianuxio.eu.org/cdn-upload', {
+            fetch('/cdn-upload', {
                 method: 'POST',
                 body: formData
             })
