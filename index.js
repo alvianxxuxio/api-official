@@ -5142,7 +5142,7 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
 
     // Ambil URL file yang diunggah
     const fileUrl = `https://cloud.alvianuxio.eu.org/${filePath}`;
-    res.json({ success: true, url: fileUrl });
+    res.json({ success: true, info: "ALVIAN UXIO - CDN UPLOADER", url: fileUrl });
   } catch (error) {
     res.status(500).json({
       error: "Gagal upload file",
