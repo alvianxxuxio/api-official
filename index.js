@@ -5123,7 +5123,7 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
 
   try {
     await axios.put(
-      `https://api.github.com/repos/${process.env.gh_repo}/contents/${filePath}`,
+      `https://api.github.com/repos/${process.env.GH_USERNAME}/${process.env.GH_REPO}/contents/${filePath}`,
       {
         message: `Upload ${fileName}`,
         content: buffer.toString("base64"),
@@ -5132,7 +5132,7 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
         headers: {
           Authorization: `token ${process.env.GITHUB_TOKEN}`,
           Accept: "application/vnd.github.v3+json",
-          "User-Agent": process.env.gh_username,
+          "User-Agent": process.env.GH_USERNAME,
         },
       }
     );
