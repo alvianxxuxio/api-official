@@ -5114,6 +5114,20 @@ function generateRandomName(originalName) {
   return `${randomString}.${ext}`;
 }
 
+// Fungsi untuk mengonversi ukuran file ke format yang lebih mudah dibaca
+function formatFileSize(size) {
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let unitIndex = 0;
+  let readableSize = size;
+
+  while (readableSize >= 1024 && unitIndex < units.length - 1) {
+    readableSize /= 1024;
+    unitIndex++;
+  }
+
+  return `${readableSize.toFixed(2)} ${units[unitIndex]}`;
+}
+
 // Fungsi untuk memproses input expired time
 function parseExpirationTime(expires_in) {
   if (!expires_in || expires_in.toLowerCase() === "permanent") return null;
@@ -5146,6 +5160,7 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
   const { expires_in } = req.body; // "24 hours", "30 hours", "permanent"
   const fileName = generateRandomName(originalname);
   const filePath = `files/${fileName}`;
+  const formattedSize = formatFileSize(size); // Konversi ukuran file
 
   const expiredAt = parseExpirationTime(expires_in);
   if (expiredAt === "invalid") {
@@ -5169,8 +5184,8 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
       }
     );
 
-    // Simpan metadata file (termasuk expiredAt)
-    const metadata = { fileName, expiredAt, size };
+    // Simpan metadata file (termasuk expiredAt dan ukuran)
+    const metadata = { fileName, expiredAt, size: formattedSize };
     await axios.put(
       `https://api.github.com/repos/${process.env.GH_USERNAME}/${process.env.GH_REPO}/contents/metadata/${fileName}.json`,
       {
@@ -5192,8 +5207,8 @@ app.post("/cdn-upload", upload.single("file"), async (req, res) => {
       success: true,
       info: "ALVIAN UXIO - CDN UPLOADER",
       url: `https://cloud.alvianuxio.eu.org/${filePath}`,
-      size: size, // Menambahkan ukuran file dalam response
-      expiredAt: expiredAt ? new Date(expiredAt).toISOString() : "permanent",
+      size: formattedSize, // Ukuran file dalam format terbaca
+      expired: expiredAt ? new Date(expiredAt).toISOString() : "permanent",
     });
   } catch (error) {
     res.status(500).json({
