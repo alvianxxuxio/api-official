@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const dotenv = require("dotenv");
 const crypto = require('crypto');
 const path = require('path');
 const axios = require('axios');
@@ -38,8 +39,32 @@ app.enable("trust proxy");
 app.set("json spaces", 2);
 
 // Middleware untuk CORS
+dotenv.config();
 app.use(cors());
 
+// Middleware Firebase
+const authMiddleware = (req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+  if (apiKey === process.env.SECRET) {
+    next(); // Lanjutkan jika API Key cocok
+  } else {
+    res.status(403).json({ error: "Unauthorized access" });
+  }
+};
+
+// Endpoint untuk Mengambil Firebase Config
+app.get("/firebase-config", authMiddleware, (req, res) => {
+  res.json({
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID
+  });
+});
 
 // brat fix
 async function Brat(text, type = "image") {
