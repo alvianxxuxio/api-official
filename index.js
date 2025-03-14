@@ -5102,6 +5102,51 @@ await trackTotalRequest();
   }
 });
 // uploader api
+const upload = multer({
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
+});
+
+// Fungsi untuk membuat nama file acak
+function generateRandomName(originalName) {
+  const ext = originalName.split(".").pop();
+  const randomString = crypto.randomBytes(3).toString("hex"); // 6 karakter
+  return `${randomString}.${ext}`;
+}
+
+// Endpoint untuk upload file
+app.post("/cdn-upload", upload.single("file"), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "File tidak ditemukan" });
+
+  const { originalname, buffer } = req.file;
+  const fileName = generateRandomName(originalname);
+  const filePath = `files/${fileName}`;
+
+  try {
+    const response = await axios.put(
+      `https://api.github.com/repos/${process.env.GH_REPO}/contents/${filePath}`,
+      {
+        message: `Upload ${fileName}`,
+        content: buffer.toString("base64"),
+      },
+      {
+        headers: {
+          Authorization: `token ${process.env.GITHUB_TOKEN}`,
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": process.env.GH_USERNAME,
+        },
+      }
+    );
+
+    // Ambil URL file yang diunggah
+    const fileUrl = `https://cloud.alvianuxio.eu.org/${filePath}`;
+    res.json({ success: true, url: fileUrl });
+  } catch (error) {
+    res.status(500).json({
+      error: "Gagal upload file",
+      details: error.response?.data || error.message,
+    });
+  }
+});
 // tts
 app.get("/api/tts", async (req, res) => { 
   try {
