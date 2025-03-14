@@ -47,6 +47,7 @@ const authMiddleware = (req, res, next) => {
   const apiKey = req.headers["x-api-key"];
   if (apiKey === process.env.SECRET_KEY) {
     next(); // Lanjutkan jika API Key cocok
+    console.log("SECRET_KEY dari ENV:", process.env.SECRET_KEY);
   } else {
     res.status(403).json({ error: "Unauthorized access" });
   }
